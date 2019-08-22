@@ -1,6 +1,6 @@
 {
   "name": "@lemoncode/form-validation",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Form schema validator library",
   "main": "dist/@lemoncode/form-validation.cjs.js",
   "module": "dist/@lemoncode/form-validation.esm.js",
@@ -20,7 +20,7 @@
     "test:size": "bundlesize",
     "prepublish": "npm run validate",
     "publish": "np",
-    "publish:beta": "np --tag=beta"
+    "publish:beta": "npm run prepublish && np --tag=beta"
   },
   "bundlesize": [
     {
