@@ -20,7 +20,7 @@
     "test:size": "bundlesize",
     "prepublish": "npm run validate",
     "publish": "np",
-    "publish:beta": "npm run prepublish && np --tag=beta --any-branch"
+    "publish:beta": "npm run prepublish && np --tag=beta --no-publish --any-branch"
   },
   "bundlesize": [
     {
