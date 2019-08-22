@@ -8,7 +8,7 @@
   "scripts": {
     "build": "npm run clean && rollup --config",
     "clean": "rimraf dist .rpt2_cache",
-    "lint": "eslint ./src",
+    "lint": "eslint './src/**/*.{ts,tsx}'",
     "test": "jest -c ./config/test/jest.json --verbose",
     "test:watch": "jest -c ./config/test/jest.json --verbose --watchAll -i"
   },
@@ -65,7 +65,7 @@
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
-      "eslint --fix",
+      "npm run lint",
       "pretty-quick — staged",
       "git add"
     ]
