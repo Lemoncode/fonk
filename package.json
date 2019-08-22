@@ -18,7 +18,9 @@
     "test": "jest -c ./config/test/jest.json --verbose",
     "test:watch": "jest -c ./config/test/jest.json --verbose --watchAll -i",
     "test:size": "bundlesize",
-    "prepublish": "npm run validate"
+    "prepublish": "npm run validate",
+    "publish": "np",
+    "publish:beta": "np --tag=beta"
   },
   "bundlesize": [
     {
@@ -61,6 +63,7 @@
     "husky": "^3.0.4",
     "jest": "^24.9.0",
     "lint-staged": "^9.2.3",
+    "np": "^5.0.3",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.1",
     "rimraf": "^3.0.0",
