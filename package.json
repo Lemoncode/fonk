@@ -60,12 +60,12 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
-      "eslint",
+      "eslint --fix",
       "pretty-quick — staged",
       "git add"
     ]

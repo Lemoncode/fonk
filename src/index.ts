@@ -6,4 +6,3 @@ const user: User = {
 };
 
 console.log(formatUser(user));
-console.log(formatUser(user));
