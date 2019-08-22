@@ -1,25 +1,29 @@
 {
-  "name": "form-validation",
+  "name": "@lemoncode/form-validation",
   "version": "0.0.1",
   "description": "Form schema validator library",
-  "main": "dist/form-validation.cjs.js",
-  "module": "dist/form-validation.esm.js",
+  "main": "dist/@lemoncode/form-validation.cjs.js",
+  "module": "dist/@lemoncode/form-validation.esm.js",
   "typings": "typings/index.d.ts",
+  "files": [
+    "dist",
+    "typings"
+  ],
   "scripts": {
     "build": "npm run clean && rollup --config",
     "clean": "rimraf dist .rpt2_cache",
-    "validate": "npm run lint && npm run build && npm run test && npm run bundle-size",
+    "validate": "npm run lint && npm run build && npm run test && npm run test:size",
     "lint": "eslint src --ext .ts ",
     "lint:fix": "npm run lint -- --fix",
     "test": "jest -c ./config/test/jest.json --verbose",
     "test:watch": "jest -c ./config/test/jest.json --verbose --watchAll -i",
-    "bundle-size": "bundlesize",
+    "test:size": "bundlesize",
     "prepublish": "npm run validate"
   },
   "bundlesize": [
     {
-      "path": "./dist/**.js",
-      "maxSize": "30 kB"
+      "path": "./dist/**/*.js",
+      "maxSize": "2kB"
     }
   ],
   "repository": {
@@ -50,7 +54,7 @@
     "@types/jest": "^24.0.18",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
-    "bundlesize": "^0.18.0",
+    "bundlesize": "0.18.0",
     "eslint": "^6.2.1",
     "eslint-config-prettier": "^6.1.0",
     "eslint-plugin-prettier": "^3.1.0",
