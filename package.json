@@ -4,9 +4,12 @@
   "description": "Form schema validator library",
   "main": "dist/form-validation.cjs.js",
   "module": "dist/form-validation.esm.js",
+  "typings": "typings/index.d.ts",
   "scripts": {
     "build": "npm run clean && rollup --config",
-    "clean": "rimraf dist .rpt2_cache"
+    "clean": "rimraf dist .rpt2_cache",
+    "test": "jest -c ./config/test/jest.json --verbose",
+    "test:watch": "jest -c ./config/test/jest.json --verbose --watchAll -i"
   },
   "repository": {
     "type": "git",
@@ -33,8 +36,9 @@
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "@types/react": "^16.9.2",
+    "@types/jest": "^24.0.18",
     "husky": "^3.0.4",
+    "jest": "^24.9.0",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.1",
     "rimraf": "^3.0.0",
@@ -44,14 +48,12 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript2": "^0.22.1",
     "rollup-plugin-uglify": "^6.0.2",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.5.3"
   },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
-  },
-  "dependencies": {
-    "react": "^16.9.0"
   }
 }
