@@ -65,7 +65,7 @@
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
-      "npm run lint",
+      "npm run lint --fix",
       "pretty-quick — staged",
       "git add"
     ]
