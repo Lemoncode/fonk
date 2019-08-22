@@ -8,10 +8,20 @@
   "scripts": {
     "build": "npm run clean && rollup --config",
     "clean": "rimraf dist .rpt2_cache",
-    "lint": "eslint './src/**/*.{ts,tsx}'",
+    "validate": "npm run lint && npm run build && npm run test && npm run bundle-size",
+    "lint": "eslint src --ext .ts ",
+    "lint:fix": "npm run lint -- --fix",
     "test": "jest -c ./config/test/jest.json --verbose",
-    "test:watch": "jest -c ./config/test/jest.json --verbose --watchAll -i"
+    "test:watch": "jest -c ./config/test/jest.json --verbose --watchAll -i",
+    "bundle-size": "bundlesize",
+    "prepublish": "npm run validate"
   },
+  "bundlesize": [
+    {
+      "path": "./dist/**.js",
+      "maxSize": "30 kB"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Lemoncode/form-validation.git"
@@ -40,6 +50,7 @@
     "@types/jest": "^24.0.18",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
+    "bundlesize": "^0.18.0",
     "eslint": "^6.2.1",
     "eslint-config-prettier": "^6.1.0",
     "eslint-plugin-prettier": "^3.1.0",
@@ -65,7 +76,7 @@
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
-      "npm run lint --fix",
+      "npm run lint:fix",
       "pretty-quick — staged",
       "git add"
     ]

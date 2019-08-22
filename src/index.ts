@@ -5,8 +5,4 @@ const user: User = {
   name: 'test',
 };
 
-const test = (a, b) => {
-  return a * c;
-};
-
 console.log(formatUser(user));

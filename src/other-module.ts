@@ -1,3 +1,3 @@
 import { User } from './model';
 
-export const formatUser = (user: User) => `The user name: ${user.name}`;
+export const formatUser = (user: User): string => `The user name: ${user.name}`;
