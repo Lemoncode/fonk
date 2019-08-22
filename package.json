@@ -1,6 +1,6 @@
 {
   "name": "@lemoncode/form-validation",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Form schema validator library",
   "main": "dist/@lemoncode/form-validation.cjs.js",
   "module": "dist/@lemoncode/form-validation.esm.js",
