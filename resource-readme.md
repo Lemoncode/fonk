@@ -121,8 +121,7 @@ module.exports = {
 
 - To ignore folder and files: .eslintignore
 
-
-- Run eslint:
+* Run eslint:
 
 _package.json_
 
