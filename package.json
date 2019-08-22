@@ -2,9 +2,11 @@
   "name": "form-validation",
   "version": "0.0.1",
   "description": "Form schema validator library",
-  "main": "index.js",
+  "main": "dist/form-validation.cjs.js",
+  "module": "dist/form-validation.esm.js",
   "scripts": {
-    "build": "rollup --config"
+    "build": "npm run clean && rollup --config",
+    "clean": "rimraf dist .rpt2_cache"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,28 @@
   },
   "homepage": "https://github.com/Lemoncode/form-validation#readme",
   "devDependencies": {
-    "rollup": "^1.20.0"
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@types/react": "^16.9.2",
+    "husky": "^3.0.4",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
+    "rimraf": "^3.0.0",
+    "rollup": "^1.20.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.0.2",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript2": "^0.22.1",
+    "rollup-plugin-uglify": "^6.0.2",
+    "typescript": "^3.5.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "dependencies": {
+    "react": "^16.9.0"
   }
 }
