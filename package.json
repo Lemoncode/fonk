@@ -18,9 +18,9 @@
     "test": "jest -c ./config/test/jest.json --verbose",
     "test:watch": "jest -c ./config/test/jest.json --verbose --watchAll -i",
     "test:size": "bundlesize",
-    "prepublish": "npm run validate",
-    "publish": "np",
-    "publish:beta": "npm run prepublish && np --tag=beta --any-branch"
+    "prepare": "npm run validate",
+    "publish": "npm run prepare && np",
+    "publish:beta": "npm run prepare && np --tag=beta --any-branch"
   },
   "bundlesize": [
     {
