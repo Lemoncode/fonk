@@ -1,6 +1,6 @@
 {
   "name": "@lemoncode/form-validation",
-  "version": "0.0.2-1",
+  "version": "0.0.1",
   "description": "Form schema validator library",
   "main": "dist/@lemoncode/form-validation.cjs.js",
   "module": "dist/@lemoncode/form-validation.esm.js",
@@ -19,8 +19,8 @@
     "test:watch": "jest -c ./config/test/jest.json --verbose --watchAll -i",
     "test:size": "bundlesize",
     "prepare": "npm run validate",
-    "publish": "npm run prepare && np",
-    "publish:beta": "npm run prepare && np --tag=beta --any-branch"
+    "deploy": "npm run prepare && np",
+    "deploy:beta": "npm run prepare && np --tag=beta --any-branch"
   },
   "bundlesize": [
     {
