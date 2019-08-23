@@ -33,15 +33,12 @@
     "url": "git+https://github.com/Lemoncode/form-validation.git"
   },
   "keywords": [
+    "validation",
     "form",
-    "validation",
-    "validation",
+    "form validation",
     "validate",
-    "form",
-    "async",
-    "validation",
-    "sync",
-    "validation"
+    "async validation",
+    "sync validation"
   ],
   "author": "Lemoncode",
   "license": "MIT",

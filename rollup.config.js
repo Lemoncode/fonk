@@ -31,7 +31,7 @@ export default builds.map(({ format, minify }) => {
       commonjs(),
       typescript({
         tsconfig: 'tsconfig.json',
-        rollupCommonJSResolveHack: true, // To be compatible with commojs plugin
+        rollupCommonJSResolveHack: true, // To be compatible with commonjs plugin
       }),
       babel({
         extensions,
