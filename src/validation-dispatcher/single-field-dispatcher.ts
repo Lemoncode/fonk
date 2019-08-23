@@ -12,7 +12,7 @@ import {
 } from '../helper';
 
 interface ValidationParams {
-  record: any;
+  values: any;
   value: any;
   fieldValidationCollection: FieldValidation[];
 }
@@ -22,7 +22,7 @@ const createValidationParams = (
   value: any,
   fieldValidationCollection: FieldValidation[]
 ): ValidationParams => ({
-  record: values,
+  values,
   value,
   fieldValidationCollection,
 });
@@ -69,7 +69,7 @@ const iterateFiringFieldValidations = (
 
   validationFunction(
     validationParams.value,
-    validationParams.record,
+    validationParams.values,
     fieldValidation['customArgs'] // TODO: this can be a bit dirty, if function return undefined, if not the value
   )
     .then(fieldValidationResult => {
