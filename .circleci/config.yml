@@ -11,4 +11,4 @@ jobs:
           command: 'npm install'
       - run:
           name: validate
-          command: 'npm validate'
+          command: 'npm run validate'
