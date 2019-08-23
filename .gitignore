@@ -1,0 +1,11 @@
+node_modules
+.DS_Store
+dist/
+*.orig
+.idea/
+*/src/**/*.js.map
+*.log
+package-lock.json
+coverage/
+.awcache/
+.rpt2_cache
