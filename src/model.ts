@@ -17,11 +17,10 @@ type ValidationResultSyncAsync = ValidationResult | Promise<ValidationResult>;
 
 export type FieldValidationFunction = (
   value: any,
-  values: any,
-  customParams: any
+  values?: any,
+  customParams?: any
 ) => Promise<ValidationResult>;
 
-// renamoe to FullFieldValidation
 export interface FullFieldValidation {
   validator: FieldValidationFunction;
   customArgs?: object;
