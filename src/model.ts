@@ -2,14 +2,14 @@ export interface ValidationResult {
   key?: string;
   type: string;
   succeeded: boolean;
-  errorMessage: string;
+  message: string;
 }
 
 export const createDefaultValidationResult = (): ValidationResult => ({
   key: '',
   type: '',
   succeeded: true,
-  errorMessage: '',
+  message: '',
 });
 
 // Pending on ValidationEngine

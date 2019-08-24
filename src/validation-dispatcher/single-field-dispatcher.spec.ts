@@ -716,6 +716,10 @@ describe('validationDispatcher', () => {
 
       const validationsPerField = [validationFn1, validationFn2];
 
+      const errorStub = jest
+        .spyOn(global.console, 'error')
+        .mockImplementation(() => {});
+
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
         values,
@@ -728,6 +732,7 @@ describe('validationDispatcher', () => {
         expect(fieldValidationResult.succeeded).toBeTruthy();
         expect(validationFn1).toBeCalled();
         expect(validationFn2).toBeCalled();
+        expect(errorStub).toHaveBeenCalled();
         done();
       });
     });
