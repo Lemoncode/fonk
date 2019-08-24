@@ -35,7 +35,9 @@ export interface FormValidation {
   formGlobalErrors: Array<ValidationResult>;
 }
 
-export type RecordValidationFunction = (vm: any) => ValidationResult;
+export type RecordValidationFunction = (
+  values: any
+) => Promise<ValidationResult>;
 
 export interface ValidationSchema {
   global?: RecordValidationFunction[];
