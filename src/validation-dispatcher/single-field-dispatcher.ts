@@ -5,27 +5,16 @@ import {
 } from '../model';
 
 import {
+  ValidationParams,
+  createValidationParams,
+} from './validation-dispatcher.model';
+
+import {
   arrayContainsEntries,
   isFunction,
   isLastIndexInArray,
   isUndefinedOrNull,
 } from '../helper';
-
-interface ValidationParams {
-  values: any;
-  value: any;
-  fieldValidationCollection: FieldValidation[];
-}
-
-const createValidationParams = (
-  values: any,
-  value: any,
-  fieldValidationCollection: FieldValidation[]
-): ValidationParams => ({
-  values,
-  value,
-  fieldValidationCollection,
-});
 
 enum ValidationCheck {
   ERROR_NOT_EXPECTED,
