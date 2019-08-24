@@ -14,3 +14,7 @@ export const isLastIndexInArray = <T>(index: number, array: T[]) =>
   index === safeArrayLength(array) - 1;
 
 export const isUndefinedOrNull = (v: any) => v === void 0 || v === null;
+
+export const areAllElementsInArrayDefined = <T>(elements: T[]) => {
+  return elements.every(element => element);
+};
