@@ -15,3 +15,9 @@ export const createValidationParams = (
   value,
   fieldValidationCollection,
 });
+
+export enum ValidationCheck {
+  ERROR_NOT_EXPECTED,
+  FAILED,
+  SUCCEEDED,
+}

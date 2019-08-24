@@ -7,6 +7,7 @@ import {
 import {
   ValidationParams,
   createValidationParams,
+  ValidationCheck,
 } from './validation-dispatcher.model';
 
 import {
@@ -16,27 +17,17 @@ import {
   isUndefinedOrNull,
 } from '../helper';
 
-enum ValidationCheck {
-  ERROR_NOT_EXPECTED,
-  FAILED,
-  SUCCEEDED,
-}
-
 const checkFieldValidationResult = (
-  fieldValidationResult: ValidationResult
+  validationResult: ValidationResult
 ): ValidationCheck => {
   let validationCheck: ValidationCheck = null;
 
-  if (
-    !fieldValidationResult ||
-    isUndefinedOrNull(fieldValidationResult.succeeded)
-  ) {
+  if (!validationResult || isUndefinedOrNull(validationResult.succeeded)) {
     validationCheck = ValidationCheck.ERROR_NOT_EXPECTED;
   } else {
-    validationCheck =
-      fieldValidationResult.succeeded === true
-        ? ValidationCheck.SUCCEEDED
-        : ValidationCheck.FAILED;
+    validationCheck = validationResult.succeeded
+      ? ValidationCheck.SUCCEEDED
+      : ValidationCheck.FAILED;
   }
 
   return validationCheck;
