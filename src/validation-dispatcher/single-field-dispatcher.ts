@@ -8,7 +8,7 @@ import {
   arrayContainsEntries,
   isFunction,
   isLastIndexInArray,
-  isNorUndefinedOrNull,
+  isUndefinedOrNull,
 } from '../helper';
 
 interface ValidationParams {
@@ -40,7 +40,7 @@ const checkFieldValidationResult = (
 
   if (
     !fieldValidationResult ||
-    !isNorUndefinedOrNull(fieldValidationResult.succeeded)
+    isUndefinedOrNull(fieldValidationResult.succeeded)
   ) {
     validationCheck = ValidationCheck.ERROR_NOT_EXPECTED;
   } else {

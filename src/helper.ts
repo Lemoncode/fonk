@@ -13,4 +13,4 @@ export const isFunction = (v: any): v is Function => typeof v === 'function';
 export const isLastIndexInArray = <T>(index: number, array: T[]) =>
   index === safeArrayLength(array) - 1;
 
-export const isNorUndefinedOrNull = (v: any) => !(v === void 0 || v === null);
+export const isUndefinedOrNull = (v: any) => v === void 0 || v === null;

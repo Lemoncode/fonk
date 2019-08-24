@@ -1,8 +1,4 @@
-import {
-  arrayContainsEntries,
-  isFunction,
-  isNorUndefinedOrNull,
-} from './helper';
+import { arrayContainsEntries, isFunction, isUndefinedOrNull } from './helper';
 
 describe('arrayContainsEntries', () => {
   it('Should return false when passing undefined', () => {
@@ -137,59 +133,59 @@ describe('isFunction', () => {
   });
 });
 
-describe('isNorUndefinedOrNull', () => {
-  it('returns false when undefined', () => {
+describe('isUndefinedOrNull', () => {
+  it('returns true when undefined', () => {
     // Arrange
     const value = void 0;
 
     // Act
-    const result = isNorUndefinedOrNull(value);
+    const result = isUndefinedOrNull(value);
 
     // Assert
-    expect(result).toBeFalsy();
+    expect(result).toBeTruthy();
   });
 
-  it('returns false when null', () => {
+  it('returns true when null', () => {
     // Arrange
     const value = null;
 
     // Act
-    const result = isNorUndefinedOrNull(value);
+    const result = isUndefinedOrNull(value);
+
+    // Assert
+    expect(result).toBeTruthy();
+  });
+
+  it('returns false when value is false', () => {
+    // Arrange
+    const value = false;
+
+    // Act
+    const result = isUndefinedOrNull(value);
 
     // Assert
     expect(result).toBeFalsy();
   });
 
-  it('returns true when value is false', () => {
-    // Arrange
-    const value = false;
-
-    // Act
-    const result = isNorUndefinedOrNull(value);
-
-    // Assert
-    expect(result).toBeTruthy();
-  });
-
-  it('returns true when value is empty string', () => {
+  it('returns false when value is empty string', () => {
     // Arrange
     const value = '';
 
     // Act
-    const result = isNorUndefinedOrNull(value);
+    const result = isUndefinedOrNull(value);
 
     // Assert
-    expect(result).toBeTruthy();
+    expect(result).toBeFalsy();
   });
 
-  it('returns true when value is an object', () => {
+  it('returns false when value is an object', () => {
     // Arrange
     const value = { a: 'foo' };
 
     // Act
-    const result = isNorUndefinedOrNull(value);
+    const result = isUndefinedOrNull(value);
 
     // Assert
-    expect(result).toBeTruthy();
+    expect(result).toBeFalsy();
   });
 });
