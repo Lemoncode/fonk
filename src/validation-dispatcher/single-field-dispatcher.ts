@@ -55,8 +55,8 @@ const checkFieldValidationResult = (
 
 // TODO, we should type resolve / reject
 const iterateFiringFieldValidations = (
-  resolve: any,
-  reject: any,
+  resolve: (value?: ValidationResult | PromiseLike<ValidationResult>) => void,
+  reject: (reason?: any) => void,
   validationParams: ValidationParams,
   currentIndex: number
 ): void => {
