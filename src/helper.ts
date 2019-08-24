@@ -7,6 +7,9 @@ export const arrayContainsEntries = <T>(collection: T[]) =>
 export const safeArrayLength = <T>(collection: T[]) =>
   collection ? collection.length : 0;
 
+export const arrayContainsElements = <T>(collection: T[]) =>
+  safeArrayLength(collection) > 0;
+
 // https://stackoverflow.com/questions/5999998/check-if-a-variable-is-of-function-type
 export const isFunction = (v: any): v is Function => typeof v === 'function';
 
