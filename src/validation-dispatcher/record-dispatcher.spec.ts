@@ -244,7 +244,7 @@ describe(`fireRecordValidations`, () => {
     });
   });
 
-  it(`Should return an empty array plus console warning
+  it(`Should return an empty array plus console error
       when one of the validators is null`, () => {
     // Arrange
     const values = null;
@@ -256,6 +256,33 @@ describe(`fireRecordValidations`, () => {
           message: '',
         }),
       null,
+    ];
+
+    const errorStub = jest
+      .spyOn(global.console, 'error')
+      .mockImplementation(() => {});
+
+    // Act
+    const result = fireRecordValidations(values, validations);
+
+    // Assert
+    expect(result).toBeDefined;
+    expect(result.length).toBe(0);
+    expect(errorStub).toHaveBeenCalled();
+  });
+
+  it(`Should return an empty array plus console error
+      when one of the validators is undefined`, () => {
+    // Arrange
+    const values = null;
+    const validations: RecordValidationFunction[] = [
+      values =>
+        Promise.resolve({
+          type: 'myrecordvalidation1',
+          succeeded: false,
+          message: '',
+        }),
+      void 0,
     ];
 
     const errorStub = jest
