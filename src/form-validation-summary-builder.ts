@@ -52,15 +52,14 @@ const setEmptyKeysToGlobalKeys = (
         }
   );
 
-const removeValidationsThatSucceeded = (
-  validationResults: ValidationResult[]
-) => validationResults.filter(validationResult => !validationResult.succeeded);
+const removeSucceededValidations = (validationResults: ValidationResult[]) =>
+  validationResults.filter(validationResult => !validationResult.succeeded);
 
 const cleanupValidationResultCollection = (
   validationResults: ValidationResult[]
 ): ValidationResult[] => {
   let collectionProcessed = removeNotValidValidationResults(validationResults);
-  collectionProcessed = removeValidationsThatSucceeded(collectionProcessed);
+  collectionProcessed = removeSucceededValidations(collectionProcessed);
   // TODO check why this is needed
   // Does it mean global validation arrive here with an empty key ''?
   // then we map it to global?
