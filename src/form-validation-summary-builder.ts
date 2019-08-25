@@ -4,7 +4,7 @@ import {
   createDefaultFormValidationSummary,
   FormFieldError,
 } from './model';
-import { arrayContainsElements } from './helper';
+import { arrayContainsEntries } from './helper';
 import { globalFormValidationId } from './const';
 
 const didAllValidationsSucceeded = (
@@ -77,7 +77,7 @@ export const buildFormValidationResult = (
   // just pass me the ones that failed, easier to manage?
   const formValidationSummary = createDefaultFormValidationSummary();
 
-  if (arrayContainsElements(validationResults)) {
+  if (arrayContainsEntries(validationResults)) {
     const processedValidationResults = cleanupValidationResultCollection(
       validationResults
     );
