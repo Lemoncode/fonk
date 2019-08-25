@@ -91,14 +91,12 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: '',
+      });
 
       const validationsPerField: FieldValidation[] = [validationFn];
 
@@ -128,14 +126,12 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: false,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: false,
+        type: '',
+        key: '',
+      });
 
       const validationsPerField: FieldValidation[] = [validationFn];
 
@@ -165,14 +161,12 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: '',
+      });
 
       const fullValidation: FullFieldValidation = {
         validator: validationFn,
@@ -208,14 +202,12 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: false,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: false,
+        type: '',
+        key: '',
+      });
 
       const fullValidation: FullFieldValidation = {
         validator: validationFn,
@@ -251,23 +243,19 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn1 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: false,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn1 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: false,
+        type: '',
+        key: '',
+      });
 
-      const validationFn2 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: false,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn2 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: false,
+        type: '',
+        key: '',
+      });
 
       const validationsPerField = [validationFn1, validationFn2];
 
@@ -298,23 +286,19 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn1 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: false,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn1 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: false,
+        type: '',
+        key: '',
+      });
 
-      const validationFn2 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn2 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: '',
+      });
 
       const validationsPerField = [validationFn1, validationFn2];
 
@@ -345,23 +329,19 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn1 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn1 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: '',
+      });
 
-      const validationFn2 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: false,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn2 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: false,
+        type: '',
+        key: '',
+      });
 
       const validationsPerField = [validationFn1, validationFn2];
 
@@ -392,23 +372,19 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn1 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn1 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: '',
+      });
 
-      const validationFn2 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn2 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: '',
+      });
 
       const validationsPerField = [validationFn1, validationFn2];
 
@@ -665,14 +641,12 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn1 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: false,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn1 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: false,
+        type: '',
+        key: '',
+      });
       const validationFn2 = jest.fn().mockResolvedValue(void 0);
 
       const validationsPerField = [validationFn1, validationFn2];
@@ -704,14 +678,12 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn1 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn1 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: '',
+      });
       const validationFn2 = jest.fn().mockResolvedValue(void 0);
 
       const validationsPerField = [validationFn1, validationFn2];
@@ -745,14 +717,12 @@ describe('validationDispatcher', () => {
       const values = { a: 'foo', b: 'bar' };
       const value = 'new value';
 
-      const validationFn1 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: 'test1',
-        })
-      );
+      const validationFn1 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: 'test1',
+      });
 
       const customArgs1 = { param1: 'param1' };
 
