@@ -48,6 +48,7 @@ export class ValidationEngine {
   buildValidationResults = (
     validations: Promise<ValidationResult>[]
   ): Promise<FormValidationResult> => {
+    this.asyncValidationInProgressCount++;
     return new Promise<FormValidationResult>((resolve, reject) => {
       // Once all the single field validations have been resolved
       // resolve the fullFormValidatePromise
@@ -99,7 +100,8 @@ export class ValidationEngine {
               const errorInformation = `Validation Exception, field: ${key} validation fn Index: ${key}`;
               console.log(errorInformation);
               reject(result);
-            });
+            })
+            .finally(() => this.asyncValidationInProgressCount--);
         }
       }
     );
