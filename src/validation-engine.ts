@@ -4,6 +4,8 @@ import {
   FieldsValidationSchema,
   RecordValidationFunction,
   createDefaultValidationResult,
+  RecordValidationFunctionSyncAsync,
+  isSyncValidationResult,
 } from './model';
 
 import { isUndefinedOrNull } from './helper';
@@ -19,6 +21,37 @@ export class ValidationEngine {
   private validationsPerField: FieldsValidationSchema = null;
   private validationsGlobalForm: RecordValidationFunction[] = [];
   private asyncValidationInProgressCount = 0;
+
+  // TODO: AddFieldValidation
+  //    Extra here we have a new case we can pass only the function
+  // TODO: AddFormValidation
+  addFormValidation(validation: RecordValidationFunctionSyncAsync): void {
+    // Sugar we admit both flavors syncrhonous and asynchronous validators
+    const validationAsync = this.convertFormValidationToAsyncIfNeeded(
+      validation
+    );
+
+    this.validationsGlobalForm.push(validationAsync);
+  }
+
+  // TODO: Should this be moved to model ?
+  convertFormValidationToAsyncIfNeeded(
+    validation: RecordValidationFunctionSyncAsync
+  ): RecordValidationFunction {
+    return (values: any): Promise<ValidationResult> => {
+      const result = validation(values);
+
+      if (isSyncValidationResult(result)) {
+        return Promise.resolve(result as ValidationResult);
+      } else {
+        return result as Promise<ValidationResult>;
+      }
+    };
+  }
+
+  public isValidationInProgress() {
+    return this.asyncValidationInProgressCount > 0;
+  }
 
   public validateForm(values: any): Promise<FormValidationResult> {
     const allValidations = this.fireFieldAndRecordValidations(values);

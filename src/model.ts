@@ -5,6 +5,13 @@ export interface ValidationResult {
   message: string;
 }
 
+// Since is an interface no way to use instanceof
+// Using type guard
+export const isSyncValidationResult = (
+  validationResult: ValidationResultSyncAsync
+): validationResult is ValidationResult =>
+  (validationResult as Promise<ValidationResult>).then === void 0;
+
 export const createDefaultValidationResult = (): ValidationResult => ({
   key: '',
   type: '',
@@ -51,6 +58,10 @@ export interface FormValidation {
   fieldErrors: { [key: string]: ValidationResult };
   formGlobalErrors: Array<ValidationResult>;
 }
+
+export type RecordValidationFunctionSyncAsync = (
+  value
+) => ValidationResult | Promise<ValidationResult>;
 
 export type RecordValidationFunction = (
   values: any
