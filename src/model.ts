@@ -56,7 +56,11 @@ export type RecordValidationFunction = (
   values: any
 ) => Promise<ValidationResult>;
 
+export interface FieldsValidationSchema {
+  [key: string]: FieldValidation[];
+}
+
 export interface ValidationSchema {
   global?: RecordValidationFunction[];
-  fields?: { [key: string]: FieldValidation[] };
+  fields?: FieldsValidationSchema;
 }
