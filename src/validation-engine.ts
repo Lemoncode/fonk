@@ -24,6 +24,25 @@ export class ValidationEngine {
     return this.buildValidationResults(allValidations);
   }
 
+  validateField(
+    values: any,
+    key: string,
+    value: any
+  ): Promise<ValidationResult> {
+    this.asyncValidationInProgressCount++;
+    const asyncValidationPromise = this.fireFieldValidations(
+      values,
+      key,
+      value
+    );
+
+    // TODO: de we need to add some additional check in the promise
+    // e.g. fail or something like that?
+    asyncValidationPromise.then(() => this.asyncValidationInProgressCount--);
+
+    return asyncValidationPromise;
+  }
+
   private fireFieldAndRecordValidations = (
     values: any
   ): Promise<ValidationResult>[] => {
