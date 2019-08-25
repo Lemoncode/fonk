@@ -17,13 +17,13 @@ export interface FormFieldError {
   validationResult: ValidationResult;
 }
 
-export interface FormValidationSummary {
+export interface FormValidationResult {
   succeeded: boolean;
   fieldErrors: FormFieldError[];
   formGlobalErrors: ValidationResult[];
 }
 
-export const createDefaultFormValidationSummary = (): FormValidationSummary => ({
+export const createDefaultFormValidationSummary = (): FormValidationResult => ({
   succeeded: true,
   fieldErrors: [],
   formGlobalErrors: [],

@@ -1,6 +1,6 @@
 import {
   ValidationResult,
-  FormValidationSummary,
+  FormValidationResult,
   createDefaultFormValidationSummary,
   FormFieldError,
 } from './model';
@@ -71,7 +71,7 @@ const cleanupValidationResultCollection = (
 
 export const buildFormValidationResult = (
   validationResults: ValidationResult[]
-): FormValidationSummary => {
+): FormValidationResult => {
   // TODO: [Dicussion needed here] Should we remove as well validation that had succeeded?
   // Right now it returns all validations, I think it could make no sense
   // just pass me the ones that failed, easier to manage?
