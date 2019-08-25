@@ -12,6 +12,23 @@ export const createDefaultValidationResult = (): ValidationResult => ({
   message: '',
 });
 
+export interface FormFieldError {
+  key: string;
+  validationResult: ValidationResult;
+}
+
+export interface FormValidationResult {
+  succeeded: boolean;
+  fieldErrors: FormFieldError[];
+  formGlobalErrors: ValidationResult[];
+}
+
+export const createDefaultFormValidationSummary = (): FormValidationResult => ({
+  succeeded: true,
+  fieldErrors: [],
+  formGlobalErrors: [],
+});
+
 // Pending on ValidationEngine
 type ValidationResultSyncAsync = ValidationResult | Promise<ValidationResult>;
 
