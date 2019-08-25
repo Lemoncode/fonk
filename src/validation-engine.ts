@@ -3,6 +3,7 @@ import {
   FormValidationResult,
   FieldsValidationSchema,
   RecordValidationFunction,
+  createDefaultValidationResult,
 } from './model';
 
 import { isUndefinedOrNull } from './helper';
@@ -83,7 +84,8 @@ export class ValidationEngine {
           const errorInformation = `Uncontrolled error when validating full form, check custom validations code`;
           console.log(errorInformation);
           reject(result);
-        });
+        })
+        .finally(() => this.asyncValidationInProgressCount--);
     });
   };
 
@@ -96,10 +98,8 @@ export class ValidationEngine {
 
     const fieldValidationResultPromise = new Promise<ValidationResult>(
       (resolve, reject) => {
-        // TODO: this should be encapsulated into two separate functions
         if (!this.isFieldKeyMappingDefined(key)) {
-          this.asyncValidationInProgressCount--;
-          resolve();
+          resolve(createDefaultValidationResult());
         } else {
           fireSingleFieldValidations(
             values,
@@ -107,7 +107,6 @@ export class ValidationEngine {
             this.validationsPerField[key]
           )
             .then((fieldValidationResult: ValidationResult) => {
-              this.asyncValidationInProgressCount--;
               if (fieldValidationResult) {
                 fieldValidationResult.key = key;
               }
