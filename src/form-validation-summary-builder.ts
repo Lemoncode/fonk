@@ -31,8 +31,14 @@ const extractFormRecordErrors = (
 
 const removeNotValidValidationResults = (
   validationResults: ValidationResult[]
-): ValidationResult[] =>
-  validationResults.filter(fvr => fvr !== undefined && fvr !== null);
+): ValidationResult[] => {
+  if (validationResults.some(fvr => fvr === undefined || fvr === null)) {
+    console.error(
+      'Some form validators are returning null / undefined, fix this'
+    );
+  }
+  return validationResults.filter(fvr => fvr !== undefined && fvr !== null);
+};
 
 const setEmptyKeysToGlobalKeys = (
   validationResults: ValidationResult[]
@@ -46,11 +52,18 @@ const setEmptyKeysToGlobalKeys = (
         }
   );
 
+const removeValidationsThatSucceeded = (
+  validationResults: ValidationResult[]
+) => validationResults.filter(validationResult => !validationResult.succeeded);
+
 const cleanupValidationResultCollection = (
   validationResults: ValidationResult[]
 ): ValidationResult[] => {
   let collectionProcessed = removeNotValidValidationResults(validationResults);
+  collectionProcessed = removeValidationsThatSucceeded(collectionProcessed);
   // TODO check why this is needed
+  // Does it mean global validation arrive here with an empty key ''?
+  // then we map it to global?
   collectionProcessed = setEmptyKeysToGlobalKeys(collectionProcessed);
 
   return collectionProcessed;
@@ -59,6 +72,9 @@ const cleanupValidationResultCollection = (
 export const buildFormValidationResult = (
   validationResults: ValidationResult[]
 ): FormValidationSummary => {
+  // TODO: [Dicussion needed here] Should we remove as well validation that had succeeded?
+  // Right now it returns all validations, I think it could make no sense
+  // just pass me the ones that failed, easier to manage?
   const formValidationSummary = createDefaultFormValidationSummary();
 
   if (arrayContainsElements(validationResults)) {
