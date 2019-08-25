@@ -20,45 +20,52 @@ export class ValidationEngine {
   private asyncValidationInProgressCount = 0;
 
   public validateForm(values: any): Promise<FormValidationResult> {
-    const fullFormValidatedPromise = new Promise<FormValidationResult>(
-      (resolve, reject) => {
-        // Let's add fileValidationResults
-        let fieldValidationResults: Promise<
-          ValidationResult
-        >[] = fireAllFieldsValidations(
-          values,
-          Object.keys(this.validationsPerField),
-          this.fireFieldValidations
-        );
+    const allValidations = this.fireFieldAndRecordValidations(values);
+    return this.buildValidationResults(allValidations);
+  }
 
-        // Now global form validations
-        if (this.validationsGlobalForm.length > 0) {
-          fieldValidationResults = [
-            ...fieldValidationResults,
-            ...this.validateGlobalFormValidations(values),
-          ];
-        }
-
-        // Once all the single field validations have been resolved
-        // resolve the fullFormValidatePromise
-        Promise.all(fieldValidationResults)
-          .then((fieldValidationResults: ValidationResult[]) => {
-            const formValidationResult = buildFormValidationResult(
-              fieldValidationResults
-            );
-            resolve(formValidationResult);
-          })
-          .catch(result => {
-            // Build failed validation Result
-            const errorInformation = `Uncontrolled error when validating full form, check custom validations code`;
-            console.log(errorInformation);
-            reject(result);
-          });
-      }
+  private fireFieldAndRecordValidations = (
+    values: any
+  ): Promise<ValidationResult>[] => {
+    let fieldValidationResults: Promise<
+      ValidationResult
+    >[] = fireAllFieldsValidations(
+      values,
+      Object.keys(this.validationsPerField),
+      this.fireFieldValidations
     );
 
-    return fullFormValidatedPromise;
-  }
+    // Now global form validations
+    if (this.validationsGlobalForm.length > 0) {
+      fieldValidationResults = [
+        ...fieldValidationResults,
+        ...this.validateGlobalFormValidations(values),
+      ];
+    }
+    return fieldValidationResults;
+  };
+
+  buildValidationResults = (
+    validations: Promise<ValidationResult>[]
+  ): Promise<FormValidationResult> => {
+    return new Promise<FormValidationResult>((resolve, reject) => {
+      // Once all the single field validations have been resolved
+      // resolve the fullFormValidatePromise
+      Promise.all(validations)
+        .then((fieldValidationResults: ValidationResult[]) => {
+          const formValidationResult = buildFormValidationResult(
+            fieldValidationResults
+          );
+          resolve(formValidationResult);
+        })
+        .catch(result => {
+          // Build failed validation Result
+          const errorInformation = `Uncontrolled error when validating full form, check custom validations code`;
+          console.log(errorInformation);
+          reject(result);
+        });
+    });
+  };
 
   fireFieldValidations = (
     values: any,
