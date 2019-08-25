@@ -21,6 +21,46 @@ export class ValidationEngine {
   private validationsPerField: FieldsValidationSchema = null;
   private validationsGlobalForm: RecordValidationFunction[] = [];
   private asyncValidationInProgressCount = 0;
+  /*
+  // TODO, in new api we are adding an optional parameter
+  // to customize the error message (string array)
+  //
+  // TODO: Chain patter applied here, check why it is useful
+  addFieldValidation(
+    key: string,
+    validation: FieldValidationFunction,
+    customParams: any = {}
+  ): ValidationEngine {
+    const validationAsync = this.convertFielValidationToAsyncIfNeeded(
+      validation
+    );
+
+
+    if (!this.isFieldKeyMappingDefined(key)) {
+      this.validationsPerField[key] = [];
+    }
+
+    this.validationsPerField[key].push({ validator: asyncValidationFn, customParams });
+    return this;
+  }
+
+  // Complex case here: 
+  // It can be a plain function (check if it's sync or async)
+  // It can be an interface that contains as well all the info? maybe not 
+  // this is handled by base ? let's check
+  convertFielValidationToAsyncIfNeeded(validation : FielValidationFunctionSyncAsync)
+  : FieldValidationFunction => {
+    return (values: any): Promise<ValidationResult> => {
+      const result = validation(values);
+
+      if (isSyncValidationResult(result)) {
+        return Promise.resolve(result as ValidationResult);
+      } else {
+        return result as Promise<ValidationResult>;
+      }
+    };
+
+  }
 
   // TODO: AddFieldValidation
   //    Extra here we have a new case we can pass only the function
@@ -33,7 +73,7 @@ export class ValidationEngine {
 
     this.validationsGlobalForm.push(validationAsync);
   }
-
+*/
   // TODO: Should this be moved to model ?
   convertFormValidationToAsyncIfNeeded(
     validation: RecordValidationFunctionSyncAsync
