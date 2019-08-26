@@ -6,6 +6,8 @@ import {
   createDefaultValidationResult,
   RecordValidationFunctionSyncAsync,
   isSyncValidationResult,
+  FieldValidationFunctionSyncAsync,
+  FieldValidationFunction,
 } from './model';
 
 import { isUndefinedOrNull } from './helper';
@@ -18,38 +20,41 @@ import {
 import { buildFormValidationResult } from './form-validation-summary-builder';
 
 export class ValidationEngine {
-  private validationsPerField: FieldsValidationSchema = null;
+  private validationsPerField: FieldsValidationSchema = {};
   private validationsGlobalForm: RecordValidationFunction[] = [];
   private asyncValidationInProgressCount = 0;
-  /*
+
   // TODO, in new api we are adding an optional parameter
   // to customize the error message (string array)
   //
-  // TODO: Chain patter applied here, check why it is useful
+  // TODO: Chain pattern applied here, check why it is useful
   addFieldValidation(
     key: string,
-    validation: FieldValidationFunction,
-    customParams: any = {}
+    validation: FieldValidationFunctionSyncAsync,
+    customParams: any = {},
+    errorMessage?: string
   ): ValidationEngine {
-    const validationAsync = this.convertFielValidationToAsyncIfNeeded(
+    const asyncValidationFn = this.convertFieldValidationToAsyncIfNeeded(
       validation
     );
-
 
     if (!this.isFieldKeyMappingDefined(key)) {
       this.validationsPerField[key] = [];
     }
 
-    this.validationsPerField[key].push({ validator: asyncValidationFn, customParams });
+    this.validationsPerField[key].push({
+      validator: asyncValidationFn,
+      customArgs: customParams,
+      errorMessage: errorMessage,
+    });
     return this;
   }
 
-  // Complex case here: 
-  // It can be a plain function (check if it's sync or async)
-  // It can be an interface that contains as well all the info? maybe not 
-  // this is handled by base ? let's check
-  convertFielValidationToAsyncIfNeeded(validation : FielValidationFunctionSyncAsync)
-  : FieldValidationFunction => {
+  // TODO: Should it be moved to model?
+  convertFieldValidationToAsyncIfNeeded(
+    validation: FieldValidationFunctionSyncAsync
+  ): FieldValidationFunction {
+    // Sugar we admit both flavors syncrhonous and asynchronous validators
     return (values: any): Promise<ValidationResult> => {
       const result = validation(values);
 
@@ -59,12 +64,8 @@ export class ValidationEngine {
         return result as Promise<ValidationResult>;
       }
     };
-
   }
 
-  // TODO: AddFieldValidation
-  //    Extra here we have a new case we can pass only the function
-  // TODO: AddFormValidation
   addFormValidation(validation: RecordValidationFunctionSyncAsync): void {
     // Sugar we admit both flavors syncrhonous and asynchronous validators
     const validationAsync = this.convertFormValidationToAsyncIfNeeded(
@@ -73,7 +74,7 @@ export class ValidationEngine {
 
     this.validationsGlobalForm.push(validationAsync);
   }
-*/
+
   // TODO: Should this be moved to model ?
   convertFormValidationToAsyncIfNeeded(
     validation: RecordValidationFunctionSyncAsync
@@ -138,7 +139,7 @@ export class ValidationEngine {
     return fieldValidationResults;
   };
 
-  buildValidationResults = (
+  private buildValidationResults = (
     validations: Promise<ValidationResult>[]
   ): Promise<FormValidationResult> => {
     this.asyncValidationInProgressCount++;
@@ -162,7 +163,7 @@ export class ValidationEngine {
     });
   };
 
-  fireFieldValidations = (
+  public fireFieldValidations = (
     values: any,
     key: string,
     value: any

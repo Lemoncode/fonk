@@ -1,4 +1,5 @@
 import { ValidationEngine } from './validation-engine';
+import { ValidationResult } from './model';
 
 describe('ValidationEngine tests', () => {
   describe('isValidationInProgress', () => {
@@ -26,6 +27,41 @@ describe('ValidationEngine tests', () => {
 
       // Assert
       expect(validationEngine.isValidationInProgress()).toBeFalsy;
+    });
+
+    it('should return isValidationInProgress true then false when completed if a field validation is completed', done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+
+      // Act
+      validationEngine.addFieldValidation(
+        'username',
+        (value): Promise<ValidationResult> => {
+          const promise = new Promise<ValidationResult>((resolve, reject) => {
+            setTimeout(() => {
+              resolve({
+                key: 'username',
+                type: 'REQUIRED',
+                succeeded: true,
+                message: '',
+              });
+            }, 500);
+          });
+          return promise;
+        }
+      );
+
+      validationEngine
+        .validateField(values, 'username', 'newContent')
+        .then(errors => {
+          // Assert
+          expect(validationEngine.isValidationInProgress()).toBeFalsy();
+          done();
+        });
+
+      // Assert
+      expect(validationEngine.isValidationInProgress()).toBeTruthy();
     });
   });
 });
