@@ -175,6 +175,7 @@ export class ValidationEngine {
     const fieldValidationResultPromise = new Promise<ValidationResult>(
       (resolve, reject) => {
         if (!this.isFieldKeyMappingDefined(key)) {
+          this.asyncValidationInProgressCount--;
           resolve(createDefaultValidationResult());
         } else {
           fireSingleFieldValidations(

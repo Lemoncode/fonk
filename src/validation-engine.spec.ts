@@ -66,4 +66,59 @@ describe('ValidationEngine tests', () => {
       expect(validationEngine.isValidationInProgress()).toBeTruthy();
     });
   });
+
+  describe('AddFieldValidation', () => {
+    it(`Should fire the added validation (sync flavour) and succeed
+        when adding a validation to a given field and firing validation
+        on that field
+    `, () => {});
+    it(`Should fire the added validation (async flavour) and succeed
+        when adding a validation to a given field and firing validation
+        on that field
+    `, () => {});
+    it(`Should not fire the added validation on first 
+        when adding a validation to a given field and firing validation
+        on another field
+    `, () => {});
+
+    it(`Should not fire the added validation on first instance then yes and succeed
+        when adding a validation to a given field and firing validation
+        on another field, then on the expected field.
+    `, () => {
+      it(`Should fire the added validation 
+        when calling ValidateForm`);
+    });
+  });
+
+  describe('AddFormValidation', () => {
+    it(`Should fire the added form validation when calling 
+      fire all validations
+    `);
+    it(`Should fire the two added form validation when calling 
+      fire all validations
+    `);
+    it(`Should not fire the added form validation when calling 
+      fire field validations
+    `);
+  });
+
+  describe('FireFieldValidation', () => {
+    it(`Should fire first validation and not second
+    when adding two validation to same field and first one is failing
+    `, () => {});
+
+    it(`Should fire first validation and  second
+    when adding two validation to same field and firs one succeed and second failing
+    `, () => {});
+
+    it(`Should one fire first validation and
+    when adding two async validations to same field 
+    and first one takes 500ms and fails and second 100ms and not failing
+    `, () => {});
+
+    it(`Should one fire first validation and
+    when adding two async validations to same field 
+    and first one takes 500ms and fails and second is sync and not failing
+    `, () => {});
+  });
 });
