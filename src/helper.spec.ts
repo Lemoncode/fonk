@@ -1,4 +1,66 @@
-import { arrayContainsEntries, isFunction, isUndefinedOrNull } from './helper';
+import {
+  safeArrayLength,
+  arrayContainsEntries,
+  isFunction,
+  isUndefinedOrNull,
+} from './helper';
+
+describe('safeArrayLength', () => {
+  it('Should return 0 when feeding collection equals undefined', () => {
+    // Arrange
+    const collection = void 0;
+
+    // Act
+    const result = safeArrayLength(collection);
+
+    // Assert
+    expect(result).toEqual(0);
+  });
+
+  it('Should return 0 when feeding collection equals null', () => {
+    // Arrange
+    const collection = null;
+
+    // Act
+    const result = safeArrayLength(collection);
+
+    // Assert
+    expect(result).toEqual(0);
+  });
+
+  it('Should return 0 when feeding collection equals empty array', () => {
+    // Arrange
+    const collection = [];
+
+    // Act
+    const result = safeArrayLength(collection);
+
+    // Assert
+    expect(result).toEqual(0);
+  });
+
+  it('Should return 1 when feeding collection with one item', () => {
+    // Arrange
+    const collection = ['first item'];
+
+    // Act
+    const result = safeArrayLength(collection);
+
+    // Assert
+    expect(result).toEqual(1);
+  });
+
+  it('Should return 2 when feeding collection with two items', () => {
+    // Arrange
+    const collection = ['first item', 'second item'];
+
+    // Act
+    const result = safeArrayLength(collection);
+
+    // Assert
+    expect(result).toEqual(2);
+  });
+});
 
 describe('arrayContainsEntries', () => {
   it('Should return false when passing undefined', () => {

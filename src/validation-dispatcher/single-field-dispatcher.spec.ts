@@ -91,14 +91,12 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: '',
+      });
 
       const validationsPerField: FieldValidation[] = [validationFn];
 
@@ -128,14 +126,12 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: false,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: false,
+        type: '',
+        key: '',
+      });
 
       const validationsPerField: FieldValidation[] = [validationFn];
 
@@ -165,14 +161,12 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: '',
+      });
 
       const fullValidation: FullFieldValidation = {
         validator: validationFn,
@@ -208,14 +202,12 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: false,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: false,
+        type: '',
+        key: '',
+      });
 
       const fullValidation: FullFieldValidation = {
         validator: validationFn,
@@ -251,23 +243,19 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn1 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: false,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn1 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: false,
+        type: '',
+        key: '',
+      });
 
-      const validationFn2 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: false,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn2 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: false,
+        type: '',
+        key: '',
+      });
 
       const validationsPerField = [validationFn1, validationFn2];
 
@@ -298,23 +286,19 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn1 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: false,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn1 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: false,
+        type: '',
+        key: '',
+      });
 
-      const validationFn2 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn2 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: '',
+      });
 
       const validationsPerField = [validationFn1, validationFn2];
 
@@ -345,23 +329,19 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn1 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn1 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: '',
+      });
 
-      const validationFn2 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: false,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn2 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: false,
+        type: '',
+        key: '',
+      });
 
       const validationsPerField = [validationFn1, validationFn2];
 
@@ -392,23 +372,19 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn1 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn1 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: '',
+      });
 
-      const validationFn2 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn2 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: '',
+      });
 
       const validationsPerField = [validationFn1, validationFn2];
 
@@ -665,14 +641,12 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn1 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: false,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn1 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: false,
+        type: '',
+        key: '',
+      });
       const validationFn2 = jest.fn().mockResolvedValue(void 0);
 
       const validationsPerField = [validationFn1, validationFn2];
@@ -704,14 +678,12 @@ describe('validationDispatcher', () => {
       const values = undefined;
       const value = undefined;
 
-      const validationFn1 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: '',
-        })
-      );
+      const validationFn1 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: '',
+      });
       const validationFn2 = jest.fn().mockResolvedValue(void 0);
 
       const validationsPerField = [validationFn1, validationFn2];
@@ -745,14 +717,12 @@ describe('validationDispatcher', () => {
       const values = { a: 'foo', b: 'bar' };
       const value = 'new value';
 
-      const validationFn1 = jest.fn().mockReturnValue(
-        Promise.resolve({
-          errorMessage: '',
-          succeeded: true,
-          type: '',
-          key: 'test1',
-        })
-      );
+      const validationFn1 = jest.fn().mockResolvedValue({
+        errorMessage: '',
+        succeeded: true,
+        type: '',
+        key: 'test1',
+      });
 
       const customArgs1 = { param1: 'param1' };
 
@@ -776,6 +746,246 @@ describe('validationDispatcher', () => {
         expect(fieldValidationResult.succeeded).toBeTruthy();
         expect(validationFn1).toBeCalled();
         expect(validationFn1).toBeCalledWith(value, values, customArgs1);
+
+        done();
+      });
+    });
+
+    it(`
+    Spec #19.1
+      should resolve first validation when it feeds 5 validations and first failed
+    `, done => {
+      //Arrange
+      const values = { a: 'foo', b: 'bar' };
+      const value = 'new value';
+
+      const createValidationFn = (key, succeeded, timeout) =>
+        jest.fn().mockImplementation(
+          () =>
+            new Promise(resolve =>
+              setTimeout(
+                () =>
+                  resolve({
+                    errorMessage: '',
+                    succeeded,
+                    type: '',
+                    key,
+                  }),
+                timeout
+              )
+            )
+        );
+
+      const validationFn1 = createValidationFn('key1', false, 100);
+      const validationFn2 = createValidationFn('key2', true, 50);
+      const validationFn3 = createValidationFn('key3', true, 25);
+      const validationFn4 = createValidationFn('key4', true, 30);
+      const validationFn5 = createValidationFn('key5', true, 50);
+
+      const validationsPerField = [
+        validationFn1,
+        validationFn2,
+        validationFn3,
+        validationFn4,
+        validationFn5,
+      ];
+
+      // Act
+      const result = fireSingleFieldValidations(
+        values,
+        value,
+        validationsPerField
+      );
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.key).toEqual('key1');
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).not.toHaveBeenCalled();
+        expect(validationFn3).not.toHaveBeenCalled();
+        expect(validationFn4).not.toHaveBeenCalled();
+        expect(validationFn5).not.toHaveBeenCalled();
+
+        done();
+      });
+    });
+
+    it(`
+    Spec #19.2
+      should resolve third validation when it feeds 5 validations and third, fourth and fifth failed
+    `, done => {
+      //Arrange
+      const values = { a: 'foo', b: 'bar' };
+      const value = 'new value';
+
+      const createValidationFn = (key, succeeded, timeout) =>
+        jest.fn().mockImplementation(
+          () =>
+            new Promise(resolve =>
+              setTimeout(
+                () =>
+                  resolve({
+                    errorMessage: '',
+                    succeeded,
+                    type: '',
+                    key,
+                  }),
+                timeout
+              )
+            )
+        );
+
+      const validationFn1 = createValidationFn('key1', true, 100);
+      const validationFn2 = createValidationFn('key2', true, 50);
+      const validationFn3 = createValidationFn('key3', false, 20);
+      const validationFn4 = createValidationFn('key4', false, 30);
+      const validationFn5 = createValidationFn('key5', false, 50);
+
+      const validationsPerField = [
+        validationFn1,
+        validationFn2,
+        validationFn3,
+        validationFn4,
+        validationFn5,
+      ];
+
+      // Act
+      const result = fireSingleFieldValidations(
+        values,
+        value,
+        validationsPerField
+      );
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.key).toEqual('key3');
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).toHaveBeenCalled();
+        expect(validationFn3).toHaveBeenCalled();
+        expect(validationFn4).not.toHaveBeenCalled();
+        expect(validationFn5).not.toHaveBeenCalled();
+
+        done();
+      });
+    });
+
+    it(`
+    Spec #19.3
+      should resolve fifth validation when it feeds 5 validations fifth failed
+    `, done => {
+      //Arrange
+      const values = { a: 'foo', b: 'bar' };
+      const value = 'new value';
+
+      const createValidationFn = (key, succeeded, timeout) =>
+        jest.fn().mockImplementation(
+          () =>
+            new Promise(resolve =>
+              setTimeout(
+                () =>
+                  resolve({
+                    errorMessage: '',
+                    succeeded,
+                    type: '',
+                    key,
+                  }),
+                timeout
+              )
+            )
+        );
+
+      const validationFn1 = createValidationFn('key1', true, 100);
+      const validationFn2 = createValidationFn('key2', true, 50);
+      const validationFn3 = createValidationFn('key3', true, 25);
+      const validationFn4 = createValidationFn('key4', true, 30);
+      const validationFn5 = createValidationFn('key5', false, 50);
+
+      const validationsPerField = [
+        validationFn1,
+        validationFn2,
+        validationFn3,
+        validationFn4,
+        validationFn5,
+      ];
+
+      // Act
+      const result = fireSingleFieldValidations(
+        values,
+        value,
+        validationsPerField
+      );
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.key).toEqual('key5');
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).toHaveBeenCalled();
+        expect(validationFn3).toHaveBeenCalled();
+        expect(validationFn4).toHaveBeenCalled();
+        expect(validationFn5).toHaveBeenCalled();
+
+        done();
+      });
+    });
+
+    it(`
+    Spec #19.4
+      should resolve fifth validation when it feeds 5 successfully validations
+    `, done => {
+      //Arrange
+      const values = { a: 'foo', b: 'bar' };
+      const value = 'new value';
+
+      const createValidationFn = (key, succeeded, timeout) =>
+        jest.fn().mockImplementation(
+          () =>
+            new Promise(resolve =>
+              setTimeout(
+                () =>
+                  resolve({
+                    errorMessage: '',
+                    succeeded,
+                    type: '',
+                    key,
+                  }),
+                timeout
+              )
+            )
+        );
+
+      const validationFn1 = createValidationFn('key1', true, 100);
+      const validationFn2 = createValidationFn('key2', true, 50);
+      const validationFn3 = createValidationFn('key3', true, 25);
+      const validationFn4 = createValidationFn('key4', true, 30);
+      const validationFn5 = createValidationFn('key5', true, 50);
+
+      const validationsPerField = [
+        validationFn1,
+        validationFn2,
+        validationFn3,
+        validationFn4,
+        validationFn5,
+      ];
+
+      // Act
+      const result = fireSingleFieldValidations(
+        values,
+        value,
+        validationsPerField
+      );
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.key).toEqual('key5');
+        expect(validationResult.succeeded).toBeTruthy();
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).toHaveBeenCalled();
+        expect(validationFn3).toHaveBeenCalled();
+        expect(validationFn4).toHaveBeenCalled();
+        expect(validationFn5).toHaveBeenCalled();
 
         done();
       });
