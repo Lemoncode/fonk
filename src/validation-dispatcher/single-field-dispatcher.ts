@@ -35,6 +35,8 @@ const fireValidation = (
   );
 };
 
+// Sequentially resolve promises with reduce: https://css-tricks.com/why-using-reduce-to-sequentially-resolve-promises-works/
+// Example run promises until one succeeds: https://gist.github.com/greggman/0b6eafb335de4bbb557c
 const iterateValidationsUntilFailOrAllSucceeded = (
   value: any,
   values: any,
@@ -47,7 +49,7 @@ const iterateValidationsUntilFailOrAllSucceeded = (
           ? fireValidation(value, values, next)
           : validationResult
       ),
-    fireValidation(value, values, fieldValidations[0])
+    fireValidation(value, values, fieldValidations[0]) // Initial reduce value
   );
 
 export const fireSingleFieldValidations = (
