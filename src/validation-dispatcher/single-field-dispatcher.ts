@@ -35,11 +35,11 @@ const fireValidation = (
   );
 };
 
-const findFirstFailedValidation = (
+const iterateValidationsUntilFailOrAllSucceeded = (
   value: any,
   values: any,
   fieldValidations: FieldValidation[]
-) =>
+): Promise<ValidationResult> =>
   fieldValidations.reduce(
     (result, next) =>
       result.then((validationResult: ValidationResult) =>
@@ -56,5 +56,5 @@ export const fireSingleFieldValidations = (
   fieldValidations: FieldValidation[]
 ): Promise<ValidationResult> =>
   arrayContainsEntries(fieldValidations)
-    ? findFirstFailedValidation(value, values, fieldValidations)
+    ? iterateValidationsUntilFailOrAllSucceeded(value, values, fieldValidations)
     : Promise.resolve(createDefaultValidationResult());
