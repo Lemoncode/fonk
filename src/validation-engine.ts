@@ -146,20 +146,22 @@ export class ValidationEngine {
     return new Promise<FormValidationResult>((resolve, reject) => {
       // Once all the single field validations have been resolved
       // resolve the fullFormValidatePromise
+      // TODO: Finally issue race condition unit tests
       Promise.all(validations)
         .then((fieldValidationResults: ValidationResult[]) => {
+          this.asyncValidationInProgressCount--;
           const formValidationResult = buildFormValidationResult(
             fieldValidationResults
           );
           resolve(formValidationResult);
         })
         .catch(result => {
+          this.asyncValidationInProgressCount--;
           // Build failed validation Result
           const errorInformation = `Uncontrolled error when validating full form, check custom validations code`;
           console.log(errorInformation);
           reject(result);
-        })
-        .finally(() => this.asyncValidationInProgressCount--);
+        });
     });
   };
 
@@ -181,6 +183,7 @@ export class ValidationEngine {
             this.validationsPerField[key]
           )
             .then((fieldValidationResult: ValidationResult) => {
+              this.asyncValidationInProgressCount--;
               if (fieldValidationResult) {
                 fieldValidationResult.key = key;
               }
@@ -192,8 +195,7 @@ export class ValidationEngine {
               const errorInformation = `Validation Exception, field: ${key} validation fn Index: ${key}`;
               console.log(errorInformation);
               reject(result);
-            })
-            .finally(() => this.asyncValidationInProgressCount--);
+            });
         }
       }
     );

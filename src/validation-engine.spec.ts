@@ -56,6 +56,8 @@ describe('ValidationEngine tests', () => {
         .validateField(values, 'username', 'newContent')
         .then(errors => {
           // Assert
+        })
+        .finally(() => {
           expect(validationEngine.isValidationInProgress()).toBeFalsy();
           done();
         });
