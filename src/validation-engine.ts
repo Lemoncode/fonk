@@ -26,16 +26,12 @@ export class ValidationEngine {
   private validationsGlobalForm: RecordValidationSchema[] = [];
   private asyncValidationInProgressCount = 0;
 
-  // TODO, in new api we are adding an optional parameter
-  // to customize the error message (string array)
-  //
-  // TODO: Chain pattern applied here, check why it is useful
   addFieldValidation(
     key: string,
     validation: FieldValidationFunctionSyncAsync,
     customParams: any = {},
     errorMessage?: string
-  ): ValidationEngine {
+  ) {
     const asyncValidationFn = this.convertFieldValidationToAsyncIfNeeded(
       validation
     );
@@ -54,7 +50,6 @@ export class ValidationEngine {
     }
 
     this.validationsPerField[key].push(fieldValidation);
-    return this;
   }
 
   // TODO: Should it be moved to model?
