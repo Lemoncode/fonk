@@ -222,7 +222,7 @@ describe('ValidationEngine tests', () => {
     });
   });
 
-  describe('AddFormValidation', () => {
+  describe('addRecordValidation', () => {
     it(`Should fire the added form validation (sync) when calling
       fire all validations and return succeeded
     `, done => {
@@ -499,6 +499,64 @@ describe('ValidationEngine tests', () => {
           expect(validationResult.message).toBe('my custom message');
           done();
         });
+    });
+
+    it(`Should fire the added form validation (sync) and display a custom message when calling
+      fire all validations and return failed
+    `, done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+      const validationFn = (values: any, message: string) => ({
+        key: '',
+        type: '',
+        succeeded: false,
+        message: message ? message : 'no custom message',
+      });
+
+      // Act
+      validationEngine.addRecordValidation(validationFn, 'custom message');
+
+      validationEngine.validateForm(values).then(validationResult => {
+        // Assert
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.formGlobalErrors.length).toBe(1);
+        expect(validationResult.formGlobalErrors[0].message).toBe(
+          'custom message'
+        );
+        done();
+      });
+    });
+
+    it(`Should fire the added form validation (async) and display a custom message when calling
+      fire all validations and return failed
+    `, done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+      const validationFn = (
+        values: any,
+        message: string
+      ): Promise<ValidationResult> =>
+        Promise.resolve({
+          key: '',
+          type: '',
+          succeeded: false,
+          message: message ? message : 'no custom message',
+        });
+
+      // Act
+      validationEngine.addRecordValidation(validationFn, 'custom message');
+
+      validationEngine.validateForm(values).then(validationResult => {
+        // Assert
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.formGlobalErrors.length).toBe(1);
+        expect(validationResult.formGlobalErrors[0].message).toBe(
+          'custom message'
+        );
+        done();
+      });
     });
   });
 
