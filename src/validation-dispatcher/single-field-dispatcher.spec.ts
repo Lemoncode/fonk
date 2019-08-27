@@ -171,7 +171,7 @@ describe('validationDispatcher', () => {
       const fullValidation: FullFieldValidation = {
         validator: validationFn,
         customArgs: {},
-        errorMessage: 'myError',
+        message: 'myError',
       };
 
       const validationsPerField: FieldValidation[] = [fullValidation];
@@ -212,7 +212,7 @@ describe('validationDispatcher', () => {
       const fullValidation: FullFieldValidation = {
         validator: validationFn,
         customArgs: {},
-        errorMessage: 'myError',
+        message: 'myError',
       };
 
       const validationsPerField: FieldValidation[] = [fullValidation];
@@ -729,7 +729,7 @@ describe('validationDispatcher', () => {
       const fieldValidation1: FieldValidation = {
         validator: validationFn1,
         customArgs: customArgs1,
-        errorMessage: 'my error message',
+        message: 'my error message',
       };
 
       const validationsPerField = [fieldValidation1];
@@ -745,7 +745,12 @@ describe('validationDispatcher', () => {
       fieldValidationResultPromise.then(fieldValidationResult => {
         expect(fieldValidationResult.succeeded).toBeTruthy();
         expect(validationFn1).toBeCalled();
-        expect(validationFn1).toBeCalledWith(value, values, customArgs1);
+        expect(validationFn1).toBeCalledWith(
+          value,
+          values,
+          customArgs1,
+          'my error message'
+        );
 
         done();
       });

@@ -49,14 +49,10 @@ export class ValidationEngine {
     };
 
     if (errorMessage) {
-      fieldValidation.errorMessage = errorMessage;
+      fieldValidation.message = errorMessage;
     }
 
-    this.validationsPerField[key].push({
-      validator: asyncValidationFn,
-      customArgs: customParams,
-      errorMessage: errorMessage,
-    });
+    this.validationsPerField[key].push(fieldValidation);
     return this;
   }
 
@@ -65,8 +61,13 @@ export class ValidationEngine {
     validation: FieldValidationFunctionSyncAsync
   ): FieldValidationFunction {
     // Sugar we admit both flavors syncrhonous and asynchronous validators
-    return (values: any): Promise<ValidationResult> => {
-      const result = validation(values);
+    return (
+      value: any,
+      values: any,
+      customParams?: object,
+      message?: string
+    ): Promise<ValidationResult> => {
+      const result = validation(value, values, customParams, message);
 
       if (isSyncValidationResult(result)) {
         return Promise.resolve(result as ValidationResult);

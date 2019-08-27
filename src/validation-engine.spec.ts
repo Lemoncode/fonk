@@ -442,6 +442,7 @@ describe('ValidationEngine tests', () => {
         key: '',
         type: '',
         succeeded: false,
+        customParams: {},
         message: '',
       });
 
@@ -454,6 +455,48 @@ describe('ValidationEngine tests', () => {
           // Assert
           expect(validationFn).not.toHaveBeenCalled();
           expect(validationResult.succeeded).toBeTruthy();
+          done();
+        });
+    });
+
+    it(`Should fire the added validation (async flavour) and display
+    a customized message
+    when adding a validation and indicating customized message in
+    the addFieldValidation function`, done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+
+      // Act
+      validationEngine.addFieldValidation(
+        'username',
+        (
+          values: any,
+          value: any,
+          customArgs: object,
+          errorMessage?: string
+        ): Promise<ValidationResult> => {
+          const promise = new Promise<ValidationResult>((resolve, reject) => {
+            setTimeout(() => {
+              resolve({
+                key: 'username',
+                type: 'REQUIRED',
+                succeeded: false,
+                message: errorMessage ? errorMessage : '',
+              });
+            }, 500);
+          });
+          return promise;
+        },
+        {},
+        'my custom message'
+      );
+
+      validationEngine
+        .validateField(values, 'username', 'peter')
+        .then(validationResult => {
+          // Assert
+          expect(validationResult.message).toBe('my custom message');
           done();
         });
     });
