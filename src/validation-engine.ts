@@ -8,6 +8,7 @@ import {
   isSyncValidationResult,
   FieldValidationFunctionSyncAsync,
   FieldValidationFunction,
+  FieldValidation,
 } from './model';
 
 import { isUndefinedOrNull } from './helper';
@@ -40,6 +41,15 @@ export class ValidationEngine {
 
     if (!this.isFieldKeyMappingDefined(key)) {
       this.validationsPerField[key] = [];
+    }
+
+    const fieldValidation: FieldValidation = {
+      validator: asyncValidationFn,
+      customArgs: customParams,
+    };
+
+    if (errorMessage) {
+      fieldValidation.errorMessage = errorMessage;
     }
 
     this.validationsPerField[key].push({
