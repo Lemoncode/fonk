@@ -206,7 +206,7 @@ export class ValidationEngine {
             .catch(result => {
               this.asyncValidationInProgressCount--;
               // Build failed validation Result
-              const errorInformation = `Validation Exception, field: ${key} validation fn Index: ${key}`;
+              const errorInformation = `Validation Exception, field: ${key}`;
               console.log(errorInformation);
               reject(result);
             });
