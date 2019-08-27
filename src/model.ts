@@ -72,18 +72,25 @@ export interface FormValidation {
 }
 
 export type RecordValidationFunctionSyncAsync = (
-  value
+  values: any,
+  message?: string | string[]
 ) => ValidationResult | Promise<ValidationResult>;
 
 export type RecordValidationFunction = (
-  values: any
+  values: any,
+  message?: string | string[]
 ) => Promise<ValidationResult>;
 
 export interface FieldsValidationSchema {
   [key: string]: FieldValidation[];
 }
 
+export interface RecordValidationSchema {
+  validation: RecordValidationFunction;
+  message?: string;
+}
+
 export interface ValidationSchema {
-  global?: RecordValidationFunction[];
+  global?: RecordValidationSchema[];
   fields?: FieldsValidationSchema;
 }

@@ -9,6 +9,7 @@ import {
   FieldValidationFunctionSyncAsync,
   FieldValidationFunction,
   FieldValidation,
+  RecordValidationSchema,
 } from './model';
 
 import { isUndefinedOrNull } from './helper';
@@ -22,7 +23,7 @@ import { buildFormValidationResult } from './form-validation-summary-builder';
 
 export class ValidationEngine {
   private validationsPerField: FieldsValidationSchema = {};
-  private validationsGlobalForm: RecordValidationFunction[] = [];
+  private validationsGlobalForm: RecordValidationSchema[] = [];
   private asyncValidationInProgressCount = 0;
 
   // TODO, in new api we are adding an optional parameter
@@ -77,21 +78,27 @@ export class ValidationEngine {
     };
   }
 
-  addRecordValidation(validation: RecordValidationFunctionSyncAsync): void {
+  addRecordValidation(
+    validation: RecordValidationFunctionSyncAsync,
+    message?: string
+  ): void {
     // Sugar we admit both flavors syncrhonous and asynchronous validators
-    const validationAsync = this.convertFormValidationToAsyncIfNeeded(
+    const validationAsync = this.convertRecordValidationToAsyncIfNeeded(
       validation
     );
 
-    this.validationsGlobalForm.push(validationAsync);
+    this.validationsGlobalForm.push({ validation: validationAsync, message });
   }
 
   // TODO: Should this be moved to model ?
-  convertFormValidationToAsyncIfNeeded(
+  convertRecordValidationToAsyncIfNeeded(
     validation: RecordValidationFunctionSyncAsync
   ): RecordValidationFunction {
-    return (values: any): Promise<ValidationResult> => {
-      const result = validation(values);
+    return (
+      values: any,
+      message?: string | string[]
+    ): Promise<ValidationResult> => {
+      const result = validation(values, message);
 
       if (isSyncValidationResult(result)) {
         return Promise.resolve(result as ValidationResult);
@@ -215,8 +222,6 @@ export class ValidationEngine {
     return fieldValidationResultPromise;
   };
 
-  // TODO: check async count in progress
-  // Maybe is something we don't have to keep control of?
   private validateGlobalFormValidations(
     values: any
   ): Promise<ValidationResult>[] {

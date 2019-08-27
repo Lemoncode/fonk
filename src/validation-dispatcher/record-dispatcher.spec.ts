@@ -1,5 +1,5 @@
 import { fireRecordValidations } from './record-dispatcher';
-import { RecordValidationFunction } from '../model';
+import { RecordValidationFunction, RecordValidationSchema } from '../model';
 
 describe(`fireRecordValidations`, () => {
   it(`Should return empty array of responsed 
@@ -20,13 +20,15 @@ describe(`fireRecordValidations`, () => {
       when injecting one record validation, and validation succeed`, done => {
     // Arrange
     const values = null;
-    const validations: RecordValidationFunction[] = [
-      values =>
-        Promise.resolve({
-          type: 'myrecordvalidation1',
-          succeeded: true,
-          message: '',
-        }),
+    const validations: RecordValidationSchema[] = [
+      {
+        validation: values =>
+          Promise.resolve({
+            type: 'myrecordvalidation1',
+            succeeded: true,
+            message: '',
+          }),
+      },
     ];
 
     // Act
@@ -47,13 +49,15 @@ describe(`fireRecordValidations`, () => {
       when injecting one record validation, and validation failed`, done => {
     // Arrange
     const values = null;
-    const validations: RecordValidationFunction[] = [
-      values =>
-        Promise.resolve({
-          type: 'myrecordvalidation1',
-          succeeded: false,
-          message: '',
-        }),
+    const validations: RecordValidationSchema[] = [
+      {
+        validation: values =>
+          Promise.resolve({
+            type: 'myrecordvalidation1',
+            succeeded: false,
+            message: '',
+          }),
+      },
     ];
 
     // Act
@@ -74,19 +78,23 @@ describe(`fireRecordValidations`, () => {
       when injecting two record validation, and both succeed`, done => {
     // Arrange
     const values = null;
-    const validations: RecordValidationFunction[] = [
-      values =>
-        Promise.resolve({
-          type: 'myrecordvalidation1',
-          succeeded: true,
-          message: '',
-        }),
-      values =>
-        Promise.resolve({
-          type: 'myrecordvalidation2',
-          succeeded: true,
-          message: '',
-        }),
+    const validations: RecordValidationSchema[] = [
+      {
+        validation: values =>
+          Promise.resolve({
+            type: 'myrecordvalidation1',
+            succeeded: true,
+            message: '',
+          }),
+      },
+      {
+        validation: values =>
+          Promise.resolve({
+            type: 'myrecordvalidation2',
+            succeeded: true,
+            message: '',
+          }),
+      },
     ];
 
     // Act
@@ -109,19 +117,23 @@ describe(`fireRecordValidations`, () => {
       when injecting two record validation, and both failed`, done => {
     // Arrange
     const values = null;
-    const validations: RecordValidationFunction[] = [
-      values =>
-        Promise.resolve({
-          type: 'myrecordvalidation1',
-          succeeded: false,
-          message: '',
-        }),
-      values =>
-        Promise.resolve({
-          type: 'myrecordvalidation2',
-          succeeded: false,
-          message: '',
-        }),
+    const validations: RecordValidationSchema[] = [
+      {
+        validation: values =>
+          Promise.resolve({
+            type: 'myrecordvalidation1',
+            succeeded: false,
+            message: '',
+          }),
+      },
+      {
+        validation: values =>
+          Promise.resolve({
+            type: 'myrecordvalidation2',
+            succeeded: false,
+            message: '',
+          }),
+      },
     ];
 
     // Act
@@ -144,19 +156,23 @@ describe(`fireRecordValidations`, () => {
       when injecting two record validation, and first succeeded second failed`, done => {
     // Arrange
     const values = null;
-    const validations: RecordValidationFunction[] = [
-      values =>
-        Promise.resolve({
-          type: 'myrecordvalidation1',
-          succeeded: true,
-          message: '',
-        }),
-      values =>
-        Promise.resolve({
-          type: 'myrecordvalidation2',
-          succeeded: false,
-          message: '',
-        }),
+    const validations: RecordValidationSchema[] = [
+      {
+        validation: values =>
+          Promise.resolve({
+            type: 'myrecordvalidation1',
+            succeeded: true,
+            message: '',
+          }),
+      },
+      {
+        validation: values =>
+          Promise.resolve({
+            type: 'myrecordvalidation2',
+            succeeded: false,
+            message: '',
+          }),
+      },
     ];
 
     // Act
@@ -178,19 +194,23 @@ describe(`fireRecordValidations`, () => {
       when injecting two record validation, and first failed second succeeded`, done => {
     // Arrange
     const values = null;
-    const validations: RecordValidationFunction[] = [
-      values =>
-        Promise.resolve({
-          type: 'myrecordvalidation1',
-          succeeded: false,
-          message: '',
-        }),
-      values =>
-        Promise.resolve({
-          type: 'myrecordvalidation2',
-          succeeded: true,
-          message: '',
-        }),
+    const validations: RecordValidationSchema[] = [
+      {
+        validation: values =>
+          Promise.resolve({
+            type: 'myrecordvalidation1',
+            succeeded: false,
+            message: '',
+          }),
+      },
+      {
+        validation: values =>
+          Promise.resolve({
+            type: 'myrecordvalidation2',
+            succeeded: true,
+            message: '',
+          }),
+      },
     ];
 
     // Act
@@ -213,19 +233,23 @@ describe(`fireRecordValidations`, () => {
       when injecting two record validation, and first succeeded second failed`, done => {
     // Arrange
     const values = null;
-    const validations: RecordValidationFunction[] = [
-      values =>
-        Promise.resolve({
-          type: 'myrecordvalidation1',
-          succeeded: true,
-          message: '',
-        }),
-      values =>
-        Promise.resolve({
-          type: 'myrecordvalidation2',
-          succeeded: false,
-          message: '',
-        }),
+    const validations: RecordValidationSchema[] = [
+      {
+        validation: values =>
+          Promise.resolve({
+            type: 'myrecordvalidation1',
+            succeeded: true,
+            message: '',
+          }),
+      },
+      {
+        validation: values =>
+          Promise.resolve({
+            type: 'myrecordvalidation2',
+            succeeded: false,
+            message: '',
+          }),
+      },
     ];
 
     // Act
@@ -248,14 +272,18 @@ describe(`fireRecordValidations`, () => {
       when one of the validators is null`, () => {
     // Arrange
     const values = null;
-    const validations: RecordValidationFunction[] = [
-      values =>
-        Promise.resolve({
-          type: 'myrecordvalidation1',
-          succeeded: false,
-          message: '',
-        }),
-      null,
+    const validations: RecordValidationSchema[] = [
+      {
+        validation: values =>
+          Promise.resolve({
+            type: 'myrecordvalidation1',
+            succeeded: false,
+            message: '',
+          }),
+      },
+      {
+        validation: null,
+      },
     ];
 
     const errorStub = jest
@@ -275,14 +303,18 @@ describe(`fireRecordValidations`, () => {
       when one of the validators is undefined`, () => {
     // Arrange
     const values = null;
-    const validations: RecordValidationFunction[] = [
-      values =>
-        Promise.resolve({
-          type: 'myrecordvalidation1',
-          succeeded: false,
-          message: '',
-        }),
-      void 0,
+    const validations: RecordValidationSchema[] = [
+      {
+        validation: values =>
+          Promise.resolve({
+            type: 'myrecordvalidation1',
+            succeeded: false,
+            message: '',
+          }),
+      },
+      {
+        validation: void 0,
+      },
     ];
 
     const errorStub = jest
