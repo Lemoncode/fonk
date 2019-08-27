@@ -1,5 +1,6 @@
 import { ValidationEngine } from './validation-engine';
-import { ValidationResult } from './model';
+import { ValidationResult, FieldValidationFunctionSyncAsync } from './model';
+import { globalFormValidationId } from './const';
 
 describe('ValidationEngine tests', () => {
   describe('isValidationInProgress', () => {
@@ -222,34 +223,402 @@ describe('ValidationEngine tests', () => {
   });
 
   describe('AddFormValidation', () => {
-    it(`Should fire the added form validation when calling
+    it(`Should fire the added form validation (sync) when calling
+      fire all validations and return succeeded
+    `, done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+      const validationFn = jest.fn().mockReturnValue({
+        key: '',
+        type: '',
+        succeeded: true,
+        message: '',
+      });
+
+      // Act
+      validationEngine.addRecordValidation(validationFn);
+
+      validationEngine.validateForm(values).then(validationResult => {
+        // Assert
+        expect(validationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeTruthy();
+        expect(validationResult.formGlobalErrors.length).toBe(0);
+        done();
+      });
+    });
+
+    it(`Should fire the added form validation (async) when calling
+      fire all validations and return succeeded
+    `, done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+      const validationFn = jest.fn().mockResolvedValue({
+        key: '',
+        type: '',
+        succeeded: true,
+        message: '',
+      });
+
+      // Act
+      validationEngine.addRecordValidation(validationFn);
+
+      validationEngine.validateForm(values).then(validationResult => {
+        // Assert
+        expect(validationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeTruthy();
+        expect(validationResult.formGlobalErrors.length).toBe(0);
+        done();
+      });
+    });
+
+    it(`Should fire the added form validation (sync) when calling
+      fire all validations and return failed and formvalidation in the queue
+    `, done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+      const validationFn = jest.fn().mockReturnValue({
+        key: '',
+        type: '',
+        succeeded: false,
+        message: '',
+      });
+
+      // Act
+      validationEngine.addRecordValidation(validationFn);
+
+      validationEngine.validateForm(values).then(validationResult => {
+        // Assert
+        expect(validationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.formGlobalErrors.length).toBe(1);
+        expect(validationResult.formGlobalErrors[0].key).toBe(
+          globalFormValidationId
+        );
+        done();
+      });
+    });
+
+    it(`Should fire the added form validation (async) when calling
+      fire all validations and return failed and formvalidation in the queue
+    `, done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+      const validationFn = jest.fn().mockResolvedValue({
+        key: '',
+        type: '',
+        succeeded: false,
+        message: '',
+      });
+
+      // Act
+      validationEngine.addRecordValidation(validationFn);
+
+      validationEngine.validateForm(values).then(validationResult => {
+        // Assert
+        expect(validationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.formGlobalErrors.length).toBe(1);
+        expect(validationResult.formGlobalErrors[0].key).toBe(
+          globalFormValidationId
+        );
+        done();
+      });
+    });
+
+    it(`Should fire the two added form validation (succeeded) when calling
       fire all validations
-    `, () => {});
-    it(`Should fire the two added form validation when calling
-      fire all validations
-    `, () => {});
+    `, done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+      const validationFn1 = jest.fn().mockResolvedValue({
+        key: '',
+        type: '',
+        succeeded: true,
+        message: '',
+      });
+
+      const validationFn2 = jest.fn().mockResolvedValue({
+        key: '',
+        type: '',
+        succeeded: true,
+        message: '',
+      });
+
+      // Act
+      validationEngine.addRecordValidation(validationFn1);
+      validationEngine.addRecordValidation(validationFn2);
+
+      validationEngine.validateForm(values).then(validationResult => {
+        // Assert
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeTruthy();
+        expect(validationResult.formGlobalErrors.length).toBe(0);
+        done();
+      });
+    });
+
+    it(`Should fire the two added form validation (failed first), but only failed validation
+    in the form result list. when first form validation fails, second succeeds
+    `, done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+      const validationFn1 = jest.fn().mockResolvedValue({
+        key: '',
+        type: '',
+        succeeded: false,
+        message: '',
+      });
+
+      const validationFn2 = jest.fn().mockResolvedValue({
+        key: '',
+        type: '',
+        succeeded: true,
+        message: '',
+      });
+
+      // Act
+      validationEngine.addRecordValidation(validationFn1);
+      validationEngine.addRecordValidation(validationFn2);
+
+      validationEngine.validateForm(values).then(validationResult => {
+        // Assert
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.formGlobalErrors.length).toBe(1);
+        done();
+      });
+    });
+
+    it(`Should fire the two added form validation (both failed), adn both in
+    the form validation result 
+      fire all validations, and first form validation fails, second fails
+    `, done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+      const validationFn1 = jest.fn().mockResolvedValue({
+        key: '',
+        type: '',
+        succeeded: false,
+        message: '',
+      });
+
+      const validationFn2 = jest.fn().mockResolvedValue({
+        key: '',
+        type: '',
+        succeeded: false,
+        message: '',
+      });
+
+      // Act
+      validationEngine.addRecordValidation(validationFn1);
+      validationEngine.addRecordValidation(validationFn2);
+
+      validationEngine.validateForm(values).then(validationResult => {
+        // Assert
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.formGlobalErrors.length).toBe(2);
+        done();
+      });
+    });
+
     it(`Should not fire the added form validation when calling
       fire field validations
-    `, () => {});
+    `, done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+      const validationFn = jest.fn().mockReturnValue({
+        key: '',
+        type: '',
+        succeeded: false,
+        message: '',
+      });
+
+      // Act
+      validationEngine.addRecordValidation(validationFn);
+
+      validationEngine
+        .validateField(values, 'username', 'John')
+        .then(validationResult => {
+          // Assert
+          expect(validationFn).not.toHaveBeenCalled();
+          expect(validationResult.succeeded).toBeTruthy();
+          done();
+        });
+    });
   });
 
   describe('FireFieldValidation', () => {
     it(`Should fire first validation and not second
-    when adding two validation to same field and first one is failing
-    `, () => {});
+    when adding two validations to same field and first one is failing
+    `, done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+      const validationFn1: FieldValidationFunctionSyncAsync = (
+        values: any,
+        field: string,
+        value
+      ): Promise<ValidationResult> => {
+        const promise = new Promise<ValidationResult>((resolve, reject) => {
+          setTimeout(() => {
+            resolve({
+              key: 'username',
+              type: 'REQUIRED',
+              succeeded: false,
+              message: '',
+            });
+          }, 500);
+        });
+        return promise;
+      };
+
+      const validationFn2: FieldValidationFunctionSyncAsync = (
+        values: any,
+        field: string,
+        value
+      ): Promise<ValidationResult> => {
+        const promise = new Promise<ValidationResult>((resolve, reject) => {
+          setTimeout(() => {
+            resolve({
+              key: 'username',
+              type: 'ANOTHER',
+              succeeded: true,
+              message: '',
+            });
+          }, 20);
+        });
+        return promise;
+      };
+
+      // Act
+      validationEngine.addFieldValidation('username', validationFn1);
+
+      validationEngine.addFieldValidation('username', validationFn2);
+
+      validationEngine
+        .validateField(values, 'username', 'newContent')
+        .then(validationResult => {
+          // Assert
+          expect(validationResult.succeeded).toBeFalsy();
+          expect(validationResult.type).toBe('REQUIRED');
+          done();
+        });
+    });
 
     it(`Should fire first validation and  second
-    when adding two validation to same field and firs one succeed and second failing
-    `, () => {});
+    when adding two validation to same field and first one succeed and second failing
+    `, done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+      const validationFn1: FieldValidationFunctionSyncAsync = (
+        values: any,
+        field: string,
+        value
+      ): Promise<ValidationResult> => {
+        const promise = new Promise<ValidationResult>((resolve, reject) => {
+          setTimeout(() => {
+            resolve({
+              key: 'username',
+              type: 'REQUIRED',
+              succeeded: true,
+              message: '',
+            });
+          }, 500);
+        });
+        return promise;
+      };
 
-    it(`Should one fire first validation and
-    when adding two async validations to same field
-    and first one takes 500ms and fails and second 100ms and not failing
-    `, () => {});
+      const validationFn2: FieldValidationFunctionSyncAsync = (
+        values: any,
+        field: string,
+        value
+      ): Promise<ValidationResult> => {
+        const promise = new Promise<ValidationResult>((resolve, reject) => {
+          setTimeout(done => {
+            resolve({
+              key: 'username',
+              type: 'ANOTHER',
+              succeeded: false,
+              message: '',
+            });
+          }, 20);
+        });
+        return promise;
+      };
+
+      // Act
+      validationEngine.addFieldValidation('username', validationFn1);
+
+      validationEngine.addFieldValidation('username', validationFn2);
+
+      validationEngine
+        .validateField(values, 'username', 'newContent')
+        .then(validationResult => {
+          // Assert
+          expect(validationResult.succeeded).toBeFalsy();
+          expect(validationResult.type).toBe('ANOTHER');
+          done();
+        });
+    });
 
     it(`Should one fire first validation and
     when adding two async validations to same field
     and first one takes 500ms and fails and second is sync and not failing
-    `, () => {});
+    `, done => {
+      // Arrange
+      const validationEngine: ValidationEngine = new ValidationEngine();
+      const values = [{ username: 'john', lastname: 'doe' }];
+      const validationFn1 = (value): Promise<ValidationResult> => {
+        const promise = new Promise<ValidationResult>((resolve, reject) => {
+          setTimeout(() => {
+            resolve({
+              key: 'username',
+              type: 'REQUIRED',
+              succeeded: false,
+              message: '',
+            });
+          }, 500);
+        });
+        return promise;
+      };
+
+      const validationFn2: FieldValidationFunctionSyncAsync = (
+        values: any,
+        field: string,
+        value
+      ): ValidationResult => ({
+        key: 'username',
+        type: 'ANOTHER',
+        succeeded: true,
+        message: '',
+      });
+
+      // Act
+      validationEngine.addFieldValidation('username', validationFn1);
+
+      validationEngine.addFieldValidation('username', validationFn2);
+
+      validationEngine
+        .validateField(values, 'username', 'newContent')
+        .then(validationResult => {
+          // Assert
+          expect(validationResult.succeeded).toBeFalsy();
+          expect(validationResult.type).toBe('REQUIRED');
+          done();
+        });
+    });
   });
 });

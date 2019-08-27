@@ -66,7 +66,7 @@ export class ValidationEngine {
     };
   }
 
-  addFormValidation(validation: RecordValidationFunctionSyncAsync): void {
+  addRecordValidation(validation: RecordValidationFunctionSyncAsync): void {
     // Sugar we admit both flavors syncrhonous and asynchronous validators
     const validationAsync = this.convertFormValidationToAsyncIfNeeded(
       validation
@@ -212,11 +212,11 @@ export class ValidationEngine {
     let globalFieldResultValidations: Promise<ValidationResult>[] = [];
 
     if (this.validationsGlobalForm.length > 0) {
-      const fieldValidationResultsPromises = fireRecordValidations(
+      const recordValidationResultsPromises = fireRecordValidations(
         values,
         this.validationsGlobalForm
       );
-      globalFieldResultValidations = [...fieldValidationResultsPromises];
+      globalFieldResultValidations = [...recordValidationResultsPromises];
     }
 
     return globalFieldResultValidations;
