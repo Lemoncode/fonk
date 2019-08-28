@@ -30,7 +30,7 @@ export class ValidationEngine {
     key: string,
     validation: FieldValidationFunctionSyncAsync,
     customParams: any = {},
-    errorMessage?: string
+    errorMessage?: string | string[]
   ) {
     const asyncValidationFn = convertFieldValidationToAsyncIfNeeded(validation);
 
