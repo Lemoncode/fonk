@@ -84,5 +84,8 @@
       "pretty-quick — staged",
       "git add"
     ]
+  },
+  "dependencies": {
+    "lodash.get": "^4.4.2"
   }
 }

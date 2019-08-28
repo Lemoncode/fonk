@@ -1,15 +1,21 @@
-import { ValidationResult, RecordValidationFunction } from '../model';
-import { areAllElementsInArrayDefined } from '../helper';
+import { ValidationResult, RecordValidationSchema } from '../model';
+
+export const areAllRecordValidationsDefined = (
+  validationSchemaCollection: RecordValidationSchema[]
+): boolean =>
+  validationSchemaCollection.every(
+    validationSchema => validationSchema && validationSchema.validation
+  );
 
 export const fireRecordValidations = (
   values: any,
-  validations: RecordValidationFunction[]
+  validations: RecordValidationSchema[]
 ): Promise<ValidationResult>[] => {
   let validationResultsPromises: Promise<ValidationResult>[] = [];
 
-  if (areAllElementsInArrayDefined(validations)) {
-    validationResultsPromises = validations.map(validationFn =>
-      validationFn(values)
+  if (areAllRecordValidationsDefined(validations)) {
+    validationResultsPromises = validations.map(validation =>
+      validation.validation(values, validation.message)
     );
   } else {
     console.error('One of the form record validations are not defined.');
