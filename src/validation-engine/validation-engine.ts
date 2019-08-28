@@ -7,16 +7,16 @@ import {
   FieldValidationFunctionSyncAsync,
   FieldValidation,
   RecordValidationSchema,
-} from './model';
+} from '../model';
 
-import { isUndefinedOrNull } from './helper';
+import { isUndefinedOrNull } from '../helper';
 
 import {
   fireAllFieldsValidations,
   fireSingleFieldValidations,
   fireRecordValidations,
-} from './validation-dispatcher';
-import { buildFormValidationResult } from './form-validation-summary-builder';
+} from '../validation-dispatcher';
+import { buildFormValidationResult } from '../form-validation-summary-builder';
 import {
   convertFieldValidationToAsyncIfNeeded,
   convertRecordValidationToAsyncIfNeeded,

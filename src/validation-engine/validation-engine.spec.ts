@@ -1,6 +1,6 @@
 import { ValidationEngine } from './validation-engine';
-import { ValidationResult, FieldValidationFunctionSyncAsync } from './model';
-import { globalFormValidationId } from './const';
+import { ValidationResult, FieldValidationFunctionSyncAsync } from '../model';
+import { globalFormValidationId } from '../const';
 
 describe('ValidationEngine tests', () => {
   describe('AddFieldValidation', () => {

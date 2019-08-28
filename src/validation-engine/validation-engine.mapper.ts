@@ -2,10 +2,12 @@ import {
   FieldValidationFunctionSyncAsync,
   FieldValidationFunction,
   ValidationResult,
-  isSyncValidationResult,
   RecordValidationFunctionSyncAsync,
   RecordValidationFunction,
-} from './model';
+} from '../model';
+import { isPromise } from '../helper';
+
+// TODO: add unit tests
 
 export const convertFieldValidationToAsyncIfNeeded = (
   validation: FieldValidationFunctionSyncAsync
@@ -15,15 +17,11 @@ export const convertFieldValidationToAsyncIfNeeded = (
     value: any,
     values: any,
     customParams?: object,
-    message?: string
+    message?: string | string[]
   ): Promise<ValidationResult> => {
     const result = validation(value, values, customParams, message);
 
-    if (isSyncValidationResult(result)) {
-      return Promise.resolve(result as ValidationResult);
-    } else {
-      return result as Promise<ValidationResult>;
-    }
+    return isPromise(result) ? result : Promise.resolve(result);
   };
 };
 
@@ -36,10 +34,6 @@ export const convertRecordValidationToAsyncIfNeeded = (
   ): Promise<ValidationResult> => {
     const result = validation(values, message);
 
-    if (isSyncValidationResult(result)) {
-      return Promise.resolve(result as ValidationResult);
-    } else {
-      return result as Promise<ValidationResult>;
-    }
+    return isPromise(result) ? result : Promise.resolve(result);
   };
 };
