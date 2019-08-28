@@ -10,7 +10,7 @@ import {
 import { isFunction } from './helper';
 
 // TODO: consider changing this to a meaningful name FormSchemaValidator?
-class FormValidation {
+export class FormValidation {
   private validationEngine: ValidationEngine;
 
   constructor(validationSchema: ValidationSchema) {
