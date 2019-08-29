@@ -13,9 +13,8 @@ export const isLastIndexInArray = <T>(index: number, array: T[]) =>
 
 export const isUndefinedOrNull = (v: any) => v === void 0 || v === null;
 
-export const areAllElementsInArrayDefined = <T>(elements: T[]) => {
-  return elements.every(element => element);
-};
+export const areAllElementsInArrayDefined = <T>(collection: T[]) =>
+  arrayContainsEntries(collection) && collection.every(element => element);
 
 // TODO add unit tests
 // Typeguard, check if 'then' exists

@@ -3,6 +3,7 @@ import {
   arrayContainsEntries,
   isFunction,
   isUndefinedOrNull,
+  areAllElementsInArrayDefined,
 } from './helper';
 
 describe('safeArrayLength', () => {
@@ -246,6 +247,129 @@ describe('isUndefinedOrNull', () => {
 
     // Act
     const result = isUndefinedOrNull(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+});
+
+describe('areAllElementsInArrayDefined', () => {
+  it('Should return false when passing undefined', () => {
+    // Arrange
+    const myCollection = void 0;
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('Should return false when passing null', () => {
+    // Arrange
+    const myCollection = null;
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('Should return false when passing empty array', () => {
+    // Arrange
+    const myCollection = [];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('Should return false when passing an array including one element equals undefined', () => {
+    // Arrange
+    const myCollection = [void 0];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('Should return false when passing an array including one element equals null', () => {
+    // Arrange
+    const myCollection = [null];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('Should return true when passing an array including one element equals emtpy array', () => {
+    // Arrange
+    const myCollection = [[]];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeTruthy();
+  });
+
+  it('Should return true when passing an array including one element equals emtpy object', () => {
+    // Arrange
+    const myCollection = [{}];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeTruthy();
+  });
+
+  it('Should return true when passing an array including one element equals string', () => {
+    // Arrange
+    const myCollection = ['item'];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeTruthy();
+  });
+
+  it('Should return true when passing an array including one element equals number', () => {
+    // Arrange
+    const myCollection = [1];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeTruthy();
+  });
+
+  it('Should return false when passing an array including two elements equals undefined and number', () => {
+    // Arrange
+    const myCollection = [void 0, 1];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('Should return false when passing an array including two elements equals null and number', () => {
+    // Arrange
+    const myCollection = [null, 1];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
 
     // Assert
     expect(result).toBeFalsy();
