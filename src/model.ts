@@ -35,14 +35,14 @@ type ValidationResultSyncAsync = ValidationResult | Promise<ValidationResult>;
 export type FieldValidationFunctionSync = (
   value: any,
   values?: any,
-  customArgs?: object,
+  customArgs?: any,
   message?: string | string[]
 ) => ValidationResult;
 
 export type FieldValidationFunctionAsync = (
   value: any,
   values?: any,
-  customParams?: object,
+  customArgs?: any,
   message?: string | string[]
 ) => Promise<ValidationResult>;
 
@@ -52,7 +52,7 @@ export type FieldValidationFunctionSyncAsync =
 
 export interface FullFieldValidation {
   validator: FieldValidationFunctionSyncAsync;
-  customArgs?: object;
+  customArgs?: any;
   message?: string | string[];
 }
 
