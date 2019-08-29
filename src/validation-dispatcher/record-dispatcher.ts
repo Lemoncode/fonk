@@ -4,7 +4,7 @@ import {
   RecordValidationFunctionAsync,
 } from '../model';
 import { isFunction } from '../helper';
-import { convertRecordValidationToAsyncIfNeeded } from '../mapper';
+import { convertRecordValidationToAsyncIfNeeded } from '../mappers';
 
 const getValidationFn = (
   recordValidation: RecordValidationSchema

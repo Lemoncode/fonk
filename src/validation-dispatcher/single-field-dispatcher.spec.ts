@@ -711,7 +711,7 @@ describe('validationDispatcher', () => {
 
     it(`
     Spec #18.
-      should pass customParams to its proper validationFunction
+      should pass customArgs to its proper validationFunction
     `, done => {
       //Arrange
       const values = { a: 'foo', b: 'bar' };

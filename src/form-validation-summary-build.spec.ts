@@ -245,8 +245,8 @@ describe(`buildFormValidationResult`, () => {
     expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
-  it(`Spec #10 => should returns new FormValidationResult equals { succeeded: false }
-  and two field validations, 
+  it(`Spec #11 => should returns new FormValidationResult equals { succeeded: false }
+  and two field validations,
   when passing fieldValidationResults with two items first equals { succeeded: false }
   and second equals { succeeded: false }, belonging to different fields
   `, () => {
@@ -290,7 +290,7 @@ describe(`buildFormValidationResult`, () => {
     expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
-  it(`Spec #11 => shoud return succeeded form validation when passing
+  it(`Spec #12 => shoud return succeeded form validation when passing
   edge cases (null / undefined) plus console error message
   `, () => {
     // Arrange
@@ -308,7 +308,7 @@ describe(`buildFormValidationResult`, () => {
     expect(errorStub).toHaveBeenCalled();
   });
 
-  it(`Spec #12 => shoud return succeeded form validation when passing
+  it(`Spec #13 => shoud return succeeded form validation when passing
   a form validation that succeeds
   `, () => {
     // Arrange
@@ -329,7 +329,7 @@ describe(`buildFormValidationResult`, () => {
     expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
-  it(`Spec #13 => shoud return failed form validation when passing
+  it(`Spec #14 => shoud return failed form validation when passing
   a form validation that fails and include that validation in the global list
   `, () => {
     // Arrange
@@ -350,7 +350,7 @@ describe(`buildFormValidationResult`, () => {
     expect(formValidationSummary.recordErrors.length).toBe(1);
   });
 
-  it(`Spec #13 => shoud return failed form validation when passing
+  it(`Spec #15 => shoud return failed form validation when passing
   a field validation that pass
   a form validation that fails and include that validation in the global list
   `, () => {
@@ -378,7 +378,7 @@ describe(`buildFormValidationResult`, () => {
     expect(formValidationSummary.recordErrors.length).toBe(1);
   });
 
-  it(`Spec #13 => shoud return failed form validation when passing
+  it(`Spec #16 => shoud return failed form validation when passing
   a field validation that failed
   a form validation that fails and include that validation in the global list,
   plus the field validation in the field list

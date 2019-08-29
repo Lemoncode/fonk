@@ -20,7 +20,7 @@ import { buildFormValidationResult } from '../form-validation-summary-builder';
 import {
   convertFieldValidationToAsyncIfNeeded,
   convertRecordValidationToAsyncIfNeeded,
-} from '../mapper';
+} from '../mappers';
 
 export class ValidationEngine {
   private validationsPerField: FieldsValidationSchema = {};
@@ -29,7 +29,7 @@ export class ValidationEngine {
   addFieldValidation(
     key: string,
     validation: FieldValidationFunctionSyncAsync,
-    customParams: any = {},
+    customArgs: any = {},
     errorMessage?: string | string[]
   ) {
     const asyncValidationFn = convertFieldValidationToAsyncIfNeeded(validation);
@@ -40,7 +40,7 @@ export class ValidationEngine {
 
     const fieldValidation: FieldValidation = {
       validator: asyncValidationFn,
-      customArgs: customParams,
+      customArgs,
     };
 
     if (errorMessage) {

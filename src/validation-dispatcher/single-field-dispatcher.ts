@@ -5,7 +5,7 @@ import {
   FieldValidationFunctionAsync,
 } from '../model';
 import { arrayContainsEntries, isFunction, isUndefinedOrNull } from '../helper';
-import { convertFieldValidationToAsyncIfNeeded } from '../mapper';
+import { convertFieldValidationToAsyncIfNeeded } from '../mappers';
 
 const getValidationFn = (
   fieldValidation: FieldValidation

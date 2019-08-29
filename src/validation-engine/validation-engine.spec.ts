@@ -377,7 +377,7 @@ describe('ValidationEngine tests', () => {
         key: '',
         type: '',
         succeeded: false,
-        customParams: {},
+        customArgs: {},
         message: '',
       });
 
