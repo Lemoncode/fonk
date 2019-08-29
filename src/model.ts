@@ -85,7 +85,7 @@ export interface FieldsValidationSchema {
 }
 
 export interface RecordValidationFull {
-  validation: RecordValidationFunctionAsync;
+  validation: RecordValidationFunctionSyncAsync;
   message?: string;
 }
 

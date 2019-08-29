@@ -9,6 +9,7 @@ import {
   RecordValidationFunctionSync,
 } from './model';
 import { doesNotReject } from 'assert';
+import { promises } from 'fs';
 
 describe('createFormValidation', () => {
   it(`spec #1: should return an instance of FormValidation
@@ -423,7 +424,7 @@ when adding two validators to a given field and second fails
 
   describe(`FormValidations`, () => {
     it(`#Spec 1: should failed form validation 
-    when adding a record validation that fails (sync flavor function)
+    when adding a record validation that fails (sync flavour function)
     `, done => {
       // Arrange
       const mockValidationFn: RecordValidationFunctionSync = jest
@@ -451,6 +452,112 @@ when adding two validators to a given field and second fails
         done();
       });
     });
+
+    it(`#Spec 2: should failed form validation 
+    when adding a record validation that fails (async flavour function)
+    `, done => {
+      // Arrange
+      const mockValidationFn: RecordValidationFunctionSync = jest
+        .fn()
+        .mockResolvedValue({
+          type: '',
+          succeeded: false,
+          message: 'mymessageA',
+        });
+
+      const validationSchema: ValidationSchema = {
+        record: [mockValidationFn],
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors.length).toBe(1);
+        done();
+      });
+    });
+
+    it(`#Spec 3: should failed form validation 
+    when adding a record validation that fails (fullRecordValidationSchema entry,
+      async validator)
+    `, done => {
+      // Arrange
+      const validationFn: RecordValidationFunctionAsync = (values, message) =>
+        Promise.resolve<ValidationResult>({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageA',
+        });
+
+      const validationSchema: ValidationSchema = {
+        record: [
+          {
+            validation: validationFn,
+            message: 'My custom message',
+          },
+        ],
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors.length).toBe(1);
+        expect(validationResult.recordErrors[0].message).toBe(
+          'My custom message'
+        );
+        done();
+      });
+    });
+
+    it(`#Spec 4: should failed form validation 
+    when adding a record validation that fails (fullRecordValidationSchema entry,
+      sync validator)
+    `, done => {
+      // Arrange
+      const validationFn: RecordValidationFunctionSync = (values, message) => ({
+        type: '',
+        succeeded: false,
+        message: message ? (message as string) : 'mymessageA',
+      });
+
+      const validationSchema: ValidationSchema = {
+        record: [
+          {
+            validation: validationFn,
+            message: 'My custom message',
+          },
+        ],
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors.length).toBe(1);
+        expect(validationResult.recordErrors[0].message).toBe(
+          'My custom message'
+        );
+        done();
+      });
+    });
+
     // Test here all fields togehter
     // Create a form validation check is fired
     // Combine both field and form
