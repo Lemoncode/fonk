@@ -11,9 +11,12 @@ const getValidationFn = (
 ): RecordValidationFunctionAsync => {
   if (!recordValidation) return null;
 
+  // Defensive programming, record.validation could be null
   const validationFn = isFunction(recordValidation)
     ? recordValidation
-    : recordValidation.validation;
+    : recordValidation.validation
+    ? recordValidation.validation
+    : null;
 
   return convertRecordValidationToAsyncIfNeeded(validationFn);
 };
