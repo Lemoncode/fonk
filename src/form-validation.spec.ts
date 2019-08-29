@@ -558,12 +558,308 @@ when adding two validators to a given field and second fails
       });
     });
 
-    // Test here all fields togehter
-    // Create a form validation check is fired
-    // Combine both field and form
-    // Create two form validations check both executed
-    // on succeed
-    // first fail second succeeded
-    // secondf succeeds
+    it(`#Spec 5: should failed form validation, and return back one validationResult on forms
+    when adding two record validation first fails, second succeeds
+    `, done => {
+      // Arrange
+      const validationFn1: RecordValidationFunctionSync = (
+        values,
+        message
+      ) => ({
+        type: '',
+        succeeded: false,
+        message: message ? (message as string) : 'mymessageA',
+      });
+
+      const validationFn2: RecordValidationFunctionSync = (
+        values,
+        message
+      ) => ({
+        type: '',
+        succeeded: true,
+        message: message ? (message as string) : 'mymessageB',
+      });
+
+      const validationSchema: ValidationSchema = {
+        record: [validationFn1, validationFn2, ,],
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors.length).toBe(1);
+        expect(validationResult.recordErrors[0].message).toBe('mymessageA');
+        done();
+      });
+    });
+
+    it(`#Spec 6: should failed form validation, and return back one validationResult on forms
+    when adding two record validation first succeeds, second fails
+    `, done => {
+      // Arrange
+      const validationFn1: RecordValidationFunctionSync = (
+        values,
+        message
+      ) => ({
+        type: '',
+        succeeded: true,
+        message: message ? (message as string) : 'mymessageA',
+      });
+
+      const validationFn2: RecordValidationFunctionSync = (
+        values,
+        message
+      ) => ({
+        type: '',
+        succeeded: false,
+        message: message ? (message as string) : 'mymessageB',
+      });
+
+      const validationSchema: ValidationSchema = {
+        record: [validationFn1, validationFn2, ,],
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors.length).toBe(1);
+        expect(validationResult.recordErrors[0].message).toBe('mymessageB');
+        done();
+      });
+    });
+
+    it(`#Spec 7: should failed form validation, and return back two validationResult on forms
+    when adding two record validation first fails, second fails
+    `, done => {
+      // Arrange
+      const validationFn1: RecordValidationFunctionSync = (
+        values,
+        message
+      ) => ({
+        type: '',
+        succeeded: false,
+        message: message ? (message as string) : 'mymessageA',
+      });
+
+      const validationFn2: RecordValidationFunctionSync = (
+        values,
+        message
+      ) => ({
+        type: '',
+        succeeded: false,
+        message: message ? (message as string) : 'mymessageB',
+      });
+
+      const validationSchema: ValidationSchema = {
+        record: [validationFn1, validationFn2, ,],
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors.length).toBe(2);
+        expect(validationResult.recordErrors[0].message).toBe('mymessageA');
+        expect(validationResult.recordErrors[1].message).toBe('mymessageB');
+        done();
+      });
+    });
+
+    it(`#Spec 8: should failed form validation, and return back a field validation result
+    a form validation result
+    when adding one field validation that fails and record validation that fails
+    `, done => {
+      // Arrange
+      const myFieldValidation: FieldValidationFunctionSync = (
+        value,
+        values
+      ) => ({
+        type: 'MY_TYPE',
+        succeeded: false,
+        message: 'mymessage',
+      });
+
+      const myrecordValidation: RecordValidationFunctionSync = (
+        values,
+        message
+      ) => ({
+        type: '',
+        succeeded: false,
+        message: message ? (message as string) : 'mymessageA',
+      });
+
+      const validationSchema: ValidationSchema = {
+        fields: {
+          username: [myFieldValidation],
+        },
+        record: [myrecordValidation],
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.fieldErrors.length).toBe(1);
+        expect(validationResult.recordErrors.length).toBe(1);
+        done();
+      });
+    });
+
+    it(`#Spec 8: should failed form validation, and return back a zero field validation result
+    a form validation result
+    when adding one field validation that succeeds and record validation that fails
+    `, done => {
+      // Arrange
+      const myFieldValidation: FieldValidationFunctionSync = (
+        value,
+        values
+      ) => ({
+        type: 'MY_TYPE',
+        succeeded: true,
+        message: 'mymessage',
+      });
+
+      const myrecordValidation: RecordValidationFunctionSync = (
+        values,
+        message
+      ) => ({
+        type: '',
+        succeeded: false,
+        message: message ? (message as string) : 'mymessageA',
+      });
+
+      const validationSchema: ValidationSchema = {
+        fields: {
+          username: [myFieldValidation],
+        },
+        record: [myrecordValidation],
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.fieldErrors.length).toBe(0);
+        expect(validationResult.recordErrors.length).toBe(1);
+        done();
+      });
+    });
+
+    it(`#Spec 9: should failed form validation, and return back a field validation result
+    and zero form validation result
+    when adding one field validation that fails and record validation that succeeds
+    `, done => {
+      // Arrange
+      const myFieldValidation: FieldValidationFunctionSync = (
+        value,
+        values
+      ) => ({
+        type: 'MY_TYPE',
+        succeeded: false,
+        message: 'mymessage',
+      });
+
+      const myrecordValidation: RecordValidationFunctionSync = (
+        values,
+        message
+      ) => ({
+        type: '',
+        succeeded: true,
+        message: message ? (message as string) : 'mymessageA',
+      });
+
+      const validationSchema: ValidationSchema = {
+        fields: {
+          username: [myFieldValidation],
+        },
+        record: [myrecordValidation],
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.fieldErrors.length).toBe(1);
+        expect(validationResult.recordErrors.length).toBe(0);
+        done();
+      });
+    });
+
+    it(`#Spec 9: should succeed form validation, and return back zero field validation result
+    and zero form validation result
+    when adding one field validation that succeeds and record validation that succeeds
+    `, done => {
+      // Arrange
+      const myFieldValidation: FieldValidationFunctionSync = (
+        value,
+        values
+      ) => ({
+        type: 'MY_TYPE',
+        succeeded: true,
+        message: 'mymessage',
+      });
+
+      const myrecordValidation: RecordValidationFunctionSync = (
+        values,
+        message
+      ) => ({
+        type: '',
+        succeeded: true,
+        message: message ? (message as string) : 'mymessageA',
+      });
+
+      const validationSchema: ValidationSchema = {
+        fields: {
+          username: [myFieldValidation],
+        },
+        record: [myrecordValidation],
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBeTruthy();
+        expect(validationResult.fieldErrors.length).toBe(0);
+        expect(validationResult.recordErrors.length).toBe(0);
+        done();
+      });
+    });
   });
 });
