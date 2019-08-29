@@ -1,5 +1,10 @@
 import { createFormValidation, FormValidation } from './form-validation';
-import { ValidationSchema } from './model';
+import {
+  ValidationSchema,
+  ValidationResult,
+  FieldValidationFunctionSync,
+  FieldValidationFunctionSyncAsync,
+} from './model';
 
 describe('createFormValidation', () => {
   it(`spec #1: should return an instance of FormValidation
@@ -16,18 +21,116 @@ describe('createFormValidation', () => {
   });
 
   describe(`FieldValidations`, () => {
-    it(`should execute a field validation and fail when
+    it(`should execute a field validation (sync and using function in schema) and fail when
     adding a field validation in the schema on a given field
     firing a validation for that given field
-`, () => {
+    `, done => {
       // Arrange
-      const validationSchema: ValidationSchema = {};
+
+      const mockValidationFn = jest.fn().mockReturnValue({
+        type: 'MY_TYPE',
+        succeeded: false,
+        message: 'mymessage',
+      });
+
+      const validationSchema: ValidationSchema = {
+        fields: {
+          username: [mockValidationFn],
+        },
+      };
 
       // Act
       const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateField('username', 'whatever');
 
       // Assert
-      expect(formValidation).toBeInstanceOf(FormValidation);
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBe(false);
+        expect(validationResult.type).toBe('MY_TYPE');
+        expect(validationResult.message).toBe('mymessage');
+        expect(mockValidationFn).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it(`should execute a field validation (async and using function in schema) and fail when
+    adding a field validation in the schema on a given field
+    firing a validation for that given field
+    `, done => {
+      // Arrange
+      const mockValidationFn = jest.fn(
+        (
+          value: any,
+          values?: any,
+          customArgs?: object,
+          message?: string | string[]
+        ): ValidationResult => ({
+          type: 'MY_TYPE',
+          succeeded: false,
+          message: 'mymessage',
+        })
+      );
+
+      const validationSchema: ValidationSchema = {
+        fields: {
+          username: [mockValidationFn],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateField('username', 'whatever');
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBe(false);
+        expect(validationResult.type).toBe('MY_TYPE');
+        expect(validationResult.message).toBe('mymessage');
+        expect(mockValidationFn).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it(`should execute a field validation (sync and using full fied schema) and fail when
+    adding a field validation in the schema on a given field
+    firing a validation for that given field
+    `, done => {
+      // Arrange
+      const validationFn: FieldValidationFunctionSync = (
+        value: any,
+        values?: any,
+        customArgs?: object,
+        message?: string | string[]
+      ): ValidationResult => ({
+        type: 'MY_TYPE',
+        succeeded: false,
+        message: message ? (message as string) : 'mymessage',
+      });
+
+      const customArgs = { a: 'foo' };
+
+      const validationSchema: ValidationSchema = {
+        fields: {
+          username: [
+            {
+              validator: validationFn,
+              message: 'myOverridden message',
+            },
+          ],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateField('username', 'whatever');
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBe(false);
+        expect(validationResult.type).toBe('MY_TYPE');
+        expect(validationResult.message).toBe('myOverridden message');
+        done();
+      });
     });
 
     it(`should execute a field validation and success when

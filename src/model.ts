@@ -32,14 +32,14 @@ export const createDefaultFormValidationSummary = (): FormValidationResult => ({
 // Pending on ValidationEngine
 type ValidationResultSyncAsync = ValidationResult | Promise<ValidationResult>;
 
-type FieldValidationFunctionSync = (
+export type FieldValidationFunctionSync = (
   value: any,
   values?: any,
   customArgs?: object,
   message?: string | string[]
 ) => ValidationResult;
 
-export type FieldValidationFunction = (
+export type FieldValidationFunctionAsync = (
   value: any,
   values?: any,
   customParams?: object,
@@ -47,16 +47,18 @@ export type FieldValidationFunction = (
 ) => Promise<ValidationResult>;
 
 export type FieldValidationFunctionSyncAsync =
-  | FieldValidationFunction
+  | FieldValidationFunctionAsync
   | FieldValidationFunctionSync;
 
 export interface FullFieldValidation {
-  validator: FieldValidationFunction;
+  validator: FieldValidationFunctionSyncAsync;
   customArgs?: object;
   message?: string | string[];
 }
 
-export type FieldValidation = FieldValidationFunction | FullFieldValidation;
+export type FieldValidation =
+  | FieldValidationFunctionSyncAsync
+  | FullFieldValidation;
 
 export interface FormValidation {
   succeeded: boolean;

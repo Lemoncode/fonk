@@ -20,7 +20,7 @@ import { buildFormValidationResult } from '../form-validation-summary-builder';
 import {
   convertFieldValidationToAsyncIfNeeded,
   convertRecordValidationToAsyncIfNeeded,
-} from './validation-engine.mapper';
+} from '../mapper';
 
 export class ValidationEngine {
   private validationsPerField: FieldsValidationSchema = {};

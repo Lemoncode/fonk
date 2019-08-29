@@ -1,17 +1,17 @@
 import {
   FieldValidationFunctionSyncAsync,
-  FieldValidationFunction,
+  FieldValidationFunctionAsync,
   ValidationResult,
   RecordValidationFunctionSyncAsync,
   RecordValidationFunction,
-} from '../model';
-import { isPromise } from '../helper';
+} from './model';
+import { isPromise } from './helper';
 
 // TODO: add unit tests
 
 export const convertFieldValidationToAsyncIfNeeded = (
   validation: FieldValidationFunctionSyncAsync
-): FieldValidationFunction => {
+): FieldValidationFunctionAsync => {
   // Sugar we admit both flavors syncrhonous and asynchronous validators
   return (
     value: any,
