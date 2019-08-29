@@ -2,7 +2,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import commonjs from 'rollup-plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
-import { uglify } from 'rollup-plugin-uglify';
+import { terser } from 'rollup-plugin-terser';
 import { DEFAULT_EXTENSIONS } from '@babel/core';
 import pkg from './package.json';
 
@@ -37,7 +37,7 @@ export default builds.map(({ format, minify }) => {
         extensions,
         exclude: 'node_modules/**',
       }),
-      minify ? uglify() : null,
+      minify ? terser() : null,
     ],
   };
 });
