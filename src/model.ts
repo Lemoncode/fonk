@@ -66,12 +66,16 @@ export interface FormValidation {
   recordErrors: Array<ValidationResult>;
 }
 
-export type RecordValidationFunctionSyncAsync = (
+export type RecordValidationFunctionSyncAsync =
+  | RecordValidationFunctionSync
+  | RecordValidationFunctionAsync;
+
+export type RecordValidationFunctionSync = (
   values: any,
   message?: string | string[]
-) => ValidationResult | Promise<ValidationResult>;
+) => ValidationResult;
 
-export type RecordValidationFunction = (
+export type RecordValidationFunctionAsync = (
   values: any,
   message?: string | string[]
 ) => Promise<ValidationResult>;
@@ -80,10 +84,14 @@ export interface FieldsValidationSchema {
   [key: string]: FieldValidation[];
 }
 
-export interface RecordValidationSchema {
-  validation: RecordValidationFunction;
+export interface RecordValidationFull {
+  validation: RecordValidationFunctionAsync;
   message?: string;
 }
+
+export type RecordValidationSchema =
+  | RecordValidationFull
+  | RecordValidationFunctionSyncAsync;
 
 export interface ValidationSchema {
   record?: RecordValidationSchema[];

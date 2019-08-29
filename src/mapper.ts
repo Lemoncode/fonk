@@ -3,7 +3,7 @@ import {
   FieldValidationFunctionAsync,
   ValidationResult,
   RecordValidationFunctionSyncAsync,
-  RecordValidationFunction,
+  RecordValidationFunctionAsync,
 } from './model';
 import { isPromise } from './helper';
 
@@ -27,7 +27,7 @@ export const convertFieldValidationToAsyncIfNeeded = (
 
 export const convertRecordValidationToAsyncIfNeeded = (
   validation: RecordValidationFunctionSyncAsync
-): RecordValidationFunction => {
+): RecordValidationFunctionAsync => {
   return (
     values: any,
     message?: string | string[]

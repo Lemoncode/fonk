@@ -55,12 +55,20 @@ export class FormValidation {
   ) {
     recordValidationSchemaCollection.forEach(
       (recordValidation: RecordValidationSchema) => {
-        this.validationEngine.addRecordValidation(
-          recordValidation.validation,
-          recordValidation.message
-        );
+        this.addRecordValidation(recordValidation);
       }
     );
+  }
+
+  private addRecordValidation(recordValidation: RecordValidationSchema) {
+    if (isFunction(recordValidation)) {
+      this.validationEngine.addRecordValidation(recordValidation);
+    } else {
+      this.validationEngine.addRecordValidation(
+        recordValidation.validation,
+        recordValidation.message
+      );
+    }
   }
 
   private addAllFieldsValidations(fields: FieldsValidationSchema) {

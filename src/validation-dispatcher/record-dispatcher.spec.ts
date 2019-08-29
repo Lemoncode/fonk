@@ -1,5 +1,8 @@
 import { fireRecordValidations } from './record-dispatcher';
-import { RecordValidationFunction, RecordValidationSchema } from '../model';
+import {
+  RecordValidationFunctionAsync,
+  RecordValidationSchema,
+} from '../model';
 
 describe(`fireRecordValidations`, () => {
   it(`Should return empty array of responsed 

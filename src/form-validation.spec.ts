@@ -5,7 +5,10 @@ import {
   FieldValidationFunctionSync,
   FieldValidationFunctionSyncAsync,
   FieldValidation,
+  RecordValidationFunctionAsync,
+  RecordValidationFunctionSync,
 } from './model';
+import { doesNotReject } from 'assert';
 
 describe('createFormValidation', () => {
   it(`spec #1: should return an instance of FormValidation
@@ -419,6 +422,35 @@ when adding two validators to a given field and second fails
   });
 
   describe(`FormValidations`, () => {
+    it(`#Spec 1: should failed form validation 
+    when adding a record validation that fails (sync flavor function)
+    `, done => {
+      // Arrange
+      const mockValidationFn: RecordValidationFunctionSync = jest
+        .fn()
+        .mockReturnValue({
+          type: '',
+          succeeded: false,
+          message: 'mymessageA',
+        });
+
+      const validationSchema: ValidationSchema = {
+        record: [mockValidationFn],
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors.length).toBe(1);
+        done();
+      });
+    });
     // Test here all fields togehter
     // Create a form validation check is fired
     // Combine both field and form
