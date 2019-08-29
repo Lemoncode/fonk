@@ -4,6 +4,7 @@ import {
   isFunction,
   isUndefinedOrNull,
   areAllElementsInArrayDefined,
+  isLastIndexInArray,
 } from './helper';
 
 describe('safeArrayLength', () => {
@@ -370,6 +371,152 @@ describe('areAllElementsInArrayDefined', () => {
 
     // Act
     const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+});
+
+describe('isLastIndexInArray', () => {
+  it('should return false when it feeds index equal 0 and collection equals undefined', () => {
+    // Arrange
+    const index = 0;
+    const collection = void 0;
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds index equal 0 and collection equals null', () => {
+    // Arrange
+    const index = 0;
+    const collection = null;
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds index equal 0 and collection equals empty array', () => {
+    // Arrange
+    const index = 0;
+    const collection = [];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds index equal 0 and collection equals empty array', () => {
+    // Arrange
+    const index = 0;
+    const collection = [];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return true when it feeds index equal 0 and collection with one item', () => {
+    // Arrange
+    const index = 0;
+    const collection = ['item1'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeTruthy();
+  });
+
+  it('should return false when it feeds index equal 0 and collection with two items', () => {
+    // Arrange
+    const index = 0;
+    const collection = ['item1', 'item2'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds index equal -1 and collection with two items', () => {
+    // Arrange
+    const index = -1;
+    const collection = ['item1', 'item2'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds index equal undefined and collection with two items', () => {
+    // Arrange
+    const index = void 0;
+    const collection = ['item1', 'item2'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds index equal null and collection with two items', () => {
+    // Arrange
+    const index = null;
+    const collection = ['item1', 'item2'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return true when it feeds index equal 1 and collection with two items', () => {
+    // Arrange
+    const index = 1;
+    const collection = ['item1', 'item2'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeTruthy();
+  });
+
+  it('should return false when it feeds index equal 2 and collection with two items', () => {
+    // Arrange
+    const index = 2;
+    const collection = ['item1', 'item2'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds index equal 3 and collection with two items', () => {
+    // Arrange
+    const index = 3;
+    const collection = ['item1', 'item2'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
 
     // Assert
     expect(result).toBeFalsy();
