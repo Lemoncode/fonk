@@ -35,10 +35,10 @@ export class FormValidation {
 
   private setupValidationSchema(validationSchema: ValidationSchema) {
     if (validationSchema && typeof validationSchema === 'object') {
-      const { global, fields } = validationSchema;
+      const { record, fields } = validationSchema;
 
-      if (global && global instanceof Array) {
-        this.addRecordValidations(global);
+      if (record && record instanceof Array) {
+        this.addRecordValidations(record);
       }
       if (fields && typeof fields === 'object') {
         this.addAllFieldsValidations(fields);

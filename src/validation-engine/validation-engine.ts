@@ -24,7 +24,7 @@ import {
 
 export class ValidationEngine {
   private validationsPerField: FieldsValidationSchema = {};
-  private validationsGlobalForm: RecordValidationSchema[] = [];
+  private validationsRecord: RecordValidationSchema[] = [];
 
   addFieldValidation(
     key: string,
@@ -57,7 +57,7 @@ export class ValidationEngine {
     // Sugar we admit both flavors syncrhonous and asynchronous validators
     const validationAsync = convertRecordValidationToAsyncIfNeeded(validation);
 
-    this.validationsGlobalForm.push({ validation: validationAsync, message });
+    this.validationsRecord.push({ validation: validationAsync, message });
   }
 
   public validateForm(values: any): Promise<FormValidationResult> {
@@ -90,11 +90,11 @@ export class ValidationEngine {
       this.fireFieldValidations
     );
 
-    // Now global form validations
-    if (this.validationsGlobalForm.length > 0) {
+    // Now record form validations
+    if (this.validationsRecord.length > 0) {
       fieldValidationResults = [
         ...fieldValidationResults,
-        ...this.validateGlobalFormValidations(values),
+        ...this.validateRecordValidations(values),
       ];
     }
     return fieldValidationResults;
@@ -157,20 +157,18 @@ export class ValidationEngine {
     return fieldValidationResultPromise;
   };
 
-  private validateGlobalFormValidations(
-    values: any
-  ): Promise<ValidationResult>[] {
-    let globalFieldResultValidations: Promise<ValidationResult>[] = [];
+  private validateRecordValidations(values: any): Promise<ValidationResult>[] {
+    let recordResultValidations: Promise<ValidationResult>[] = [];
 
-    if (this.validationsGlobalForm.length > 0) {
+    if (this.validationsRecord.length > 0) {
       const recordValidationResultsPromises = fireRecordValidations(
         values,
-        this.validationsGlobalForm
+        this.validationsRecord
       );
-      globalFieldResultValidations = [...recordValidationResultsPromises];
+      recordResultValidations = [...recordValidationResultsPromises];
     }
 
-    return globalFieldResultValidations;
+    return recordResultValidations;
   }
 
   isFieldKeyMappingDefined(key: string): boolean {

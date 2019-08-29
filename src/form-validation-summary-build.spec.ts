@@ -13,7 +13,7 @@ describe(`buildFormValidationResult`, () => {
     // Assert
     expect(formValidationSummary.succeeded).toBeTruthy();
     expect(formValidationSummary.fieldErrors.length).toBe(0);
-    expect(formValidationSummary.formGlobalErrors.length).toBe(0);
+    expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
   it(`Spec #2 => should returns new FormValidationResult equals { succeeded: true }
@@ -27,7 +27,7 @@ describe(`buildFormValidationResult`, () => {
     // Assert
     expect(formValidationSummary.succeeded).toBeTruthy();
     expect(formValidationSummary.fieldErrors.length).toBe(0);
-    expect(formValidationSummary.formGlobalErrors.length).toBe(0);
+    expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
   it(`Spec #3 => should returns new FormValidationResult equals { succeeded: true }
@@ -41,7 +41,7 @@ describe(`buildFormValidationResult`, () => {
     // Assert
     expect(formValidationSummary.succeeded).toBeTruthy();
     expect(formValidationSummary.fieldErrors.length).toBe(0);
-    expect(formValidationSummary.formGlobalErrors.length).toBe(0);
+    expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
   it(`Spec #4 => should returns new FormValidationResult equals { succeeded: true }
@@ -62,7 +62,7 @@ describe(`buildFormValidationResult`, () => {
     // Assert
     expect(formValidationSummary.succeeded).toBeTruthy();
     expect(formValidationSummary.fieldErrors.length).toBe(0);
-    expect(formValidationSummary.formGlobalErrors.length).toBe(0);
+    expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
   it(`Spec #5 => should returns new FormValidationResult equals { succeeded: false }
@@ -83,7 +83,7 @@ describe(`buildFormValidationResult`, () => {
     // Assert
     expect(formValidationSummary.succeeded).toBeFalsy();
     expect(formValidationSummary.fieldErrors.length).toBe(1);
-    expect(formValidationSummary.formGlobalErrors.length).toBe(0);
+    expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
   it(`Spec #6 => should returns new FormValidationResult equals { succeeded: false }
@@ -112,7 +112,7 @@ describe(`buildFormValidationResult`, () => {
     // Assert
     expect(formValidationSummary.succeeded).toBeFalsy();
     expect(formValidationSummary.fieldErrors.length).toBe(1);
-    expect(formValidationSummary.formGlobalErrors.length).toBe(0);
+    expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
   it(`Spec #7 => should returns new FormValidationResult equals { succeeded: true }
@@ -141,7 +141,7 @@ describe(`buildFormValidationResult`, () => {
     // Assert
     expect(formValidationSummary.succeeded).toBeTruthy();
     expect(formValidationSummary.fieldErrors.length).toBe(0);
-    expect(formValidationSummary.formGlobalErrors.length).toBe(0);
+    expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
   it(`Spec #8 => should returns new FormValidationResult equals { succeeded: true }
@@ -171,7 +171,7 @@ describe(`buildFormValidationResult`, () => {
     // Assert
     expect(formValidationSummary.succeeded).toBeTruthy();
     expect(formValidationSummary.fieldErrors.length).toBe(0);
-    expect(formValidationSummary.formGlobalErrors.length).toBe(0);
+    expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
   it(`Spec #9 => should returns new FormValidationResult equals { succeeded: false }
@@ -205,7 +205,7 @@ describe(`buildFormValidationResult`, () => {
     expect(
       formValidationSummary.fieldErrors[0].validationResult.succeeded
     ).toBeFalsy();
-    expect(formValidationSummary.formGlobalErrors.length).toBe(0);
+    expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
   it(`Spec #10 => should returns new FormValidationResult equals { succeeded: false }
@@ -242,7 +242,7 @@ describe(`buildFormValidationResult`, () => {
     expect(formValidationSummary.fieldErrors[0].validationResult.type).toBe(
       'MY_VALIDATION'
     );
-    expect(formValidationSummary.formGlobalErrors.length).toBe(0);
+    expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
   it(`Spec #10 => should returns new FormValidationResult equals { succeeded: false }
@@ -279,7 +279,7 @@ describe(`buildFormValidationResult`, () => {
     expect(formValidationSummary.fieldErrors[0].validationResult.type).toBe(
       'MY_VALIDATION'
     );
-    expect(formValidationSummary.formGlobalErrors.length).toBe(0);
+    expect(formValidationSummary.recordErrors.length).toBe(0);
     expect(formValidationSummary.fieldErrors[1].key).toBe('myfieldB');
     expect(
       formValidationSummary.fieldErrors[1].validationResult.succeeded
@@ -287,7 +287,7 @@ describe(`buildFormValidationResult`, () => {
     expect(formValidationSummary.fieldErrors[1].validationResult.type).toBe(
       'MY_SECOND_VALIDATION'
     );
-    expect(formValidationSummary.formGlobalErrors.length).toBe(0);
+    expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
   it(`Spec #11 => shoud return succeeded form validation when passing
@@ -326,7 +326,7 @@ describe(`buildFormValidationResult`, () => {
     // Assert
     expect(formValidationSummary.succeeded).toBeTruthy();
     expect(formValidationSummary.fieldErrors.length).toBe(0);
-    expect(formValidationSummary.formGlobalErrors.length).toBe(0);
+    expect(formValidationSummary.recordErrors.length).toBe(0);
   });
 
   it(`Spec #13 => shoud return failed form validation when passing
@@ -347,7 +347,7 @@ describe(`buildFormValidationResult`, () => {
     // Assert
     expect(formValidationSummary.succeeded).toBeFalsy();
     expect(formValidationSummary.fieldErrors.length).toBe(0);
-    expect(formValidationSummary.formGlobalErrors.length).toBe(1);
+    expect(formValidationSummary.recordErrors.length).toBe(1);
   });
 
   it(`Spec #13 => shoud return failed form validation when passing
@@ -375,7 +375,7 @@ describe(`buildFormValidationResult`, () => {
     // Assert
     expect(formValidationSummary.succeeded).toBeFalsy();
     expect(formValidationSummary.fieldErrors.length).toBe(0);
-    expect(formValidationSummary.formGlobalErrors.length).toBe(1);
+    expect(formValidationSummary.recordErrors.length).toBe(1);
   });
 
   it(`Spec #13 => shoud return failed form validation when passing
@@ -404,6 +404,6 @@ describe(`buildFormValidationResult`, () => {
     // Assert
     expect(formValidationSummary.succeeded).toBeFalsy();
     expect(formValidationSummary.fieldErrors.length).toBe(1);
-    expect(formValidationSummary.formGlobalErrors.length).toBe(1);
+    expect(formValidationSummary.recordErrors.length).toBe(1);
   });
 });

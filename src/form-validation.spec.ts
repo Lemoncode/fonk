@@ -6,7 +6,6 @@ describe('createFormValidation', () => {
   when calling createFormValidation
   `, () => {
     // Arrange
-
     const validationSchema: ValidationSchema = {};
 
     // Act
@@ -19,8 +18,17 @@ describe('createFormValidation', () => {
   describe(`FieldValidations`, () => {
     it(`should execute a field validation and fail when
     adding a field validation in the schema on a given field
-    firing a validation for that given field that fails
-`, () => {});
+    firing a validation for that given field
+`, () => {
+      // Arrange
+      const validationSchema: ValidationSchema = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+
+      // Assert
+      expect(formValidation).toBeInstanceOf(FormValidation);
+    });
 
     it(`should execute a field validation and success when
     adding a field validation in the schema on a given field

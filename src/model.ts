@@ -20,13 +20,13 @@ export interface FormFieldError {
 export interface FormValidationResult {
   succeeded: boolean;
   fieldErrors: FormFieldError[];
-  formGlobalErrors: ValidationResult[];
+  recordErrors: ValidationResult[];
 }
 
 export const createDefaultFormValidationSummary = (): FormValidationResult => ({
   succeeded: true,
   fieldErrors: [],
-  formGlobalErrors: [],
+  recordErrors: [],
 });
 
 // Pending on ValidationEngine
@@ -61,7 +61,7 @@ export type FieldValidation = FieldValidationFunction | FullFieldValidation;
 export interface FormValidation {
   succeeded: boolean;
   fieldErrors: { [key: string]: ValidationResult };
-  formGlobalErrors: Array<ValidationResult>;
+  recordErrors: Array<ValidationResult>;
 }
 
 export type RecordValidationFunctionSyncAsync = (
@@ -84,6 +84,6 @@ export interface RecordValidationSchema {
 }
 
 export interface ValidationSchema {
-  global?: RecordValidationSchema[];
+  record?: RecordValidationSchema[];
   fields?: FieldsValidationSchema;
 }
