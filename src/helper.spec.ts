@@ -5,6 +5,7 @@ import {
   isUndefinedOrNull,
   areAllElementsInArrayDefined,
   isLastIndexInArray,
+  isPromise,
 } from './helper';
 
 describe('safeArrayLength', () => {
@@ -520,5 +521,250 @@ describe('isLastIndexInArray', () => {
 
     // Assert
     expect(result).toBeFalsy();
+  });
+});
+
+describe('isPromise', () => {
+  it('should return false when it feed value equals undefined', () => {
+    // Arrange
+    const value = void 0;
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals null', () => {
+    // Arrange
+    const value = null;
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals empty array', () => {
+    // Arrange
+    const value = [];
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals empty object', () => {
+    // Arrange
+    const value = {};
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with props', () => {
+    // Arrange
+    const value = {
+      prop: 1,
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals string', () => {
+    // Arrange
+    const value = 'test';
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals number', () => {
+    // Arrange
+    const value = 1;
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals boolean', () => {
+    // Arrange
+    const value = true;
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals function', () => {
+    // Arrange
+    const value = () => {};
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals undefined', () => {
+    // Arrange
+    const value = {
+      then: void 0,
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals null', () => {
+    // Arrange
+    const value = {
+      then: null,
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals empty array', () => {
+    // Arrange
+    const value = {
+      then: [],
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals empty object', () => {
+    // Arrange
+    const value = {
+      then: {},
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals object with props', () => {
+    // Arrange
+    const value = {
+      then: { prop: 1 },
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals string', () => {
+    // Arrange
+    const value = {
+      then: 'test',
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals number', () => {
+    // Arrange
+    const value = {
+      then: 1,
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals boolean', () => {
+    // Arrange
+    const value = {
+      then: true,
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals function', () => {
+    // Arrange
+    const value = {
+      then: () => {},
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then and catch property equals function', () => {
+    // Arrange
+    const value = {
+      then: () => {},
+      catch: () => {},
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return true when it feed value equals Promise', () => {
+    // Arrange
+    const value = new Promise(() => {});
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeTruthy();
   });
 });
