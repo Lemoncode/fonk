@@ -11,14 +11,21 @@ const getValidationFn = (
 ): RecordValidationFunctionAsync => {
   if (!recordValidation) return null;
 
-  // Defensive programming, record.validation could be null
-  const validationFn = isFunction(recordValidation)
-    ? recordValidation
-    : recordValidation.validation
-    ? recordValidation.validation
-    : null;
+  let recordValidationFunction: RecordValidationFunctionAsync = null;
 
-  return convertRecordValidationToAsyncIfNeeded(validationFn);
+  if (isFunction(recordValidation)) {
+    recordValidationFunction = convertRecordValidationToAsyncIfNeeded(
+      recordValidation
+    );
+  } else {
+    if (recordValidation.validation) {
+      recordValidationFunction = convertRecordValidationToAsyncIfNeeded(
+        recordValidation.validation
+      );
+    }
+  }
+
+  return recordValidationFunction;
 };
 
 export const areAllRecordValidationsDefined = (
