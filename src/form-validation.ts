@@ -9,7 +9,6 @@ import {
 } from './model';
 import { isFunction } from './helper';
 
-// TODO: consider changing this to a meaningful name FormSchemaValidator?
 export class FormValidation {
   private validationEngine: ValidationEngine;
 
@@ -48,8 +47,6 @@ export class FormValidation {
     }
   }
 
-  // TODO: we need to introduce sugar here, we should allow:
-  //   - Let the user just pass a function or the validation schema object (function plus message object)
   private addRecordValidations(
     recordValidationSchemaCollection: RecordValidationSchema[]
   ) {
