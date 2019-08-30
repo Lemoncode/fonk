@@ -26,7 +26,7 @@ import {
 
 export class ValidationEngine {
   private validationsPerField: FieldsValidationSchema = {};
-  private validationsRecord: RecordValidationSchema[] = [];
+  private recordVaslidations: RecordValidationSchema[] = [];
 
   addFieldValidation(key: string, validationFull: FullFieldValidation) {
     validationFull.validator = convertFieldValidationToAsyncIfNeeded(
@@ -46,7 +46,7 @@ export class ValidationEngine {
       recordValidation.validation
     );
 
-    this.validationsRecord.push(recordValidation);
+    this.recordVaslidations.push(recordValidation);
   }
 
   public validateForm(values: any): Promise<FormValidationResult> {
@@ -80,7 +80,7 @@ export class ValidationEngine {
     );
 
     // Now record form validations
-    if (this.validationsRecord.length > 0) {
+    if (this.recordVaslidations.length > 0) {
       fieldValidationResults = [
         ...fieldValidationResults,
         ...this.validateRecordValidations(values),
@@ -149,10 +149,10 @@ export class ValidationEngine {
   private validateRecordValidations(values: any): Promise<ValidationResult>[] {
     let recordResultValidations: Promise<ValidationResult>[] = [];
 
-    if (this.validationsRecord.length > 0) {
+    if (this.recordVaslidations.length > 0) {
       const recordValidationResultsPromises = fireRecordValidations(
         values,
-        this.validationsRecord
+        this.recordVaslidations
       );
       recordResultValidations = [...recordValidationResultsPromises];
     }
