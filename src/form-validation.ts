@@ -6,8 +6,16 @@ import {
   FieldValidation,
   ValidationResult,
   FormValidationResult,
+  FullRecordValidation,
+  FullFieldValidation,
+  FullFieldValidationAsync,
+  FullRecordValidationAsync,
 } from './model';
 import { isFunction } from './helper';
+import {
+  convertFieldValidationToAsyncIfNeeded,
+  convertRecordValidationToAsyncIfNeeded,
+} from './mappers';
 
 export class FormValidation {
   private validationEngine: ValidationEngine;
@@ -25,7 +33,7 @@ export class FormValidation {
     value: any,
     values?: any
   ): Promise<ValidationResult> {
-    return this.validationEngine.validateField(values, fieldId, value);
+    return this.validationEngine.validateField(fieldId, value, values);
   }
 
   public validateForm(values: any): Promise<FormValidationResult> {
@@ -58,14 +66,24 @@ export class FormValidation {
   }
 
   private addRecordValidation(recordValidation: RecordValidationSchema) {
+    let recordValidationSchemaFullAsync: FullRecordValidationAsync = null;
+
     if (isFunction(recordValidation)) {
-      this.validationEngine.addRecordValidation(recordValidation);
+      recordValidationSchemaFullAsync = {
+        validation: convertRecordValidationToAsyncIfNeeded(recordValidation),
+        message: void 0,
+      };
+      //this.validationEngine.addRecordValidation(recordValidation);
     } else {
-      this.validationEngine.addRecordValidation(
-        recordValidation.validation,
-        recordValidation.message
-      );
+      recordValidationSchemaFullAsync = {
+        validation: convertRecordValidationToAsyncIfNeeded(
+          recordValidation.validation
+        ),
+        message: recordValidation.message,
+      };
     }
+
+    this.validationEngine.addRecordValidation(recordValidationSchemaFullAsync);
   }
 
   private addAllFieldsValidations(fields: FieldsValidationSchema) {
@@ -86,21 +104,25 @@ export class FormValidation {
   }
 
   private addFieldValidation(field: string, fieldValidation: FieldValidation) {
+    let validationFullAsync: FullFieldValidationAsync = null;
+
     if (isFunction(fieldValidation)) {
-      this.validationEngine.addFieldValidation(
-        field,
-        fieldValidation,
-        void 0,
-        void 0
-      );
+      validationFullAsync = {
+        validator: convertFieldValidationToAsyncIfNeeded(fieldValidation),
+        message: void 0,
+        customArgs: void 0,
+      };
     } else {
-      this.validationEngine.addFieldValidation(
-        field,
-        fieldValidation.validator,
-        fieldValidation.customArgs,
-        fieldValidation.message
-      );
+      validationFullAsync = {
+        validator: convertFieldValidationToAsyncIfNeeded(
+          fieldValidation.validator
+        ),
+        customArgs: fieldValidation.customArgs,
+        message: fieldValidation.message,
+      };
     }
+
+    this.validationEngine.addFieldValidation(field, validationFullAsync);
   }
 }
 
