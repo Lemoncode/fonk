@@ -2,11 +2,20 @@ import {
   FieldValidation,
   ValidationResult,
   createDefaultValidationResult,
+  FieldValidationFunctionAsync,
 } from '../model';
 import { arrayContainsEntries, isFunction, isUndefinedOrNull } from '../helper';
+import { convertFieldValidationToAsyncIfNeeded } from '../mappers';
 
-const getValidationFn = (fieldValidation: FieldValidation) =>
-  isFunction(fieldValidation) ? fieldValidation : fieldValidation.validator;
+const getValidationFn = (
+  fieldValidation: FieldValidation
+): FieldValidationFunctionAsync => {
+  const validationFn = isFunction(fieldValidation)
+    ? fieldValidation
+    : fieldValidation.validator;
+
+  return convertFieldValidationToAsyncIfNeeded(validationFn);
+};
 
 const checkValidationResult = (
   validationResult: ValidationResult

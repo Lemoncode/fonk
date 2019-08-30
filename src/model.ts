@@ -20,13 +20,13 @@ export interface FormFieldError {
 export interface FormValidationResult {
   succeeded: boolean;
   fieldErrors: FormFieldError[];
-  formGlobalErrors: ValidationResult[];
+  recordErrors: ValidationResult[];
 }
 
 export const createDefaultFormValidationSummary = (): FormValidationResult => ({
   succeeded: true,
   fieldErrors: [],
-  formGlobalErrors: [],
+  recordErrors: [],
 });
 
 // Pending on ValidationEngine
@@ -35,41 +35,47 @@ type ValidationResultSyncAsync = ValidationResult | Promise<ValidationResult>;
 export type FieldValidationFunctionSync = (
   value: any,
   values?: any,
-  customArgs?: object,
+  customArgs?: any,
   message?: string | string[]
 ) => ValidationResult;
 
-export type FieldValidationFunction = (
+export type FieldValidationFunctionAsync = (
   value: any,
   values?: any,
-  customParams?: object,
+  customArgs?: any,
   message?: string | string[]
 ) => Promise<ValidationResult>;
 
 export type FieldValidationFunctionSyncAsync =
-  | FieldValidationFunction
+  | FieldValidationFunctionAsync
   | FieldValidationFunctionSync;
 
 export interface FullFieldValidation {
-  validator: FieldValidationFunction;
-  customArgs?: object;
+  validator: FieldValidationFunctionSyncAsync;
+  customArgs?: any;
   message?: string | string[];
 }
 
-export type FieldValidation = FieldValidationFunction | FullFieldValidation;
+export type FieldValidation =
+  | FieldValidationFunctionSyncAsync
+  | FullFieldValidation;
 
 export interface FormValidation {
   succeeded: boolean;
   fieldErrors: { [key: string]: ValidationResult };
-  formGlobalErrors: Array<ValidationResult>;
+  recordErrors: Array<ValidationResult>;
 }
 
-export type RecordValidationFunctionSyncAsync = (
+export type RecordValidationFunctionSyncAsync =
+  | RecordValidationFunctionSync
+  | RecordValidationFunctionAsync;
+
+export type RecordValidationFunctionSync = (
   values: any,
   message?: string | string[]
-) => ValidationResult | Promise<ValidationResult>;
+) => ValidationResult;
 
-export type RecordValidationFunction = (
+export type RecordValidationFunctionAsync = (
   values: any,
   message?: string | string[]
 ) => Promise<ValidationResult>;
@@ -78,12 +84,16 @@ export interface FieldsValidationSchema {
   [key: string]: FieldValidation[];
 }
 
-export interface RecordValidationSchema {
-  validation: RecordValidationFunction;
+export interface RecordValidationFull {
+  validation: RecordValidationFunctionSyncAsync;
   message?: string;
 }
 
+export type RecordValidationSchema =
+  | RecordValidationFull
+  | RecordValidationFunctionSyncAsync;
+
 export interface ValidationSchema {
-  global?: RecordValidationSchema[];
+  record?: RecordValidationSchema[];
   fields?: FieldsValidationSchema;
 }

@@ -1,6 +1,6 @@
 import { ValidationEngine } from './validation-engine';
 import { ValidationResult, FieldValidationFunctionSyncAsync } from '../model';
-import { globalFormValidationId } from '../const';
+import { recordFormValidationId } from '../const';
 
 describe('ValidationEngine tests', () => {
   describe('AddFieldValidation', () => {
@@ -178,7 +178,7 @@ describe('ValidationEngine tests', () => {
         // Assert
         expect(validationFn).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeTruthy();
-        expect(validationResult.formGlobalErrors.length).toBe(0);
+        expect(validationResult.recordErrors.length).toBe(0);
         done();
       });
     });
@@ -203,7 +203,7 @@ describe('ValidationEngine tests', () => {
         // Assert
         expect(validationFn).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeTruthy();
-        expect(validationResult.formGlobalErrors.length).toBe(0);
+        expect(validationResult.recordErrors.length).toBe(0);
         done();
       });
     });
@@ -228,9 +228,9 @@ describe('ValidationEngine tests', () => {
         // Assert
         expect(validationFn).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.formGlobalErrors.length).toBe(1);
-        expect(validationResult.formGlobalErrors[0].key).toBe(
-          globalFormValidationId
+        expect(validationResult.recordErrors.length).toBe(1);
+        expect(validationResult.recordErrors[0].key).toBe(
+          recordFormValidationId
         );
         done();
       });
@@ -256,9 +256,9 @@ describe('ValidationEngine tests', () => {
         // Assert
         expect(validationFn).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.formGlobalErrors.length).toBe(1);
-        expect(validationResult.formGlobalErrors[0].key).toBe(
-          globalFormValidationId
+        expect(validationResult.recordErrors.length).toBe(1);
+        expect(validationResult.recordErrors[0].key).toBe(
+          recordFormValidationId
         );
         done();
       });
@@ -293,7 +293,7 @@ describe('ValidationEngine tests', () => {
         expect(validationFn1).toHaveBeenCalled();
         expect(validationFn2).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeTruthy();
-        expect(validationResult.formGlobalErrors.length).toBe(0);
+        expect(validationResult.recordErrors.length).toBe(0);
         done();
       });
     });
@@ -327,7 +327,7 @@ describe('ValidationEngine tests', () => {
         expect(validationFn1).toHaveBeenCalled();
         expect(validationFn2).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.formGlobalErrors.length).toBe(1);
+        expect(validationResult.recordErrors.length).toBe(1);
         done();
       });
     });
@@ -362,7 +362,7 @@ describe('ValidationEngine tests', () => {
         expect(validationFn1).toHaveBeenCalled();
         expect(validationFn2).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.formGlobalErrors.length).toBe(2);
+        expect(validationResult.recordErrors.length).toBe(2);
         done();
       });
     });
@@ -377,7 +377,7 @@ describe('ValidationEngine tests', () => {
         key: '',
         type: '',
         succeeded: false,
-        customParams: {},
+        customArgs: {},
         message: '',
       });
 
@@ -455,10 +455,8 @@ describe('ValidationEngine tests', () => {
       validationEngine.validateForm(values).then(validationResult => {
         // Assert
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.formGlobalErrors.length).toBe(1);
-        expect(validationResult.formGlobalErrors[0].message).toBe(
-          'custom message'
-        );
+        expect(validationResult.recordErrors.length).toBe(1);
+        expect(validationResult.recordErrors[0].message).toBe('custom message');
         done();
       });
     });
@@ -486,10 +484,8 @@ describe('ValidationEngine tests', () => {
       validationEngine.validateForm(values).then(validationResult => {
         // Assert
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.formGlobalErrors.length).toBe(1);
-        expect(validationResult.formGlobalErrors[0].message).toBe(
-          'custom message'
-        );
+        expect(validationResult.recordErrors.length).toBe(1);
+        expect(validationResult.recordErrors[0].message).toBe('custom message');
         done();
       });
     });

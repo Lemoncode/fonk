@@ -1,1 +1,1 @@
-export const globalFormValidationId = '_GLOBAL_FORM_';
+export const recordFormValidationId = '_RECORD_FORM_';

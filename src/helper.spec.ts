@@ -3,6 +3,9 @@ import {
   arrayContainsEntries,
   isFunction,
   isUndefinedOrNull,
+  areAllElementsInArrayDefined,
+  isLastIndexInArray,
+  isPromise,
 } from './helper';
 
 describe('safeArrayLength', () => {
@@ -249,5 +252,519 @@ describe('isUndefinedOrNull', () => {
 
     // Assert
     expect(result).toBeFalsy();
+  });
+});
+
+describe('areAllElementsInArrayDefined', () => {
+  it('Should return false when passing undefined', () => {
+    // Arrange
+    const myCollection = void 0;
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('Should return false when passing null', () => {
+    // Arrange
+    const myCollection = null;
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('Should return false when passing empty array', () => {
+    // Arrange
+    const myCollection = [];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('Should return false when passing an array including one element equals undefined', () => {
+    // Arrange
+    const myCollection = [void 0];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('Should return false when passing an array including one element equals null', () => {
+    // Arrange
+    const myCollection = [null];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('Should return true when passing an array including one element equals emtpy array', () => {
+    // Arrange
+    const myCollection = [[]];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeTruthy();
+  });
+
+  it('Should return true when passing an array including one element equals emtpy object', () => {
+    // Arrange
+    const myCollection = [{}];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeTruthy();
+  });
+
+  it('Should return true when passing an array including one element equals string', () => {
+    // Arrange
+    const myCollection = ['item'];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeTruthy();
+  });
+
+  it('Should return true when passing an array including one element equals number', () => {
+    // Arrange
+    const myCollection = [1];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeTruthy();
+  });
+
+  it('Should return false when passing an array including two elements equals undefined and number', () => {
+    // Arrange
+    const myCollection = [void 0, 1];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('Should return false when passing an array including two elements equals null and number', () => {
+    // Arrange
+    const myCollection = [null, 1];
+
+    // Act
+    const result = areAllElementsInArrayDefined(myCollection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+});
+
+describe('isLastIndexInArray', () => {
+  it('should return false when it feeds index equal 0 and collection equals undefined', () => {
+    // Arrange
+    const index = 0;
+    const collection = void 0;
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds index equal 0 and collection equals null', () => {
+    // Arrange
+    const index = 0;
+    const collection = null;
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds index equal 0 and collection equals empty array', () => {
+    // Arrange
+    const index = 0;
+    const collection = [];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds index equal 0 and collection equals empty array', () => {
+    // Arrange
+    const index = 0;
+    const collection = [];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return true when it feeds index equal 0 and collection with one item', () => {
+    // Arrange
+    const index = 0;
+    const collection = ['item1'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeTruthy();
+  });
+
+  it('should return false when it feeds index equal 0 and collection with two items', () => {
+    // Arrange
+    const index = 0;
+    const collection = ['item1', 'item2'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds index equal -1 and collection with two items', () => {
+    // Arrange
+    const index = -1;
+    const collection = ['item1', 'item2'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds index equal undefined and collection with two items', () => {
+    // Arrange
+    const index = void 0;
+    const collection = ['item1', 'item2'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds index equal null and collection with two items', () => {
+    // Arrange
+    const index = null;
+    const collection = ['item1', 'item2'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return true when it feeds index equal 1 and collection with two items', () => {
+    // Arrange
+    const index = 1;
+    const collection = ['item1', 'item2'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeTruthy();
+  });
+
+  it('should return false when it feeds index equal 2 and collection with two items', () => {
+    // Arrange
+    const index = 2;
+    const collection = ['item1', 'item2'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds index equal 3 and collection with two items', () => {
+    // Arrange
+    const index = 3;
+    const collection = ['item1', 'item2'];
+
+    // Act
+    const result = isLastIndexInArray(index, collection);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+});
+
+describe('isPromise', () => {
+  it('should return false when it feed value equals undefined', () => {
+    // Arrange
+    const value = void 0;
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals null', () => {
+    // Arrange
+    const value = null;
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals empty array', () => {
+    // Arrange
+    const value = [];
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals empty object', () => {
+    // Arrange
+    const value = {};
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with props', () => {
+    // Arrange
+    const value = {
+      prop: 1,
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals string', () => {
+    // Arrange
+    const value = 'test';
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals number', () => {
+    // Arrange
+    const value = 1;
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals boolean', () => {
+    // Arrange
+    const value = true;
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals function', () => {
+    // Arrange
+    const value = () => {};
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals undefined', () => {
+    // Arrange
+    const value = {
+      then: void 0,
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals null', () => {
+    // Arrange
+    const value = {
+      then: null,
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals empty array', () => {
+    // Arrange
+    const value = {
+      then: [],
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals empty object', () => {
+    // Arrange
+    const value = {
+      then: {},
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals object with props', () => {
+    // Arrange
+    const value = {
+      then: { prop: 1 },
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals string', () => {
+    // Arrange
+    const value = {
+      then: 'test',
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals number', () => {
+    // Arrange
+    const value = {
+      then: 1,
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals boolean', () => {
+    // Arrange
+    const value = {
+      then: true,
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then property equals function', () => {
+    // Arrange
+    const value = {
+      then: () => {},
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feed value equals object with then and catch property equals function', () => {
+    // Arrange
+    const value = {
+      then: () => {},
+      catch: () => {},
+    };
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return true when it feed value equals Promise', () => {
+    // Arrange
+    const value = new Promise(() => {});
+
+    // Act
+    const result = isPromise(value);
+
+    // Assert
+    expect(result).toBeTruthy();
   });
 });
