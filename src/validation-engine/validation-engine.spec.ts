@@ -24,7 +24,7 @@ describe('ValidationEngine tests', () => {
       );
 
       validationEngine
-        .validateField(values, 'username', 'newContent')
+        .validateField('username', 'newContent', values)
         .then(validationResult => {
           // Assert
           expect(validationResult.succeeded).toBeTruthy();
@@ -60,7 +60,7 @@ describe('ValidationEngine tests', () => {
       );
 
       validationEngine
-        .validateField(values, 'username', 'newContent')
+        .validateField('username', 'newContent', values)
         .then(validationResult => {
           // Assert
           expect(validationResult.succeeded).toBeTruthy();
@@ -87,7 +87,7 @@ describe('ValidationEngine tests', () => {
       validationEngine.addFieldValidation('username', validationFn);
 
       validationEngine
-        .validateField(values, 'lastname', 'sellers')
+        .validateField('lastname', 'sellers', values)
         .then(validationResult => {
           // Assert
           expect(validationFn).not.toHaveBeenCalled();
@@ -116,12 +116,12 @@ describe('ValidationEngine tests', () => {
       validationEngine.addFieldValidation('username', validationFn);
 
       validationEngine
-        .validateField(values, 'lastname', 'sellers')
+        .validateField('lastname', 'sellers', values)
         .then(validationResult => {
           // Assert
           expect(validationFn).not.toHaveBeenCalled();
           validationEngine
-            .validateField(values, 'username', 'Mary')
+            .validateField('username', 'Mary', values)
             .then(validationResult => {
               expect(validationFn).toHaveBeenCalled();
               expect(validationResult.succeeded).toBeTruthy();
@@ -385,7 +385,7 @@ describe('ValidationEngine tests', () => {
       validationEngine.addRecordValidation(validationFn);
 
       validationEngine
-        .validateField(values, 'username', 'John')
+        .validateField('username', 'John', values)
         .then(validationResult => {
           // Assert
           expect(validationFn).not.toHaveBeenCalled();
@@ -428,7 +428,7 @@ describe('ValidationEngine tests', () => {
       );
 
       validationEngine
-        .validateField(values, 'username', 'peter')
+        .validateField('username', 'peter', values)
         .then(validationResult => {
           // Assert
           expect(validationResult.message).toBe('my custom message');
@@ -540,7 +540,7 @@ describe('ValidationEngine tests', () => {
       validationEngine.addFieldValidation('username', validationFn2);
 
       validationEngine
-        .validateField(values, 'username', 'newContent')
+        .validateField('username', 'newContent', values)
         .then(validationResult => {
           // Assert
           expect(validationResult.succeeded).toBeFalsy();
@@ -597,7 +597,7 @@ describe('ValidationEngine tests', () => {
       validationEngine.addFieldValidation('username', validationFn2);
 
       validationEngine
-        .validateField(values, 'username', 'newContent')
+        .validateField('username', 'newContent', values)
         .then(validationResult => {
           // Assert
           expect(validationResult.succeeded).toBeFalsy();
@@ -644,7 +644,7 @@ describe('ValidationEngine tests', () => {
       validationEngine.addFieldValidation('username', validationFn2);
 
       validationEngine
-        .validateField(values, 'username', 'newContent')
+        .validateField('username', 'newContent', values)
         .then(validationResult => {
           // Assert
           expect(validationResult.succeeded).toBeFalsy();

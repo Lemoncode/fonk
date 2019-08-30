@@ -25,7 +25,7 @@ export class FormValidation {
     value: any,
     values?: any
   ): Promise<ValidationResult> {
-    return this.validationEngine.validateField(values, fieldId, value);
+    return this.validationEngine.validateField(fieldId, value, values);
   }
 
   public validateForm(values: any): Promise<FormValidationResult> {
