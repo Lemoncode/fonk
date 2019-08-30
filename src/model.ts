@@ -50,6 +50,12 @@ export type FieldValidationFunctionSyncAsync =
   | FieldValidationFunctionAsync
   | FieldValidationFunctionSync;
 
+export interface FullFieldValidationAsync {
+  validator: FieldValidationFunctionAsync;
+  customArgs?: any;
+  message?: string | string[];
+}
+
 export interface FullFieldValidation {
   validator: FieldValidationFunctionSyncAsync;
   customArgs?: any;
@@ -82,6 +88,11 @@ export type RecordValidationFunctionAsync = (
 
 export interface FieldsValidationSchema {
   [key: string]: FieldValidation[];
+}
+
+export interface FullRecordValidationAsync {
+  validation: RecordValidationFunctionAsync;
+  message?: string;
 }
 
 export interface FullRecordValidation {

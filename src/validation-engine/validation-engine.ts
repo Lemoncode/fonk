@@ -3,12 +3,9 @@ import {
   FormValidationResult,
   FieldsValidationSchema,
   createDefaultValidationResult,
-  RecordValidationFunctionSyncAsync,
-  FieldValidationFunctionSyncAsync,
-  FieldValidation,
   RecordValidationSchema,
-  FullRecordValidation,
-  FullFieldValidation,
+  FullFieldValidationAsync,
+  FullRecordValidationAsync,
 } from '../model';
 
 import { isUndefinedOrNull } from '../helper';
@@ -19,20 +16,12 @@ import {
   fireRecordValidations,
 } from '../validation-dispatcher';
 import { buildFormValidationResult } from '../form-validation-summary-builder';
-import {
-  convertFieldValidationToAsyncIfNeeded,
-  convertRecordValidationToAsyncIfNeeded,
-} from '../mappers';
 
 export class ValidationEngine {
   private validationsPerField: FieldsValidationSchema = {};
   private recordVaslidations: RecordValidationSchema[] = [];
 
-  addFieldValidation(key: string, validationFull: FullFieldValidation) {
-    validationFull.validator = convertFieldValidationToAsyncIfNeeded(
-      validationFull.validator
-    );
-
+  addFieldValidation(key: string, validationFull: FullFieldValidationAsync) {
     if (!this.isFieldKeyMappingDefined(key)) {
       this.validationsPerField[key] = [];
     }
@@ -40,12 +29,7 @@ export class ValidationEngine {
     this.validationsPerField[key].push(validationFull);
   }
 
-  addRecordValidation(recordValidation: FullRecordValidation): void {
-    // Sugar we admit both flavors syncrhonous and asynchronous validators
-    recordValidation.validation = convertRecordValidationToAsyncIfNeeded(
-      recordValidation.validation
-    );
-
+  addRecordValidation(recordValidation: FullRecordValidationAsync): void {
     this.recordVaslidations.push(recordValidation);
   }
 
