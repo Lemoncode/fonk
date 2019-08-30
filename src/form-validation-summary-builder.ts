@@ -5,7 +5,7 @@ import {
   FormFieldError,
 } from './model';
 import { arrayContainsEntries } from './helper';
-import { globalFormValidationId } from './const';
+import { recordFormValidationId } from './const';
 
 const didAllValidationsSucceeded = (
   validationResults: ValidationResult[]
@@ -15,7 +15,7 @@ const extractFieldErrors = (
   validationResults: ValidationResult[]
 ): FormFieldError[] => {
   const fieldValidationResults = validationResults.filter(
-    fvr => fvr.key !== globalFormValidationId
+    fvr => fvr.key !== recordFormValidationId
   );
 
   return fieldValidationResults.map(validation => ({
@@ -27,7 +27,7 @@ const extractFieldErrors = (
 const extractFormRecordErrors = (
   validationResults: ValidationResult[]
 ): ValidationResult[] =>
-  validationResults.filter(fvr => fvr.key === globalFormValidationId);
+  validationResults.filter(fvr => fvr.key === recordFormValidationId);
 
 const removeNotValidValidationResults = (
   validationResults: ValidationResult[]
@@ -40,7 +40,7 @@ const removeNotValidValidationResults = (
   return validationResults.filter(fvr => fvr !== undefined && fvr !== null);
 };
 
-const setEmptyKeysToGlobalKeys = (
+const setEmptyKeysToRecordKeys = (
   validationResults: ValidationResult[]
 ): ValidationResult[] =>
   validationResults.map(validationResult =>
@@ -48,7 +48,7 @@ const setEmptyKeysToGlobalKeys = (
       ? validationResult
       : {
           ...validationResult,
-          key: globalFormValidationId,
+          key: recordFormValidationId,
         }
   );
 
@@ -61,9 +61,9 @@ const cleanupValidationResultCollection = (
   let collectionProcessed = removeNotValidValidationResults(validationResults);
   collectionProcessed = removeSucceededValidations(collectionProcessed);
   // TODO check why this is needed
-  // Does it mean global validation arrive here with an empty key ''?
-  // then we map it to global?
-  collectionProcessed = setEmptyKeysToGlobalKeys(collectionProcessed);
+  // Does it mean record validation arrive here with an empty key ''?
+  // then we map it to record?
+  collectionProcessed = setEmptyKeysToRecordKeys(collectionProcessed);
 
   return collectionProcessed;
 };
@@ -89,7 +89,7 @@ export const buildFormValidationResult = (
       processedValidationResults
     );
 
-    formValidationSummary.formGlobalErrors = extractFormRecordErrors(
+    formValidationSummary.recordErrors = extractFormRecordErrors(
       processedValidationResults
     );
   }
