@@ -84,13 +84,13 @@ export interface FieldsValidationSchema {
   [key: string]: FieldValidation[];
 }
 
-export interface RecordValidationFull {
+export interface FullRecordValidation {
   validation: RecordValidationFunctionSyncAsync;
   message?: string;
 }
 
 export type RecordValidationSchema =
-  | RecordValidationFull
+  | FullRecordValidation
   | RecordValidationFunctionSyncAsync;
 
 export interface ValidationSchema {

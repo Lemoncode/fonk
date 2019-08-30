@@ -6,7 +6,7 @@ import {
   FieldValidation,
   ValidationResult,
   FormValidationResult,
-  RecordValidationFull,
+  FullRecordValidation,
   FullFieldValidation,
 } from './model';
 import { isFunction } from './helper';
@@ -60,7 +60,7 @@ export class FormValidation {
   }
 
   private addRecordValidation(recordValidation: RecordValidationSchema) {
-    let recordValidationSchemaFull: RecordValidationFull = null;
+    let recordValidationSchemaFull: FullRecordValidation = null;
 
     if (isFunction(recordValidation)) {
       recordValidationSchemaFull = {

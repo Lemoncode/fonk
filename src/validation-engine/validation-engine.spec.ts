@@ -2,7 +2,7 @@ import { ValidationEngine } from './validation-engine';
 import {
   ValidationResult,
   FieldValidationFunctionSyncAsync,
-  RecordValidationFull,
+  FullRecordValidation,
   FullFieldValidation,
 } from '../model';
 import { recordFormValidationId } from '../const';
@@ -194,7 +194,7 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
-      const recordValidation: RecordValidationFull = {
+      const recordValidation: FullRecordValidation = {
         validation: validationFn,
       };
 
@@ -223,7 +223,7 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
-      const recordValidation: RecordValidationFull = {
+      const recordValidation: FullRecordValidation = {
         validation: validationFn,
       };
 
@@ -252,7 +252,7 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
-      const recordValidation: RecordValidationFull = {
+      const recordValidation: FullRecordValidation = {
         validation: validationFn,
       };
 
@@ -284,7 +284,7 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
-      const recordValidation: RecordValidationFull = {
+      const recordValidation: FullRecordValidation = {
         validation: validationFn,
       };
 
@@ -323,11 +323,11 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
-      const recordValidation1: RecordValidationFull = {
+      const recordValidation1: FullRecordValidation = {
         validation: validationFn1,
       };
 
-      const recordValidation2: RecordValidationFull = {
+      const recordValidation2: FullRecordValidation = {
         validation: validationFn2,
       };
 
@@ -365,11 +365,11 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
-      const recordValidation1: RecordValidationFull = {
+      const recordValidation1: FullRecordValidation = {
         validation: validationFn1,
       };
 
-      const recordValidation2: RecordValidationFull = {
+      const recordValidation2: FullRecordValidation = {
         validation: validationFn2,
       };
 
@@ -408,11 +408,11 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
-      const recordValidation1: RecordValidationFull = {
+      const recordValidation1: FullRecordValidation = {
         validation: validationFn1,
       };
 
-      const recordValidation2: RecordValidationFull = {
+      const recordValidation2: FullRecordValidation = {
         validation: validationFn2,
       };
 
@@ -444,7 +444,7 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
-      const recordValidation: RecordValidationFull = {
+      const recordValidation: FullRecordValidation = {
         validation: validationFn,
       };
 
@@ -519,7 +519,7 @@ describe('ValidationEngine tests', () => {
         message: message ? message : 'no custom message',
       });
 
-      const recordValidation: RecordValidationFull = {
+      const recordValidation: FullRecordValidation = {
         validation: validationFn,
         message: 'custom message',
       };
@@ -553,7 +553,7 @@ describe('ValidationEngine tests', () => {
           message: message ? message : 'no custom message',
         });
 
-      const recordValidation: RecordValidationFull = {
+      const recordValidation: FullRecordValidation = {
         validation: validationFn,
         message: 'custom message',
       };

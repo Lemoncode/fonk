@@ -7,7 +7,7 @@ import {
   FieldValidationFunctionSyncAsync,
   FieldValidation,
   RecordValidationSchema,
-  RecordValidationFull,
+  FullRecordValidation,
   FullFieldValidation,
 } from '../model';
 
@@ -40,7 +40,7 @@ export class ValidationEngine {
     this.validationsPerField[key].push(validationFull);
   }
 
-  addRecordValidation(recordValidation: RecordValidationFull): void {
+  addRecordValidation(recordValidation: FullRecordValidation): void {
     // Sugar we admit both flavors syncrhonous and asynchronous validators
     recordValidation.validation = convertRecordValidationToAsyncIfNeeded(
       recordValidation.validation
