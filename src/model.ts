@@ -32,19 +32,19 @@ export const createDefaultFormValidationSummary = (): FormValidationResult => ({
 // Pending on ValidationEngine
 type ValidationResultSyncAsync = ValidationResult | Promise<ValidationResult>;
 
-export interface ValidatorArgs<T = {}> {
+export interface FieldValidatorArgs {
   value: any;
   values?: any;
-  customArgs?: T;
+  customArgs?: any;
   message?: string | string[];
 }
 
 export type FieldValidationFunctionSync = (
-  validatorArgs: ValidatorArgs
+  fieldValidatorArgs: FieldValidatorArgs
 ) => ValidationResult;
 
 export type FieldValidationFunctionAsync = (
-  validatorArgs: ValidatorArgs
+  fieldValidatorArgs: FieldValidatorArgs
 ) => Promise<ValidationResult>;
 
 export type FieldValidationFunctionSyncAsync =
@@ -64,21 +64,24 @@ export type FieldValidation =
 export interface FormValidation {
   succeeded: boolean;
   fieldErrors: { [key: string]: ValidationResult };
-  recordErrors: Array<ValidationResult>;
+  recordErrors: ValidationResult[];
 }
 
 export type RecordValidationFunctionSyncAsync =
   | RecordValidationFunctionSync
   | RecordValidationFunctionAsync;
 
+export interface RecordValidatorArgs {
+  value: any;
+  message?: string | string[];
+}
+
 export type RecordValidationFunctionSync = (
-  values: any,
-  message?: string | string[]
+  recordValidatorArgs: RecordValidatorArgs
 ) => ValidationResult;
 
 export type RecordValidationFunctionAsync = (
-  values: any,
-  message?: string | string[]
+  recordValidatorArgs: RecordValidatorArgs
 ) => Promise<ValidationResult>;
 
 export interface FieldsValidationSchema {

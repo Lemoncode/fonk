@@ -39,12 +39,12 @@ const fireValidation = (
   fieldValidation: FieldValidation
 ): Promise<ValidationResult> => {
   const validationFn = getValidationFn(fieldValidation);
-  return validationFn(
+  return validationFn({
     value,
     values,
-    fieldValidation['customArgs'],
-    fieldValidation['message']
-  ).then(checkValidationResult);
+    customArgs: fieldValidation['customArgs'],
+    message: fieldValidation['message'],
+  }).then(checkValidationResult);
 };
 
 // Sequentially resolve promises with reduce: https://css-tricks.com/why-using-reduce-to-sequentially-resolve-promises-works/

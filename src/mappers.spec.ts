@@ -2,6 +2,8 @@ import {
   FieldValidationFunctionSync,
   createDefaultValidationResult,
   FieldValidationFunctionAsync,
+  FieldValidatorArgs,
+  RecordValidatorArgs,
 } from './model';
 import {
   convertFieldValidationToAsyncIfNeeded,
@@ -19,7 +21,10 @@ describe('mappers', () => {
 
       // Assert
       expect(result).toBeInstanceOf(Function);
-      const promise = result('value', 'values', { param: 1 }, 'test message');
+      const fieldValidatorArgs: FieldValidatorArgs = {
+        value: 'value',
+      };
+      const promise = result(fieldValidatorArgs);
       expect(promise).toBeInstanceOf(Promise);
       promise.then(validationResult => {
         expect(validationResult).toEqual(createDefaultValidationResult());
@@ -36,7 +41,10 @@ describe('mappers', () => {
 
       // Assert
       expect(result).toBeInstanceOf(Function);
-      const promise = result('value', 'values', { param: 1 }, 'test message');
+      const fieldValidatorArgs: FieldValidatorArgs = {
+        value: 'value',
+      };
+      const promise = result(fieldValidatorArgs);
       expect(promise).toBeInstanceOf(Promise);
       promise.then(validationResult => {
         expect(validationResult).toEqual(createDefaultValidationResult());
@@ -58,7 +66,10 @@ describe('mappers', () => {
 
       // Assert
       expect(result).toBeInstanceOf(Function);
-      const promise = result('value', 'values', { param: 1 }, 'test message');
+      const fieldValidatorArgs: FieldValidatorArgs = {
+        value: 'value',
+      };
+      const promise = result(fieldValidatorArgs);
       expect(promise).toBeInstanceOf(Promise);
       promise.then(validationResult => {
         expect(validationResult).toEqual({
@@ -86,7 +97,10 @@ describe('mappers', () => {
 
       // Assert
       expect(result).toBeInstanceOf(Function);
-      const promise = result('value', 'values', { param: 1 }, 'test message');
+      const fieldValidatorArgs: FieldValidatorArgs = {
+        value: 'value',
+      };
+      const promise = result(fieldValidatorArgs);
       expect(promise).toBeInstanceOf(Promise);
       promise.then(validationResult => {
         expect(validationResult).toEqual({
@@ -110,7 +124,10 @@ describe('mappers', () => {
 
       // Assert
       expect(result).toBeInstanceOf(Function);
-      const promise = result('value', 'test message');
+      const recordValidatorArgs: RecordValidatorArgs = {
+        value: 'test value',
+      };
+      const promise = result(recordValidatorArgs);
       expect(promise).toBeInstanceOf(Promise);
       promise.then(validationResult => {
         expect(validationResult).toEqual(createDefaultValidationResult());
@@ -127,7 +144,10 @@ describe('mappers', () => {
 
       // Assert
       expect(result).toBeInstanceOf(Function);
-      const promise = result('value', 'test message');
+      const recordValidatorArgs: RecordValidatorArgs = {
+        value: 'test value',
+      };
+      const promise = result(recordValidatorArgs);
       expect(promise).toBeInstanceOf(Promise);
       promise.then(validationResult => {
         expect(validationResult).toEqual(createDefaultValidationResult());
@@ -149,7 +169,10 @@ describe('mappers', () => {
 
       // Assert
       expect(result).toBeInstanceOf(Function);
-      const promise = result('value', 'test message');
+      const recordValidatorArgs: RecordValidatorArgs = {
+        value: 'test value',
+      };
+      const promise = result(recordValidatorArgs);
       expect(promise).toBeInstanceOf(Promise);
       promise.then(validationResult => {
         expect(validationResult).toEqual({
@@ -177,7 +200,10 @@ describe('mappers', () => {
 
       // Assert
       expect(result).toBeInstanceOf(Function);
-      const promise = result('value', 'test message');
+      const recordValidatorArgs: RecordValidatorArgs = {
+        value: 'test value',
+      };
+      const promise = result(recordValidatorArgs);
       expect(promise).toBeInstanceOf(Promise);
       promise.then(validationResult => {
         expect(validationResult).toEqual({

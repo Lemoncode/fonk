@@ -1,11 +1,11 @@
-import { required, RequiredArgs, VALIDATOR_TYPE } from './required';
-import { ValidatorArgs } from '../model';
+import { required, VALIDATOR_TYPE } from './required';
+import { FieldValidatorArgs } from '../model';
 
 describe(`required validator`, () => {
   describe('When validating a non string value', () => {
     it('should return validation failed if value is null', () => {
       // Arrange
-      const validationArgs: ValidatorArgs<RequiredArgs> = {
+      const validationArgs: FieldValidatorArgs = {
         value: null,
         values: undefined,
         customArgs: undefined,
@@ -25,7 +25,7 @@ describe(`required validator`, () => {
     it(`should return validation failed and custom error message
       if value is null and custom message informed`, () => {
       // Arrange
-      const validationArgs: ValidatorArgs<RequiredArgs> = {
+      const validationArgs: FieldValidatorArgs = {
         value: null,
         message: 'Hey ! inform this field',
       };
@@ -39,7 +39,7 @@ describe(`required validator`, () => {
     });
     it('should return validation failed if value is undefined', () => {
       // Arrange
-      const validationArgs: ValidatorArgs<RequiredArgs> = {
+      const validationArgs: FieldValidatorArgs = {
         value: void 0,
       };
 
@@ -54,9 +54,9 @@ describe(`required validator`, () => {
       );
     });
 
-    it('should return validation failed if value is false', () => {
+    it('should return validation succeeded if value is false', () => {
       // Arrange
-      const validationArgs: ValidatorArgs<RequiredArgs> = {
+      const validationArgs: FieldValidatorArgs = {
         value: false,
       };
 
@@ -64,16 +64,14 @@ describe(`required validator`, () => {
       const validationResult = required(validationArgs);
 
       // Assert
-      expect(validationResult.succeeded).toBeFalsy();
+      expect(validationResult.succeeded).toBeTruthy();
       expect(validationResult.type).toBe(VALIDATOR_TYPE);
-      expect(validationResult.message).toBe(
-        'Please fill in this mandatory field.'
-      );
+      expect(validationResult.message).toBe('');
     });
 
     it('should return validation succeeded if value is true', () => {
       // Arrange
-      const validationArgs: ValidatorArgs<RequiredArgs> = {
+      const validationArgs: FieldValidatorArgs = {
         value: true,
       };
 
@@ -83,11 +81,12 @@ describe(`required validator`, () => {
       // Assert
       expect(validationResult.succeeded).toBeTruthy();
       expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.message).toBe('');
     });
 
     it('should return true if typeof value is number', () => {
       // Arrange
-      const validationArgs: ValidatorArgs<RequiredArgs> = {
+      const validationArgs: FieldValidatorArgs = {
         value: 1,
       };
 
@@ -97,12 +96,13 @@ describe(`required validator`, () => {
       // Assert
       expect(validationResult.succeeded).toBeTruthy();
       expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.message).toBe('');
     });
   });
   describe('When validating a string value', () => {
     it('should return false if string is empty', () => {
       // Arrange
-      const validationArgs: ValidatorArgs<RequiredArgs> = {
+      const validationArgs: FieldValidatorArgs = {
         value: '',
       };
 
@@ -119,7 +119,7 @@ describe(`required validator`, () => {
 
     it('should return false if string has whitespace characters and trim option is true', () => {
       // Arrange
-      const validationArgs: ValidatorArgs<RequiredArgs> = {
+      const validationArgs: FieldValidatorArgs = {
         value: ' ',
         customArgs: { trim: true },
       };
@@ -130,11 +130,14 @@ describe(`required validator`, () => {
       // Assert
       expect(validationResult.succeeded).toBeFalsy();
       expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.message).toBe(
+        'Please fill in this mandatory field.'
+      );
     });
 
     it('should return true if string has whitespace characters and trim option is false', () => {
       // Arrange
-      const validationArgs: ValidatorArgs<RequiredArgs> = {
+      const validationArgs: FieldValidatorArgs = {
         value: ' ',
         customArgs: { trim: false },
       };
@@ -145,34 +148,39 @@ describe(`required validator`, () => {
       // Assert
       expect(validationResult.succeeded).toBeTruthy();
       expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.message).toBe('');
     });
 
-    it('should return succeed if string has whitespace characters and trim option is null', () => {
+    it('should return succeeded if string has whitespace characters and trim option is null', () => {
       // Arrange
-      const value = ' ';
-      const values = undefined;
-      const customArgs: RequiredArgs = { trim: null };
+      const validationArgs: FieldValidatorArgs = {
+        value: ' ',
+        customArgs: { trim: null },
+      };
 
       // Act
-      const validationResult = required(value, values, customArgs);
+      const validationResult = required(validationArgs);
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy();
       expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.message).toBe('');
     });
 
-    it('should return failed if string has whitespace characters and trim option is undefined', () => {
+    it('should return succeeded if string has whitespace characters and trim option is undefined', () => {
       // Arrange
-      const value = ' ';
-      const values = void 0;
-      const customArgs: RequiredArgs = null;
+      const validationArgs: FieldValidatorArgs = {
+        value: ' ',
+        customArgs: { trim: undefined },
+      };
 
       // Act
-      const validationResult = required(value, values, customArgs);
+      const validationResult = required(validationArgs);
 
       // Assert
-      expect(validationResult.succeeded).toBeFalsy();
+      expect(validationResult.succeeded).toBeTruthy();
       expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.message).toBe('');
     });
   });
 });

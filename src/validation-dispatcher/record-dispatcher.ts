@@ -45,7 +45,7 @@ export const fireRecordValidations = (
     validationResultsPromises = validations.map(validation => {
       const validationFn = getValidationFn(validation);
 
-      return validationFn(values, validation['message']);
+      return validationFn({ value: values, message: validation['message'] });
     });
   } else {
     console.error('One of the form record validations are not defined.');

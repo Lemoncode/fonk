@@ -1,8 +1,8 @@
 import { fireSingleFieldValidations } from './single-field-dispatcher';
 import {
-  ValidationResult,
   FieldValidation,
   FullFieldValidation,
+  FieldValidatorArgs,
 } from '../model';
 
 // TODO: we could check console log errors are spit out: https://stackoverflow.com/questions/44344801/how-to-use-jest-with-jsdom-to-test-console-log
@@ -745,12 +745,13 @@ describe('validationDispatcher', () => {
       fieldValidationResultPromise.then(fieldValidationResult => {
         expect(fieldValidationResult.succeeded).toBeTruthy();
         expect(validationFn1).toBeCalled();
-        expect(validationFn1).toBeCalledWith(
+        const fieldValidatorArgs: FieldValidatorArgs = {
           value,
           values,
-          customArgs1,
-          'my error message'
-        );
+          customArgs: customArgs1,
+          message: 'my error message',
+        };
+        expect(validationFn1).toBeCalledWith(fieldValidatorArgs);
 
         done();
       });

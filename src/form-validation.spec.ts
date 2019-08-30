@@ -3,13 +3,9 @@ import {
   ValidationSchema,
   ValidationResult,
   FieldValidationFunctionSync,
-  FieldValidationFunctionSyncAsync,
-  FieldValidation,
   RecordValidationFunctionAsync,
   RecordValidationFunctionSync,
 } from './model';
-import { doesNotReject } from 'assert';
-import { promises } from 'fs';
 
 describe('createFormValidation', () => {
   it(`spec #1: should return an instance of FormValidation
@@ -63,12 +59,7 @@ describe('createFormValidation', () => {
     `, done => {
       // Arrange
       const mockValidationFn = jest.fn(
-        (
-          value: any,
-          values?: any,
-          customArgs?: object,
-          message?: string | string[]
-        ): ValidationResult => ({
+        (fieldValidatorArgs): ValidationResult => ({
           type: 'MY_TYPE',
           succeeded: false,
           message: 'mymessage',
@@ -97,16 +88,11 @@ describe('createFormValidation', () => {
 
     it(`spec #4: should execute a field validation (defined as FullValidator, sync function in schema) and fail when
     adding a field validation in the schema on a given field
-    firing a validation for that given field 
+    firing a validation for that given field
     `, done => {
       // Arrange
       const mockValidationFn = jest.fn(
-        (
-          value: any,
-          values?: any,
-          customArgs?: object,
-          message?: string | string[]
-        ): ValidationResult => ({
+        ({ message }): ValidationResult => ({
           type: 'MY_TYPE',
           succeeded: false,
           message: message ? (message as string) : 'mymessage',
@@ -140,16 +126,11 @@ describe('createFormValidation', () => {
 
     it(`spec #5: should execute a field validation (defined as FullValidator, async function in schema) and fail when
     adding a field validation in the schema on a given field
-    firing a validation for that given field 
+    firing a validation for that given field
     `, done => {
       // Arrange
       const mockValidationFn = jest.fn(
-        (
-          value: any,
-          values?: any,
-          customArgs?: object,
-          message?: string | string[]
-        ): Promise<ValidationResult> =>
+        ({ message }): Promise<ValidationResult> =>
           Promise.resolve<ValidationResult>({
             type: 'MY_TYPE',
             succeeded: false,
@@ -184,16 +165,11 @@ describe('createFormValidation', () => {
 
     it(`spec #6: should execute a field validation (defined as FullValidator, async function in schema) and fail when
     adding a field validation in the schema on a given field
-    firing a validation for that given field 
+    firing a validation for that given field
     `, done => {
       // Arrange
       const mockValidationFn = jest.fn(
-        (
-          value: any,
-          values?: any,
-          customArgs?: object,
-          message?: string | string[]
-        ): Promise<ValidationResult> =>
+        ({ message }): Promise<ValidationResult> =>
           Promise.resolve<ValidationResult>({
             type: 'MY_TYPE',
             succeeded: false,
@@ -230,11 +206,9 @@ describe('createFormValidation', () => {
       custom args and failed when customArgs.fail === true
       `, done => {
       // Arrange
-      const validator: FieldValidationFunctionSync = (
-        value,
-        values,
-        customArgs
-      ): ValidationResult => {
+      const validator: FieldValidationFunctionSync = ({
+        customArgs,
+      }): ValidationResult => {
         if (customArgs.fail) {
           return {
             type: 'MY_TYPE',
@@ -278,11 +252,9 @@ describe('createFormValidation', () => {
       custom args and succeeded when customArgs.fail === false
       `, done => {
       // Arrange
-      const validator: FieldValidationFunctionSync = (
-        value,
-        values,
-        customArgs
-      ): ValidationResult => {
+      const validator: FieldValidationFunctionSync = ({
+        customArgs,
+      }): ValidationResult => {
         if (customArgs.fail) {
           return {
             type: 'MY_TYPE',
@@ -423,7 +395,7 @@ when adding two validators to a given field and second fails
   });
 
   describe(`FormValidations`, () => {
-    it(`#Spec 1: should failed form validation 
+    it(`#Spec 1: should failed form validation
     when adding a record validation that fails (sync flavour function)
     `, done => {
       // Arrange
@@ -453,7 +425,7 @@ when adding two validators to a given field and second fails
       });
     });
 
-    it(`#Spec 2: should failed form validation 
+    it(`#Spec 2: should failed form validation
     when adding a record validation that fails (async flavour function)
     `, done => {
       // Arrange
@@ -483,12 +455,12 @@ when adding two validators to a given field and second fails
       });
     });
 
-    it(`#Spec 3: should failed form validation 
+    it(`#Spec 3: should failed form validation
     when adding a record validation that fails (fullRecordValidationSchema entry,
       async validator)
     `, done => {
       // Arrange
-      const validationFn: RecordValidationFunctionAsync = (values, message) =>
+      const validationFn: RecordValidationFunctionAsync = ({ message }) =>
         Promise.resolve<ValidationResult>({
           type: '',
           succeeded: false,
@@ -521,12 +493,12 @@ when adding two validators to a given field and second fails
       });
     });
 
-    it(`#Spec 4: should failed form validation 
+    it(`#Spec 4: should failed form validation
     when adding a record validation that fails (fullRecordValidationSchema entry,
       sync validator)
     `, done => {
       // Arrange
-      const validationFn: RecordValidationFunctionSync = (values, message) => ({
+      const validationFn: RecordValidationFunctionSync = ({ message }) => ({
         type: '',
         succeeded: false,
         message: message ? (message as string) : 'mymessageA',
@@ -562,19 +534,13 @@ when adding two validators to a given field and second fails
     when adding two record validation first fails, second succeeds
     `, done => {
       // Arrange
-      const validationFn1: RecordValidationFunctionSync = (
-        values,
-        message
-      ) => ({
+      const validationFn1: RecordValidationFunctionSync = ({ message }) => ({
         type: '',
         succeeded: false,
         message: message ? (message as string) : 'mymessageA',
       });
 
-      const validationFn2: RecordValidationFunctionSync = (
-        values,
-        message
-      ) => ({
+      const validationFn2: RecordValidationFunctionSync = ({ message }) => ({
         type: '',
         succeeded: true,
         message: message ? (message as string) : 'mymessageB',
@@ -603,19 +569,13 @@ when adding two validators to a given field and second fails
     when adding two record validation first succeeds, second fails
     `, done => {
       // Arrange
-      const validationFn1: RecordValidationFunctionSync = (
-        values,
-        message
-      ) => ({
+      const validationFn1: RecordValidationFunctionSync = ({ message }) => ({
         type: '',
         succeeded: true,
         message: message ? (message as string) : 'mymessageA',
       });
 
-      const validationFn2: RecordValidationFunctionSync = (
-        values,
-        message
-      ) => ({
+      const validationFn2: RecordValidationFunctionSync = ({ message }) => ({
         type: '',
         succeeded: false,
         message: message ? (message as string) : 'mymessageB',
@@ -644,19 +604,13 @@ when adding two validators to a given field and second fails
     when adding two record validation first fails, second fails
     `, done => {
       // Arrange
-      const validationFn1: RecordValidationFunctionSync = (
-        values,
-        message
-      ) => ({
+      const validationFn1: RecordValidationFunctionSync = ({ message }) => ({
         type: '',
         succeeded: false,
         message: message ? (message as string) : 'mymessageA',
       });
 
-      const validationFn2: RecordValidationFunctionSync = (
-        values,
-        message
-      ) => ({
+      const validationFn2: RecordValidationFunctionSync = ({ message }) => ({
         type: '',
         succeeded: false,
         message: message ? (message as string) : 'mymessageB',
@@ -687,19 +641,15 @@ when adding two validators to a given field and second fails
     when adding one field validation that fails and record validation that fails
     `, done => {
       // Arrange
-      const myFieldValidation: FieldValidationFunctionSync = (
-        value,
-        values
-      ) => ({
+      const myFieldValidation: FieldValidationFunctionSync = fieldValidatorArgs => ({
         type: 'MY_TYPE',
         succeeded: false,
         message: 'mymessage',
       });
 
-      const myrecordValidation: RecordValidationFunctionSync = (
-        values,
-        message
-      ) => ({
+      const myrecordValidation: RecordValidationFunctionSync = ({
+        message,
+      }) => ({
         type: '',
         succeeded: false,
         message: message ? (message as string) : 'mymessageA',
@@ -732,19 +682,15 @@ when adding two validators to a given field and second fails
     when adding one field validation that succeeds and record validation that fails
     `, done => {
       // Arrange
-      const myFieldValidation: FieldValidationFunctionSync = (
-        value,
-        values
-      ) => ({
+      const myFieldValidation: FieldValidationFunctionSync = fieldValidatorArgs => ({
         type: 'MY_TYPE',
         succeeded: true,
         message: 'mymessage',
       });
 
-      const myrecordValidation: RecordValidationFunctionSync = (
-        values,
-        message
-      ) => ({
+      const myrecordValidation: RecordValidationFunctionSync = ({
+        message,
+      }) => ({
         type: '',
         succeeded: false,
         message: message ? (message as string) : 'mymessageA',
@@ -777,19 +723,15 @@ when adding two validators to a given field and second fails
     when adding one field validation that fails and record validation that succeeds
     `, done => {
       // Arrange
-      const myFieldValidation: FieldValidationFunctionSync = (
-        value,
-        values
-      ) => ({
+      const myFieldValidation: FieldValidationFunctionSync = fieldValidatorArgs => ({
         type: 'MY_TYPE',
         succeeded: false,
         message: 'mymessage',
       });
 
-      const myrecordValidation: RecordValidationFunctionSync = (
-        values,
-        message
-      ) => ({
+      const myrecordValidation: RecordValidationFunctionSync = ({
+        message,
+      }) => ({
         type: '',
         succeeded: true,
         message: message ? (message as string) : 'mymessageA',
@@ -822,19 +764,15 @@ when adding two validators to a given field and second fails
     when adding one field validation that succeeds and record validation that succeeds
     `, done => {
       // Arrange
-      const myFieldValidation: FieldValidationFunctionSync = (
-        value,
-        values
-      ) => ({
+      const myFieldValidation: FieldValidationFunctionSync = fieldValidatorArgs => ({
         type: 'MY_TYPE',
         succeeded: true,
         message: 'mymessage',
       });
 
-      const myrecordValidation: RecordValidationFunctionSync = (
-        values,
-        message
-      ) => ({
+      const myrecordValidation: RecordValidationFunctionSync = ({
+        message,
+      }) => ({
         type: '',
         succeeded: true,
         message: message ? (message as string) : 'mymessageA',
