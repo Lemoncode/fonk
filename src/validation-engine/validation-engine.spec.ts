@@ -2,8 +2,6 @@ import { ValidationEngine } from './validation-engine';
 import {
   ValidationResult,
   FieldValidationFunctionSyncAsync,
-  FullRecordValidation,
-  FullFieldValidation,
   FullFieldValidationAsync,
   FullRecordValidationAsync,
   FieldValidationFunctionAsync,

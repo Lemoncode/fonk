@@ -1,4 +1,4 @@
-import { FieldValidationFunctionSync, FieldValidatorArgs } from '../model';
+import { FieldValidationFunctionSync } from '../model';
 
 export const VALIDATOR_TYPE = 'REQUIRED';
 const DEFAULT_MESSAGE = 'Please fill in this mandatory field.';

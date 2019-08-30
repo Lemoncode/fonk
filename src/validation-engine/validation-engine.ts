@@ -2,7 +2,6 @@ import {
   ValidationResult,
   FormValidationResult,
   createDefaultValidationResult,
-  RecordValidationSchema,
   FullFieldValidationAsync,
   FullRecordValidationAsync,
   FullFieldValidationSchemaAsync,
