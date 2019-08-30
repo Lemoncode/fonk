@@ -1,12 +1,12 @@
 import {
   ValidationResult,
   FormValidationResult,
-  FieldsValidationSchema,
   createDefaultValidationResult,
-  RecordValidationFunctionSyncAsync,
-  FieldValidationFunctionSyncAsync,
-  FieldValidation,
   RecordValidationSchema,
+  FullFieldValidationAsync,
+  FullRecordValidationAsync,
+  FullFieldValidationSchemaAsync,
+  FullRecordValidationSchemaAsync,
 } from '../model';
 
 import { isUndefinedOrNull } from '../helper';
@@ -17,47 +17,21 @@ import {
   fireRecordValidations,
 } from '../validation-dispatcher';
 import { buildFormValidationResult } from '../form-validation-summary-builder';
-import {
-  convertFieldValidationToAsyncIfNeeded,
-  convertRecordValidationToAsyncIfNeeded,
-} from '../mappers';
 
 export class ValidationEngine {
-  private validationsPerField: FieldsValidationSchema = {};
-  private validationsRecord: RecordValidationSchema[] = [];
+  private validationsPerField: FullFieldValidationSchemaAsync = {};
+  private recordVaslidations: FullRecordValidationSchemaAsync[] = [];
 
-  addFieldValidation(
-    key: string,
-    validation: FieldValidationFunctionSyncAsync,
-    customArgs: any = {},
-    errorMessage?: string | string[]
-  ) {
-    const asyncValidationFn = convertFieldValidationToAsyncIfNeeded(validation);
-
+  addFieldValidation(key: string, validationFull: FullFieldValidationAsync) {
     if (!this.isFieldKeyMappingDefined(key)) {
       this.validationsPerField[key] = [];
     }
 
-    const fieldValidation: FieldValidation = {
-      validator: asyncValidationFn,
-      customArgs,
-    };
-
-    if (errorMessage) {
-      fieldValidation.message = errorMessage;
-    }
-
-    this.validationsPerField[key].push(fieldValidation);
+    this.validationsPerField[key].push(validationFull);
   }
 
-  addRecordValidation(
-    validation: RecordValidationFunctionSyncAsync,
-    message?: string
-  ): void {
-    // Sugar we admit both flavors syncrhonous and asynchronous validators
-    const validationAsync = convertRecordValidationToAsyncIfNeeded(validation);
-
-    this.validationsRecord.push({ validation: validationAsync, message });
+  addRecordValidation(recordValidation: FullRecordValidationAsync): void {
+    this.recordVaslidations.push(recordValidation);
   }
 
   public validateForm(values: any): Promise<FormValidationResult> {
@@ -66,13 +40,13 @@ export class ValidationEngine {
   }
 
   validateField(
-    values: any,
-    key: string,
-    value: any
+    fieldId: string,
+    value: any,
+    values: any
   ): Promise<ValidationResult> {
     const asyncValidationPromise = this.fireFieldValidations(
       values,
-      key,
+      fieldId,
       value
     );
 
@@ -91,7 +65,7 @@ export class ValidationEngine {
     );
 
     // Now record form validations
-    if (this.validationsRecord.length > 0) {
+    if (this.recordVaslidations.length > 0) {
       fieldValidationResults = [
         ...fieldValidationResults,
         ...this.validateRecordValidations(values),
@@ -160,10 +134,10 @@ export class ValidationEngine {
   private validateRecordValidations(values: any): Promise<ValidationResult>[] {
     let recordResultValidations: Promise<ValidationResult>[] = [];
 
-    if (this.validationsRecord.length > 0) {
+    if (this.recordVaslidations.length > 0) {
       const recordValidationResultsPromises = fireRecordValidations(
         values,
-        this.validationsRecord
+        this.recordVaslidations
       );
       recordResultValidations = [...recordValidationResultsPromises];
     }

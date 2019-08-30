@@ -1,12 +1,12 @@
 import { fireSingleFieldValidations } from './single-field-dispatcher';
 import {
-  FieldValidation,
-  FullFieldValidation,
   FieldValidatorArgs,
+  FullFieldValidationAsync,
+  FieldValidationFunctionAsync,
 } from '../model';
 
 // TODO: we could check console log errors are spit out: https://stackoverflow.com/questions/44344801/how-to-use-jest-with-jsdom-to-test-console-log
-describe('validationDispatcher', () => {
+describe('single-field-dispatcher', () => {
   describe('fireSingleFieldValidations', () => {
     it(`
         Spec #1
@@ -81,122 +81,11 @@ describe('validationDispatcher', () => {
     });
 
     it(`
-    Spec #3
-    When passing vm equals undefined, value equals undefined and validationsPerField equals array with one item
-        equals successful validation function
-        should return succeeded FieldValidationResult and calls to successful validation function
-        just passing simple function no full validation info
-      `, done => {
-      //Arrange
-      const values = undefined;
-      const value = undefined;
-
-      const validationFn = jest.fn().mockResolvedValue({
-        errorMessage: '',
-        succeeded: true,
-        type: '',
-        key: '',
-      });
-
-      const validationsPerField: FieldValidation[] = [validationFn];
-
-      //Act
-      const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
-        value,
-        validationsPerField
-      );
-
-      // Assert
-      fieldValidationResultPromise.then(fieldValidationResult => {
-        expect(fieldValidationResult.succeeded).toBeTruthy();
-        expect(validationFn).toBeCalled();
-        done();
-      });
-    });
-
-    it(`
-    Spec #4
-    When passing vm equals undefined, value equals undefined and validationsPerField equals array with one item
-        equals failed validation function
-        should return succeded false FieldValidationResult and calls to successful validation function
-        just passing simple function no full validation info
-      `, done => {
-      //Arrange
-      const values = undefined;
-      const value = undefined;
-
-      const validationFn = jest.fn().mockResolvedValue({
-        errorMessage: '',
-        succeeded: false,
-        type: '',
-        key: '',
-      });
-
-      const validationsPerField: FieldValidation[] = [validationFn];
-
-      //Act
-      const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
-        value,
-        validationsPerField
-      );
-
-      // Assert
-      fieldValidationResultPromise.then(fieldValidationResult => {
-        expect(fieldValidationResult.succeeded).toBeFalsy();
-        expect(validationFn).toBeCalled();
-        done();
-      });
-    });
-
-    it(`
-    Spec #5
-    When passing vm equals undefined, value equals undefined and validationsPerField equals array with one item
-        equals successful validation function
-        should return succeeded FieldValidationResult and calls to successful validation function
-        just passing full validation info
-      `, done => {
-      //Arrange
-      const values = undefined;
-      const value = undefined;
-
-      const validationFn = jest.fn().mockResolvedValue({
-        errorMessage: '',
-        succeeded: true,
-        type: '',
-        key: '',
-      });
-
-      const fullValidation: FullFieldValidation = {
-        validator: validationFn,
-        customArgs: {},
-        message: 'myError',
-      };
-
-      const validationsPerField: FieldValidation[] = [fullValidation];
-
-      //Act
-      const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
-        value,
-        validationsPerField
-      );
-
-      // Assert
-      fieldValidationResultPromise.then(fieldValidationResult => {
-        expect(fieldValidationResult.succeeded).toBeTruthy();
-        expect(validationFn).toBeCalled();
-        done();
-      });
-    });
-
-    it(`
     Spec #6
     When passing vm equals undefined, value equals undefined and validationsPerField equals array with one item
         equals failed validation function
         should return succeeded false FieldValidationResult and calls to successful validation function
-        just passing full validation info
+        just passing full validation info async
       `, done => {
       //Arrange
       const values = undefined;
@@ -209,13 +98,13 @@ describe('validationDispatcher', () => {
         key: '',
       });
 
-      const fullValidation: FullFieldValidation = {
+      const fullValidation: FullFieldValidationAsync = {
         validator: validationFn,
         customArgs: {},
         message: 'myError',
       };
 
-      const validationsPerField: FieldValidation[] = [fullValidation];
+      const validationsPerField: FullFieldValidationAsync[] = [fullValidation];
 
       //Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
@@ -257,7 +146,18 @@ describe('validationDispatcher', () => {
         key: '',
       });
 
-      const validationsPerField = [validationFn1, validationFn2];
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+        validator: validationFn2,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+        fullFieldValidationAsync2,
+      ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
@@ -300,7 +200,18 @@ describe('validationDispatcher', () => {
         key: '',
       });
 
-      const validationsPerField = [validationFn1, validationFn2];
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+        validator: validationFn2,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+        fullFieldValidationAsync2,
+      ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
@@ -343,7 +254,18 @@ describe('validationDispatcher', () => {
         key: '',
       });
 
-      const validationsPerField = [validationFn1, validationFn2];
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+        validator: validationFn2,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+        fullFieldValidationAsync2,
+      ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
@@ -386,7 +308,18 @@ describe('validationDispatcher', () => {
         key: '',
       });
 
-      const validationsPerField = [validationFn1, validationFn2];
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+        validator: validationFn2,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+        fullFieldValidationAsync2,
+      ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
@@ -421,7 +354,13 @@ describe('validationDispatcher', () => {
 
       const validationFn1 = jest.fn().mockResolvedValue(void 0);
 
-      const validationsPerField = [validationFn1];
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+      ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
@@ -452,7 +391,14 @@ describe('validationDispatcher', () => {
 
       const validationFn1 = jest.fn().mockResolvedValue(null);
 
-      const validationsPerField = [validationFn1];
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+      ];
+
       const errorStub = jest
         .spyOn(global.console, 'error')
         .mockImplementation(() => {});
@@ -486,7 +432,13 @@ describe('validationDispatcher', () => {
 
       const validationFn1 = jest.fn().mockResolvedValue('');
 
-      const validationsPerField = [validationFn1];
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+      ];
 
       const errorStub = jest
         .spyOn(global.console, 'error')
@@ -521,7 +473,13 @@ describe('validationDispatcher', () => {
 
       const validationFn1 = jest.fn().mockResolvedValue('error');
 
-      const validationsPerField = [validationFn1];
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+      ];
 
       const errorStub = jest
         .spyOn(global.console, 'error')
@@ -563,7 +521,18 @@ describe('validationDispatcher', () => {
         key: '',
       });
 
-      const validationsPerField = [validationFn1, validationFn2];
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+        validator: validationFn2,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+        fullFieldValidationAsync2,
+      ];
 
       const errorStub = jest
         .spyOn(global.console, 'error')
@@ -606,7 +575,18 @@ describe('validationDispatcher', () => {
         key: '',
       });
 
-      const validationsPerField = [validationFn1, validationFn2];
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+        validator: validationFn2,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+        fullFieldValidationAsync2,
+      ];
 
       const errorStub = jest
         .spyOn(global.console, 'error')
@@ -631,7 +611,7 @@ describe('validationDispatcher', () => {
 
     it(`
     Spec #16.
-      When passing vm equals undefined, value equals undefined and validationsPerField equals array with two items
+      When passing values equals undefined, value equals undefined and validationsPerField equals array with two items
       first equals failed validation function
       second equals validation function resolving a fieldValidationResult equals undefined
       should return failed FieldValidationResult (no console error since faulty validation is not
@@ -649,7 +629,18 @@ describe('validationDispatcher', () => {
       });
       const validationFn2 = jest.fn().mockResolvedValue(void 0);
 
-      const validationsPerField = [validationFn1, validationFn2];
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+        validator: validationFn2,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+        fullFieldValidationAsync2,
+      ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
@@ -686,7 +677,18 @@ describe('validationDispatcher', () => {
       });
       const validationFn2 = jest.fn().mockResolvedValue(void 0);
 
-      const validationsPerField = [validationFn1, validationFn2];
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+        validator: validationFn2,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+        fullFieldValidationAsync2,
+      ];
 
       const errorStub = jest
         .spyOn(global.console, 'error')
@@ -711,28 +713,31 @@ describe('validationDispatcher', () => {
 
     it(`
     Spec #18.
-      should pass customArgs to its proper validationFunction
+      should pass customArgs to its proper validationFunction and succeed
     `, done => {
       //Arrange
       const values = { a: 'foo', b: 'bar' };
       const value = 'new value';
 
-      const validationFn1 = jest.fn().mockResolvedValue({
-        errorMessage: '',
-        succeeded: true,
-        type: '',
-        key: 'test1',
-      });
+      const validationFn1: FieldValidationFunctionAsync = ({ customArgs }) =>
+        Promise.resolve({
+          message: '',
+          succeeded: customArgs.myCheck === 1 ? true : false,
+          type: '',
+          key: 'test1',
+        });
 
-      const customArgs1 = { param1: 'param1' };
+      const customArgs1 = { myCheck: 1 };
 
-      const fieldValidation1: FieldValidation = {
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
         validator: validationFn1,
         customArgs: customArgs1,
         message: 'my error message',
       };
 
-      const validationsPerField = [fieldValidation1];
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+      ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
@@ -744,6 +749,51 @@ describe('validationDispatcher', () => {
       // Assert
       fieldValidationResultPromise.then(fieldValidationResult => {
         expect(fieldValidationResult.succeeded).toBeTruthy();
+        done();
+      });
+    });
+
+    it(`
+    Spec #18.1
+      should pass customArgs to its proper validationFunction and failed
+    `, done => {
+      //Arrange
+      const values = { a: 'foo', b: 'bar' };
+      const value = 'new value';
+
+      const validationFn1: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(({ customArgs }) =>
+          Promise.resolve({
+            message: '',
+            succeeded: customArgs.myCheck === 1 ? true : false,
+            type: '',
+            key: 'test1',
+          })
+        );
+
+      const customArgs1 = { myCheck: 0 };
+
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+        customArgs: customArgs1,
+        message: 'my error message',
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+      ];
+
+      // Act
+      const fieldValidationResultPromise = fireSingleFieldValidations(
+        values,
+        value,
+        validationsPerField
+      );
+
+      // Assert
+      fieldValidationResultPromise.then(fieldValidationResult => {
+        expect(fieldValidationResult.succeeded).toBeFalsy();
         expect(validationFn1).toBeCalled();
         const fieldValidatorArgs: FieldValidatorArgs = {
           value,
@@ -788,12 +838,30 @@ describe('validationDispatcher', () => {
       const validationFn4 = createValidationFn('key4', true, 30);
       const validationFn5 = createValidationFn('key5', true, 50);
 
-      const validationsPerField = [
-        validationFn1,
-        validationFn2,
-        validationFn3,
-        validationFn4,
-        validationFn5,
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+        validator: validationFn2,
+      };
+
+      const fullFieldValidationAsync3: FullFieldValidationAsync = {
+        validator: validationFn3,
+      };
+      const fullFieldValidationAsync4: FullFieldValidationAsync = {
+        validator: validationFn4,
+      };
+      const fullFieldValidationAsync5: FullFieldValidationAsync = {
+        validator: validationFn5,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+        fullFieldValidationAsync2,
+        fullFieldValidationAsync3,
+        fullFieldValidationAsync4,
+        fullFieldValidationAsync5,
       ];
 
       // Act
@@ -848,12 +916,30 @@ describe('validationDispatcher', () => {
       const validationFn4 = createValidationFn('key4', false, 30);
       const validationFn5 = createValidationFn('key5', false, 50);
 
-      const validationsPerField = [
-        validationFn1,
-        validationFn2,
-        validationFn3,
-        validationFn4,
-        validationFn5,
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+        validator: validationFn2,
+      };
+
+      const fullFieldValidationAsync3: FullFieldValidationAsync = {
+        validator: validationFn3,
+      };
+      const fullFieldValidationAsync4: FullFieldValidationAsync = {
+        validator: validationFn4,
+      };
+      const fullFieldValidationAsync5: FullFieldValidationAsync = {
+        validator: validationFn5,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+        fullFieldValidationAsync2,
+        fullFieldValidationAsync3,
+        fullFieldValidationAsync4,
+        fullFieldValidationAsync5,
       ];
 
       // Act
@@ -908,12 +994,30 @@ describe('validationDispatcher', () => {
       const validationFn4 = createValidationFn('key4', true, 30);
       const validationFn5 = createValidationFn('key5', false, 50);
 
-      const validationsPerField = [
-        validationFn1,
-        validationFn2,
-        validationFn3,
-        validationFn4,
-        validationFn5,
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+        validator: validationFn2,
+      };
+
+      const fullFieldValidationAsync3: FullFieldValidationAsync = {
+        validator: validationFn3,
+      };
+      const fullFieldValidationAsync4: FullFieldValidationAsync = {
+        validator: validationFn4,
+      };
+      const fullFieldValidationAsync5: FullFieldValidationAsync = {
+        validator: validationFn5,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+        fullFieldValidationAsync2,
+        fullFieldValidationAsync3,
+        fullFieldValidationAsync4,
+        fullFieldValidationAsync5,
       ];
 
       // Act
@@ -968,12 +1072,30 @@ describe('validationDispatcher', () => {
       const validationFn4 = createValidationFn('key4', true, 30);
       const validationFn5 = createValidationFn('key5', true, 50);
 
-      const validationsPerField = [
-        validationFn1,
-        validationFn2,
-        validationFn3,
-        validationFn4,
-        validationFn5,
+      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+        validator: validationFn1,
+      };
+
+      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+        validator: validationFn2,
+      };
+
+      const fullFieldValidationAsync3: FullFieldValidationAsync = {
+        validator: validationFn3,
+      };
+      const fullFieldValidationAsync4: FullFieldValidationAsync = {
+        validator: validationFn4,
+      };
+      const fullFieldValidationAsync5: FullFieldValidationAsync = {
+        validator: validationFn5,
+      };
+
+      const validationsPerField: FullFieldValidationAsync[] = [
+        fullFieldValidationAsync1,
+        fullFieldValidationAsync2,
+        fullFieldValidationAsync3,
+        fullFieldValidationAsync4,
+        fullFieldValidationAsync5,
       ];
 
       // Act
