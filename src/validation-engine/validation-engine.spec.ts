@@ -1,5 +1,9 @@
 import { ValidationEngine } from './validation-engine';
-import { ValidationResult, FieldValidationFunctionSyncAsync } from '../model';
+import {
+  ValidationResult,
+  FieldValidationFunctionSyncAsync,
+  RecordValidationFull,
+} from '../model';
 import { recordFormValidationId } from '../const';
 
 describe('ValidationEngine tests', () => {
@@ -171,8 +175,12 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
+      const recordValidation: RecordValidationFull = {
+        validation: validationFn,
+      };
+
       // Act
-      validationEngine.addRecordValidation(validationFn);
+      validationEngine.addRecordValidation(recordValidation);
 
       validationEngine.validateForm(values).then(validationResult => {
         // Assert
@@ -196,8 +204,12 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
+      const recordValidation: RecordValidationFull = {
+        validation: validationFn,
+      };
+
       // Act
-      validationEngine.addRecordValidation(validationFn);
+      validationEngine.addRecordValidation(recordValidation);
 
       validationEngine.validateForm(values).then(validationResult => {
         // Assert
@@ -221,8 +233,12 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
+      const recordValidation: RecordValidationFull = {
+        validation: validationFn,
+      };
+
       // Act
-      validationEngine.addRecordValidation(validationFn);
+      validationEngine.addRecordValidation(recordValidation);
 
       validationEngine.validateForm(values).then(validationResult => {
         // Assert
@@ -249,8 +265,12 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
+      const recordValidation: RecordValidationFull = {
+        validation: validationFn,
+      };
+
       // Act
-      validationEngine.addRecordValidation(validationFn);
+      validationEngine.addRecordValidation(recordValidation);
 
       validationEngine.validateForm(values).then(validationResult => {
         // Assert
@@ -284,9 +304,17 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
+      const recordValidation1: RecordValidationFull = {
+        validation: validationFn1,
+      };
+
+      const recordValidation2: RecordValidationFull = {
+        validation: validationFn2,
+      };
+
       // Act
-      validationEngine.addRecordValidation(validationFn1);
-      validationEngine.addRecordValidation(validationFn2);
+      validationEngine.addRecordValidation(recordValidation1);
+      validationEngine.addRecordValidation(recordValidation2);
 
       validationEngine.validateForm(values).then(validationResult => {
         // Assert
@@ -318,9 +346,17 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
+      const recordValidation1: RecordValidationFull = {
+        validation: validationFn1,
+      };
+
+      const recordValidation2: RecordValidationFull = {
+        validation: validationFn2,
+      };
+
       // Act
-      validationEngine.addRecordValidation(validationFn1);
-      validationEngine.addRecordValidation(validationFn2);
+      validationEngine.addRecordValidation(recordValidation1);
+      validationEngine.addRecordValidation(recordValidation2);
 
       validationEngine.validateForm(values).then(validationResult => {
         // Assert
@@ -353,9 +389,17 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
+      const recordValidation1: RecordValidationFull = {
+        validation: validationFn1,
+      };
+
+      const recordValidation2: RecordValidationFull = {
+        validation: validationFn2,
+      };
+
       // Act
-      validationEngine.addRecordValidation(validationFn1);
-      validationEngine.addRecordValidation(validationFn2);
+      validationEngine.addRecordValidation(recordValidation1);
+      validationEngine.addRecordValidation(recordValidation2);
 
       validationEngine.validateForm(values).then(validationResult => {
         // Assert
@@ -381,8 +425,12 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
+      const recordValidation: RecordValidationFull = {
+        validation: validationFn,
+      };
+
       // Act
-      validationEngine.addRecordValidation(validationFn);
+      validationEngine.addRecordValidation(recordValidation);
 
       validationEngine
         .validateField('username', 'John', values)
@@ -449,8 +497,13 @@ describe('ValidationEngine tests', () => {
         message: message ? message : 'no custom message',
       });
 
+      const recordValidation: RecordValidationFull = {
+        validation: validationFn,
+        message: 'custom message',
+      };
+
       // Act
-      validationEngine.addRecordValidation(validationFn, 'custom message');
+      validationEngine.addRecordValidation(recordValidation);
 
       validationEngine.validateForm(values).then(validationResult => {
         // Assert
@@ -478,8 +531,13 @@ describe('ValidationEngine tests', () => {
           message: message ? message : 'no custom message',
         });
 
+      const recordValidation: RecordValidationFull = {
+        validation: validationFn,
+        message: 'custom message',
+      };
+
       // Act
-      validationEngine.addRecordValidation(validationFn, 'custom message');
+      validationEngine.addRecordValidation(recordValidation);
 
       validationEngine.validateForm(values).then(validationResult => {
         // Assert

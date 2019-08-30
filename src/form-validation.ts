@@ -6,6 +6,7 @@ import {
   FieldValidation,
   ValidationResult,
   FormValidationResult,
+  RecordValidationFull,
 } from './model';
 import { isFunction } from './helper';
 
@@ -58,14 +59,23 @@ export class FormValidation {
   }
 
   private addRecordValidation(recordValidation: RecordValidationSchema) {
+    let recordValidationSchemaFull: RecordValidationFull = null;
+
     if (isFunction(recordValidation)) {
-      this.validationEngine.addRecordValidation(recordValidation);
+      recordValidationSchemaFull = {
+        validation: recordValidation,
+        message: void 0,
+      };
+      //this.validationEngine.addRecordValidation(recordValidation);
     } else {
-      this.validationEngine.addRecordValidation(
+      recordValidationSchemaFull = recordValidation;
+      /*this.validationEngine.addRecordValidation(
         recordValidation.validation,
         recordValidation.message
-      );
+      );*/
     }
+
+    this.validationEngine.addRecordValidation(recordValidationSchemaFull);
   }
 
   private addAllFieldsValidations(fields: FieldsValidationSchema) {

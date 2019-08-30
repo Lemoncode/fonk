@@ -7,6 +7,7 @@ import {
   FieldValidationFunctionSyncAsync,
   FieldValidation,
   RecordValidationSchema,
+  RecordValidationFull,
 } from '../model';
 
 import { isUndefinedOrNull } from '../helper';
@@ -50,14 +51,13 @@ export class ValidationEngine {
     this.validationsPerField[key].push(fieldValidation);
   }
 
-  addRecordValidation(
-    validation: RecordValidationFunctionSyncAsync,
-    message?: string
-  ): void {
+  addRecordValidation(recordValidation: RecordValidationFull): void {
     // Sugar we admit both flavors syncrhonous and asynchronous validators
-    const validationAsync = convertRecordValidationToAsyncIfNeeded(validation);
+    recordValidation.validation = convertRecordValidationToAsyncIfNeeded(
+      recordValidation.validation
+    );
 
-    this.validationsRecord.push({ validation: validationAsync, message });
+    this.validationsRecord.push(recordValidation);
   }
 
   public validateForm(values: any): Promise<FormValidationResult> {
