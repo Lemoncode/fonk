@@ -3,6 +3,7 @@ import {
   ValidationResult,
   FieldValidationFunctionSyncAsync,
   RecordValidationFull,
+  FullFieldValidation,
 } from '../model';
 import { recordFormValidationId } from '../const';
 
@@ -16,16 +17,19 @@ describe('ValidationEngine tests', () => {
       const validationEngine: ValidationEngine = new ValidationEngine();
       const values = [{ username: 'john', lastname: 'doe' }];
 
+      const validationFn = (value): ValidationResult => ({
+        key: 'username',
+        type: 'REQUIRED',
+        succeeded: true,
+        message: '',
+      });
+
+      const fullFieldValidation: FullFieldValidation = {
+        validator: validationFn,
+      };
+
       // Act
-      validationEngine.addFieldValidation(
-        'username',
-        (value): ValidationResult => ({
-          key: 'username',
-          type: 'REQUIRED',
-          succeeded: true,
-          message: '',
-        })
-      );
+      validationEngine.addFieldValidation('username', fullFieldValidation);
 
       validationEngine
         .validateField('username', 'newContent', values)
@@ -45,23 +49,26 @@ describe('ValidationEngine tests', () => {
       const validationEngine: ValidationEngine = new ValidationEngine();
       const values = [{ username: 'john', lastname: 'doe' }];
 
+      const validationFn = (value): Promise<ValidationResult> => {
+        const promise = new Promise<ValidationResult>((resolve, reject) => {
+          setTimeout(() => {
+            resolve({
+              key: 'username',
+              type: 'REQUIRED',
+              succeeded: true,
+              message: '',
+            });
+          }, 500);
+        });
+        return promise;
+      };
+
+      const fullFieldValidation: FullFieldValidation = {
+        validator: validationFn,
+      };
+
       // Act
-      validationEngine.addFieldValidation(
-        'username',
-        (value): Promise<ValidationResult> => {
-          const promise = new Promise<ValidationResult>((resolve, reject) => {
-            setTimeout(() => {
-              resolve({
-                key: 'username',
-                type: 'REQUIRED',
-                succeeded: true,
-                message: '',
-              });
-            }, 500);
-          });
-          return promise;
-        }
-      );
+      validationEngine.addFieldValidation('username', fullFieldValidation);
 
       validationEngine
         .validateField('username', 'newContent', values)
@@ -87,8 +94,12 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
+      const fullFieldValidation: FullFieldValidation = {
+        validator: validationFn,
+      };
+
       // Act
-      validationEngine.addFieldValidation('username', validationFn);
+      validationEngine.addFieldValidation('username', fullFieldValidation);
 
       validationEngine
         .validateField('lastname', 'sellers', values)
@@ -116,8 +127,12 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
+      const fullFieldValidation: FullFieldValidation = {
+        validator: validationFn,
+      };
+
       // Act
-      validationEngine.addFieldValidation('username', validationFn);
+      validationEngine.addFieldValidation('username', fullFieldValidation);
 
       validationEngine
         .validateField('lastname', 'sellers', values)
@@ -147,8 +162,12 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
+      const fullFieldValidation: FullFieldValidation = {
+        validator: validationFn,
+      };
+
       // Act
-      validationEngine.addFieldValidation('username', validationFn);
+      validationEngine.addFieldValidation('username', fullFieldValidation);
 
       validationEngine.validateForm(values).then(validationResult => {
         // Assert
@@ -450,30 +469,33 @@ describe('ValidationEngine tests', () => {
       const validationEngine: ValidationEngine = new ValidationEngine();
       const values = [{ username: 'john', lastname: 'doe' }];
 
+      const validationFn = (
+        values: any,
+        value: any,
+        customArgs: object,
+        errorMessage?: string
+      ): Promise<ValidationResult> => {
+        const promise = new Promise<ValidationResult>((resolve, reject) => {
+          setTimeout(() => {
+            resolve({
+              key: 'username',
+              type: 'REQUIRED',
+              succeeded: false,
+              message: errorMessage ? errorMessage : '',
+            });
+          }, 500);
+        });
+        return promise;
+      };
+
+      const fullFieldValidation: FullFieldValidation = {
+        validator: validationFn,
+        customArgs: {},
+        message: 'my custom message',
+      };
+
       // Act
-      validationEngine.addFieldValidation(
-        'username',
-        (
-          values: any,
-          value: any,
-          customArgs: object,
-          errorMessage?: string
-        ): Promise<ValidationResult> => {
-          const promise = new Promise<ValidationResult>((resolve, reject) => {
-            setTimeout(() => {
-              resolve({
-                key: 'username',
-                type: 'REQUIRED',
-                succeeded: false,
-                message: errorMessage ? errorMessage : '',
-              });
-            }, 500);
-          });
-          return promise;
-        },
-        {},
-        'my custom message'
-      );
+      validationEngine.addFieldValidation('username', fullFieldValidation);
 
       validationEngine
         .validateField('username', 'peter', values)
@@ -592,10 +614,18 @@ describe('ValidationEngine tests', () => {
         return promise;
       };
 
-      // Act
-      validationEngine.addFieldValidation('username', validationFn1);
+      const fullFieldValidation1: FullFieldValidation = {
+        validator: validationFn1,
+      };
 
-      validationEngine.addFieldValidation('username', validationFn2);
+      const fullFieldValidation2: FullFieldValidation = {
+        validator: validationFn2,
+      };
+
+      // Act
+      validationEngine.addFieldValidation('username', fullFieldValidation1);
+
+      validationEngine.addFieldValidation('username', fullFieldValidation2);
 
       validationEngine
         .validateField('username', 'newContent', values)
@@ -649,10 +679,18 @@ describe('ValidationEngine tests', () => {
         return promise;
       };
 
-      // Act
-      validationEngine.addFieldValidation('username', validationFn1);
+      const fullFieldValidation1: FullFieldValidation = {
+        validator: validationFn1,
+      };
 
-      validationEngine.addFieldValidation('username', validationFn2);
+      const fullFieldValidation2: FullFieldValidation = {
+        validator: validationFn2,
+      };
+
+      // Act
+      validationEngine.addFieldValidation('username', fullFieldValidation1);
+
+      validationEngine.addFieldValidation('username', fullFieldValidation2);
 
       validationEngine
         .validateField('username', 'newContent', values)
@@ -696,10 +734,18 @@ describe('ValidationEngine tests', () => {
         message: '',
       });
 
-      // Act
-      validationEngine.addFieldValidation('username', validationFn1);
+      const fullFieldValidation1: FullFieldValidation = {
+        validator: validationFn1,
+      };
 
-      validationEngine.addFieldValidation('username', validationFn2);
+      const fullFieldValidation2: FullFieldValidation = {
+        validator: validationFn2,
+      };
+
+      // Act
+      validationEngine.addFieldValidation('username', fullFieldValidation1);
+
+      validationEngine.addFieldValidation('username', fullFieldValidation2);
 
       validationEngine
         .validateField('username', 'newContent', values)

@@ -8,6 +8,7 @@ import {
   FieldValidation,
   RecordValidationSchema,
   RecordValidationFull,
+  FullFieldValidation,
 } from '../model';
 
 import { isUndefinedOrNull } from '../helper';
@@ -27,28 +28,16 @@ export class ValidationEngine {
   private validationsPerField: FieldsValidationSchema = {};
   private validationsRecord: RecordValidationSchema[] = [];
 
-  addFieldValidation(
-    key: string,
-    validation: FieldValidationFunctionSyncAsync,
-    customArgs: any = {},
-    errorMessage?: string | string[]
-  ) {
-    const asyncValidationFn = convertFieldValidationToAsyncIfNeeded(validation);
+  addFieldValidation(key: string, validationFull: FullFieldValidation) {
+    validationFull.validator = convertFieldValidationToAsyncIfNeeded(
+      validationFull.validator
+    );
 
     if (!this.isFieldKeyMappingDefined(key)) {
       this.validationsPerField[key] = [];
     }
 
-    const fieldValidation: FieldValidation = {
-      validator: asyncValidationFn,
-      customArgs,
-    };
-
-    if (errorMessage) {
-      fieldValidation.message = errorMessage;
-    }
-
-    this.validationsPerField[key].push(fieldValidation);
+    this.validationsPerField[key].push(validationFull);
   }
 
   addRecordValidation(recordValidation: RecordValidationFull): void {

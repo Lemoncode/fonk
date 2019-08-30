@@ -7,6 +7,7 @@ import {
   ValidationResult,
   FormValidationResult,
   RecordValidationFull,
+  FullFieldValidation,
 } from './model';
 import { isFunction } from './helper';
 
@@ -96,21 +97,19 @@ export class FormValidation {
   }
 
   private addFieldValidation(field: string, fieldValidation: FieldValidation) {
+    let validationFull: FullFieldValidation = null;
+
     if (isFunction(fieldValidation)) {
-      this.validationEngine.addFieldValidation(
-        field,
-        fieldValidation,
-        void 0,
-        void 0
-      );
+      validationFull = {
+        validator: fieldValidation,
+        message: void 0,
+        customArgs: void 0,
+      };
     } else {
-      this.validationEngine.addFieldValidation(
-        field,
-        fieldValidation.validator,
-        fieldValidation.customArgs,
-        fieldValidation.message
-      );
+      validationFull = fieldValidation;
     }
+
+    this.validationEngine.addFieldValidation(field, validationFull);
   }
 }
 
