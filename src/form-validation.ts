@@ -6,8 +6,6 @@ import {
   FieldValidation,
   ValidationResult,
   FormValidationResult,
-  FullRecordValidation,
-  FullFieldValidation,
   FullFieldValidationAsync,
   FullRecordValidationAsync,
 } from './model';
@@ -25,9 +23,6 @@ export class FormValidation {
     this.setupValidationSchema(validationSchema);
   }
 
-  // TODO: review parameters order, baseFormValidation validateField has fieldId, value, values
-  // the engine validateField has a different order, IMHO it should be always: fieldId, value, values
-  // since values is options.
   public validateField(
     fieldId: string,
     value: any,
@@ -73,7 +68,6 @@ export class FormValidation {
         validation: convertRecordValidationToAsyncIfNeeded(recordValidation),
         message: void 0,
       };
-      //this.validationEngine.addRecordValidation(recordValidation);
     } else {
       recordValidationSchemaFullAsync = {
         validation: convertRecordValidationToAsyncIfNeeded(

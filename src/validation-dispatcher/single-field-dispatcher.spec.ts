@@ -1,15 +1,12 @@
 import { fireSingleFieldValidations } from './single-field-dispatcher';
 import {
-  ValidationResult,
-  FieldValidation,
-  FullFieldValidation,
+  FieldValidatorArgs,
   FullFieldValidationAsync,
   FieldValidationFunctionAsync,
 } from '../model';
-import { promises } from 'fs';
 
 // TODO: we could check console log errors are spit out: https://stackoverflow.com/questions/44344801/how-to-use-jest-with-jsdom-to-test-console-log
-describe('validationDispatcher', () => {
+describe('single-field-dispatcher', () => {
   describe('fireSingleFieldValidations', () => {
     it(`
         Spec #1
@@ -722,12 +719,7 @@ describe('validationDispatcher', () => {
       const values = { a: 'foo', b: 'bar' };
       const value = 'new value';
 
-      const validationFn1: FieldValidationFunctionAsync = (
-        value,
-        values,
-        customArgs,
-        message
-      ) =>
+      const validationFn1: FieldValidationFunctionAsync = ({ customArgs }) =>
         Promise.resolve({
           message: '',
           succeeded: customArgs.myCheck === 1 ? true : false,
@@ -763,24 +755,22 @@ describe('validationDispatcher', () => {
 
     it(`
     Spec #18.1
-      should pass customArgs to its proper validationFunction and succeed
+      should pass customArgs to its proper validationFunction and failed
     `, done => {
       //Arrange
       const values = { a: 'foo', b: 'bar' };
       const value = 'new value';
 
-      const validationFn1: FieldValidationFunctionAsync = (
-        value,
-        values,
-        customArgs,
-        message
-      ) =>
-        Promise.resolve({
-          message: '',
-          succeeded: customArgs.myCheck === 1 ? true : false,
-          type: '',
-          key: 'test1',
-        });
+      const validationFn1: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(({ customArgs }) =>
+          Promise.resolve({
+            message: '',
+            succeeded: customArgs.myCheck === 1 ? true : false,
+            type: '',
+            key: 'test1',
+          })
+        );
 
       const customArgs1 = { myCheck: 0 };
 
@@ -804,6 +794,15 @@ describe('validationDispatcher', () => {
       // Assert
       fieldValidationResultPromise.then(fieldValidationResult => {
         expect(fieldValidationResult.succeeded).toBeFalsy();
+        expect(validationFn1).toBeCalled();
+        const fieldValidatorArgs: FieldValidatorArgs = {
+          value,
+          values,
+          customArgs: customArgs1,
+          message: 'my error message',
+        };
+        expect(validationFn1).toBeCalledWith(fieldValidatorArgs);
+
         done();
       });
     });

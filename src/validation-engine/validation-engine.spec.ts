@@ -2,10 +2,10 @@ import { ValidationEngine } from './validation-engine';
 import {
   ValidationResult,
   FieldValidationFunctionSyncAsync,
-  FullRecordValidation,
-  FullFieldValidation,
   FullFieldValidationAsync,
   FullRecordValidationAsync,
+  FieldValidationFunctionAsync,
+  RecordValidationFunctionAsync,
 } from '../model';
 import { recordFormValidationId } from '../const';
 
@@ -378,19 +378,16 @@ describe('ValidationEngine tests', () => {
       const validationEngine: ValidationEngine = new ValidationEngine();
       const values = [{ username: 'john', lastname: 'doe' }];
 
-      const validationFn = (
-        values: any,
-        value: any,
-        customArgs: object,
-        errorMessage?: string
-      ): Promise<ValidationResult> => {
+      const validationFn: FieldValidationFunctionAsync = ({
+        message,
+      }): Promise<ValidationResult> => {
         const promise = new Promise<ValidationResult>((resolve, reject) => {
           setTimeout(() => {
             resolve({
               key: 'username',
               type: 'REQUIRED',
               succeeded: false,
-              message: errorMessage ? errorMessage : '',
+              message: (message ? message : '') as string,
             });
           }, 500);
         });
@@ -421,12 +418,12 @@ describe('ValidationEngine tests', () => {
       // Arrange
       const validationEngine: ValidationEngine = new ValidationEngine();
       const values = [{ username: 'john', lastname: 'doe' }];
-      const validationFn = (values: any, message: string) =>
+      const validationFn: RecordValidationFunctionAsync = ({ message }) =>
         Promise.resolve({
           key: '',
           type: '',
           succeeded: false,
-          message: message ? message : 'no custom message',
+          message: (message ? message : 'no custom message') as string,
         });
 
       const recordValidation: FullRecordValidationAsync = {
@@ -452,15 +449,14 @@ describe('ValidationEngine tests', () => {
       // Arrange
       const validationEngine: ValidationEngine = new ValidationEngine();
       const values = [{ username: 'john', lastname: 'doe' }];
-      const validationFn = (
-        values: any,
-        message: string
-      ): Promise<ValidationResult> =>
+      const validationFn = (recordValidatorArgs): Promise<ValidationResult> =>
         Promise.resolve({
           key: '',
           type: '',
           succeeded: false,
-          message: message ? message : 'no custom message',
+          message: recordValidatorArgs.message
+            ? recordValidatorArgs.message
+            : 'no custom message',
         });
 
       const recordValidation: FullRecordValidationAsync = {
@@ -489,9 +485,7 @@ describe('ValidationEngine tests', () => {
       const validationEngine: ValidationEngine = new ValidationEngine();
       const values = [{ username: 'john', lastname: 'doe' }];
       const validationFn1: FieldValidationFunctionSyncAsync = (
-        values: any,
-        field: string,
-        value
+        fieldValidatorArgs
       ): Promise<ValidationResult> => {
         const promise = new Promise<ValidationResult>((resolve, reject) => {
           setTimeout(() => {
@@ -507,9 +501,7 @@ describe('ValidationEngine tests', () => {
       };
 
       const validationFn2: FieldValidationFunctionSyncAsync = (
-        values: any,
-        field: string,
-        value
+        fieldValidatorArgs
       ): Promise<ValidationResult> => {
         const promise = new Promise<ValidationResult>((resolve, reject) => {
           setTimeout(() => {
@@ -554,9 +546,7 @@ describe('ValidationEngine tests', () => {
       const validationEngine: ValidationEngine = new ValidationEngine();
       const values = [{ username: 'john', lastname: 'doe' }];
       const validationFn1: FieldValidationFunctionSyncAsync = (
-        values: any,
-        field: string,
-        value
+        fieldValidatorArgs
       ): Promise<ValidationResult> => {
         const promise = new Promise<ValidationResult>((resolve, reject) => {
           setTimeout(() => {
@@ -571,10 +561,8 @@ describe('ValidationEngine tests', () => {
         return promise;
       };
 
-      const validationFn2: FieldValidationFunctionSyncAsync = (
-        values: any,
-        field: string,
-        value
+      const validationFn2: FieldValidationFunctionAsync = (
+        fieldValidatorArgs
       ): Promise<ValidationResult> => {
         const promise = new Promise<ValidationResult>((resolve, reject) => {
           setTimeout(done => {

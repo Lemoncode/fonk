@@ -25,16 +25,15 @@ const fireValidation = (
   value,
   values,
   fieldValidation: FullFieldValidationAsync
-): Promise<ValidationResult> => {
-  return fieldValidation
-    .validator(
+): Promise<ValidationResult> =>
+  fieldValidation
+    .validator({
       value,
       values,
-      fieldValidation['customArgs'],
-      fieldValidation['message']
-    )
+      customArgs: fieldValidation.customArgs,
+      message: fieldValidation.message,
+    })
     .then(checkValidationResult);
-};
 
 // Sequentially resolve promises with reduce: https://css-tricks.com/why-using-reduce-to-sequentially-resolve-promises-works/
 // Example run promises until one succeeds: https://gist.github.com/greggman/0b6eafb335de4bbb557c

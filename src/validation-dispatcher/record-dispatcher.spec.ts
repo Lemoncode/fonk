@@ -1,11 +1,8 @@
 import { fireRecordValidations } from './record-dispatcher';
-import {
-  RecordValidationFunctionAsync,
-  RecordValidationSchema,
-} from '../model';
+import { FullRecordValidationAsync } from '../model';
 
 describe(`fireRecordValidations`, () => {
-  it(`Should return empty array of responsed 
+  it(`Should return empty array of responsed
       when array of record validations is empty`, () => {
     // Arrange
     const values = null;
@@ -23,7 +20,7 @@ describe(`fireRecordValidations`, () => {
       when injecting one record validation, and validation succeed`, done => {
     // Arrange
     const values = null;
-    const validations: RecordValidationSchema[] = [
+    const validations: FullRecordValidationAsync[] = [
       {
         validation: values =>
           Promise.resolve({
@@ -52,7 +49,7 @@ describe(`fireRecordValidations`, () => {
       when injecting one record validation, and validation failed`, done => {
     // Arrange
     const values = null;
-    const validations: RecordValidationSchema[] = [
+    const validations: FullRecordValidationAsync[] = [
       {
         validation: values =>
           Promise.resolve({
@@ -81,7 +78,7 @@ describe(`fireRecordValidations`, () => {
       when injecting two record validation, and both succeed`, done => {
     // Arrange
     const values = null;
-    const validations: RecordValidationSchema[] = [
+    const validations: FullRecordValidationAsync[] = [
       {
         validation: values =>
           Promise.resolve({
@@ -120,7 +117,7 @@ describe(`fireRecordValidations`, () => {
       when injecting two record validation, and both failed`, done => {
     // Arrange
     const values = null;
-    const validations: RecordValidationSchema[] = [
+    const validations: FullRecordValidationAsync[] = [
       {
         validation: values =>
           Promise.resolve({
@@ -159,7 +156,7 @@ describe(`fireRecordValidations`, () => {
       when injecting two record validation, and first succeeded second failed`, done => {
     // Arrange
     const values = null;
-    const validations: RecordValidationSchema[] = [
+    const validations: FullRecordValidationAsync[] = [
       {
         validation: values =>
           Promise.resolve({
@@ -197,7 +194,7 @@ describe(`fireRecordValidations`, () => {
       when injecting two record validation, and first failed second succeeded`, done => {
     // Arrange
     const values = null;
-    const validations: RecordValidationSchema[] = [
+    const validations: FullRecordValidationAsync[] = [
       {
         validation: values =>
           Promise.resolve({
@@ -236,7 +233,7 @@ describe(`fireRecordValidations`, () => {
       when injecting two record validation, and first succeeded second failed`, done => {
     // Arrange
     const values = null;
-    const validations: RecordValidationSchema[] = [
+    const validations: FullRecordValidationAsync[] = [
       {
         validation: values =>
           Promise.resolve({
@@ -275,7 +272,7 @@ describe(`fireRecordValidations`, () => {
       when one of the validators is null`, () => {
     // Arrange
     const values = null;
-    const validations: RecordValidationSchema[] = [
+    const validations: FullRecordValidationAsync[] = [
       {
         validation: values =>
           Promise.resolve({
@@ -306,7 +303,7 @@ describe(`fireRecordValidations`, () => {
       when one of the validators is undefined`, () => {
     // Arrange
     const values = null;
-    const validations: RecordValidationSchema[] = [
+    const validations: FullRecordValidationAsync[] = [
       {
         validation: values =>
           Promise.resolve({

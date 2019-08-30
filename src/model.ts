@@ -32,18 +32,19 @@ export const createDefaultFormValidationSummary = (): FormValidationResult => ({
 // Pending on ValidationEngine
 type ValidationResultSyncAsync = ValidationResult | Promise<ValidationResult>;
 
+export interface FieldValidatorArgs {
+  value: any;
+  values?: any;
+  customArgs?: any;
+  message?: string | string[];
+}
+
 export type FieldValidationFunctionSync = (
-  value: any,
-  values?: any,
-  customArgs?: any,
-  message?: string | string[]
+  fieldValidatorArgs: FieldValidatorArgs
 ) => ValidationResult;
 
 export type FieldValidationFunctionAsync = (
-  value: any,
-  values?: any,
-  customArgs?: any,
-  message?: string | string[]
+  fieldValidatorArgs: FieldValidatorArgs
 ) => Promise<ValidationResult>;
 
 export type FieldValidationFunctionSyncAsync =
@@ -69,21 +70,24 @@ export type FieldValidation =
 export interface FormValidation {
   succeeded: boolean;
   fieldErrors: { [key: string]: ValidationResult };
-  recordErrors: Array<ValidationResult>;
+  recordErrors: ValidationResult[];
 }
 
 export type RecordValidationFunctionSyncAsync =
   | RecordValidationFunctionSync
   | RecordValidationFunctionAsync;
 
+export interface RecordValidatorArgs {
+  value: any;
+  message?: string | string[];
+}
+
 export type RecordValidationFunctionSync = (
-  values: any,
-  message?: string | string[]
+  recordValidatorArgs: RecordValidatorArgs
 ) => ValidationResult;
 
 export type RecordValidationFunctionAsync = (
-  values: any,
-  message?: string | string[]
+  recordValidatorArgs: RecordValidatorArgs
 ) => Promise<ValidationResult>;
 
 export interface FullFieldValidationSchemaAsync {
