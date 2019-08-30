@@ -1,21 +1,9 @@
 import {
-  FieldValidation,
   ValidationResult,
   createDefaultValidationResult,
-  FieldValidationFunctionAsync,
+  FullFieldValidationAsync,
 } from '../model';
-import { arrayContainsEntries, isFunction, isUndefinedOrNull } from '../helper';
-import { convertFieldValidationToAsyncIfNeeded } from '../mappers';
-
-const getValidationFn = (
-  fieldValidation: FieldValidation
-): FieldValidationFunctionAsync => {
-  const validationFn = isFunction(fieldValidation)
-    ? fieldValidation
-    : fieldValidation.validator;
-
-  return convertFieldValidationToAsyncIfNeeded(validationFn);
-};
+import { arrayContainsEntries, isUndefinedOrNull } from '../helper';
 
 const checkValidationResult = (
   validationResult: ValidationResult
@@ -36,15 +24,16 @@ const checkValidationResult = (
 const fireValidation = (
   value,
   values,
-  fieldValidation: FieldValidation
+  fieldValidation: FullFieldValidationAsync
 ): Promise<ValidationResult> => {
-  const validationFn = getValidationFn(fieldValidation);
-  return validationFn(
-    value,
-    values,
-    fieldValidation['customArgs'],
-    fieldValidation['message']
-  ).then(checkValidationResult);
+  return fieldValidation
+    .validator(
+      value,
+      values,
+      fieldValidation['customArgs'],
+      fieldValidation['message']
+    )
+    .then(checkValidationResult);
 };
 
 // Sequentially resolve promises with reduce: https://css-tricks.com/why-using-reduce-to-sequentially-resolve-promises-works/
@@ -52,7 +41,7 @@ const fireValidation = (
 const iterateValidationsUntilFailOrAllSucceeded = (
   value: any,
   values: any,
-  fieldValidations: FieldValidation[]
+  fieldValidations: FullFieldValidationAsync[]
 ): Promise<ValidationResult> =>
   fieldValidations.reduce(
     (result, next) =>
@@ -67,7 +56,7 @@ const iterateValidationsUntilFailOrAllSucceeded = (
 export const fireSingleFieldValidations = (
   values: any,
   value: any,
-  fieldValidations: FieldValidation[]
+  fieldValidations: FullFieldValidationAsync[]
 ): Promise<ValidationResult> =>
   arrayContainsEntries(fieldValidations)
     ? iterateValidationsUntilFailOrAllSucceeded(value, values, fieldValidations)

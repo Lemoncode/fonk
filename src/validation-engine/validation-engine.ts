@@ -1,11 +1,12 @@
 import {
   ValidationResult,
   FormValidationResult,
-  FieldsValidationSchema,
   createDefaultValidationResult,
   RecordValidationSchema,
   FullFieldValidationAsync,
   FullRecordValidationAsync,
+  FullFieldValidationSchemaAsync,
+  FullRecordValidationSchemaAsync,
 } from '../model';
 
 import { isUndefinedOrNull } from '../helper';
@@ -18,8 +19,8 @@ import {
 import { buildFormValidationResult } from '../form-validation-summary-builder';
 
 export class ValidationEngine {
-  private validationsPerField: FieldsValidationSchema = {};
-  private recordVaslidations: RecordValidationSchema[] = [];
+  private validationsPerField: FullFieldValidationSchemaAsync = {};
+  private recordVaslidations: FullRecordValidationSchemaAsync[] = [];
 
   addFieldValidation(key: string, validationFull: FullFieldValidationAsync) {
     if (!this.isFieldKeyMappingDefined(key)) {

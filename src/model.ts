@@ -86,6 +86,10 @@ export type RecordValidationFunctionAsync = (
   message?: string | string[]
 ) => Promise<ValidationResult>;
 
+export interface FullFieldValidationSchemaAsync {
+  [key: string]: FullFieldValidationAsync[];
+}
+
 export interface FieldsValidationSchema {
   [key: string]: FieldValidation[];
 }
@@ -99,6 +103,8 @@ export interface FullRecordValidation {
   validation: RecordValidationFunctionSyncAsync;
   message?: string;
 }
+
+export type FullRecordValidationSchemaAsync = FullRecordValidationAsync;
 
 export type RecordValidationSchema =
   | FullRecordValidation
