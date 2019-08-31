@@ -2,7 +2,73 @@ import { pattern, VALIDATOR_TYPE, PatternArgs } from './pattern';
 import { FieldValidatorArgs, ValidationResult } from '../model';
 
 describe(`pattern validator`, () => {
-  describe('Pattern option boundaries =>', () => {});
+  describe('Pattern option boundaries =>', () => {
+    it('should throw an error if pattern is null', () => {
+      // Arrange
+      const value = 'test';
+      const values = undefined;
+      const patternArgs: PatternArgs = { pattern: null };
+
+      // Act
+      // TODO: check how to acomplish this using jest toThrowError
+      try {
+        pattern({
+          value,
+          values,
+          customArgs: patternArgs,
+        });
+      } catch (error) {
+        // Assert
+        expect(error.message).toBe(
+          'FieldValidationError: pattern option for pattern validation is mandatory. Example: { pattern: /d+/ }.'
+        );
+      }
+    });
+
+    it('should throw an error if patternArgs is null', () => {
+      // Arrange
+      const value = 'test';
+      const values = undefined;
+      const patternArgs: PatternArgs = null;
+
+      // Act
+      // TODO: check how to acomplish this using jest toThrowError
+      try {
+        pattern({
+          value,
+          values,
+          customArgs: patternArgs,
+        });
+      } catch (error) {
+        // Assert
+        expect(error.message).toBe(
+          'FieldValidationError: pattern option for pattern validation is mandatory. Example: { pattern: /d+/ }.'
+        );
+      }
+    });
+
+    it('should throw an error if patternArgs is undefined', () => {
+      // Arrange
+      const value = 'test';
+      const values = undefined;
+      const patternArgs: PatternArgs = void 0;
+
+      // Act
+      // TODO: check how to acomplish this using jest toThrowError
+      try {
+        pattern({
+          value,
+          values,
+          customArgs: patternArgs,
+        });
+      } catch (error) {
+        // Assert
+        expect(error.message).toBe(
+          'FieldValidationError: pattern option for pattern validation is mandatory. Example: { pattern: /d+/ }.'
+        );
+      }
+    });
+  });
 
   describe('Given a string as RegExp in pattern option', () => {
     it('should return validation succeed when field matches the pattern', () => {

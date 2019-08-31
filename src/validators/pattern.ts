@@ -31,6 +31,9 @@ export function isValidField(value, pattern: RegExp): boolean {
 }
 
 export const pattern: FieldValidationFunctionSync = fieldValidatorArgs => {
+  if (!fieldValidatorArgs.customArgs) {
+    throw new Error(BAD_PARAMETER);
+  }
   const {
     value,
     customArgs = DEFAULT_PARAMS as PatternArgs,
