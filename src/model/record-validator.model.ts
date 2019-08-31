@@ -18,17 +18,17 @@ export type RecordValidationFunctionSyncAsync =
   | RecordValidationFunctionAsync;
 
 export interface FullRecordValidation {
-  validation: RecordValidationFunctionSyncAsync;
-  message?: string;
+  validator: RecordValidationFunctionSyncAsync;
+  message?: string | string[];
 }
 
 // FullRecordValidationAsync
 export interface InternalRecordValidation {
-  validation: RecordValidationFunctionAsync;
-  message?: string;
+  validator: RecordValidationFunctionAsync;
+  message?: string | string[];
 }
 
 // FullRecordValidationSchemaAsync
 export type InternalRecordValidationSchema = {
-  [key: string]: InternalRecordValidation;
+  [key: string]: InternalRecordValidation[];
 };
