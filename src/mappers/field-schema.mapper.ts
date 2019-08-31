@@ -9,29 +9,6 @@ import { convertFieldValidationToAsyncIfNeeded } from './mapper-helpers';
 
 type FieldIdInternalValidation = [string, InternalFieldValidation[]];
 
-export const mapToInternalFieldValidationSchema = (
-  fieldValidationSchema: FieldValidationSchema
-): InternalFieldValidationSchema => {
-  const validationSchema =
-    fieldValidationSchema instanceof Object ? fieldValidationSchema : {};
-
-  const internalFieldValidations: FieldIdInternalValidation[] = Object.entries(
-    validationSchema
-  ).map(([fielId, fieldValidations]) => [
-    fielId,
-    mapToInternalValidationCollection(fieldValidations),
-  ]);
-
-  return buildIntertalSchema(internalFieldValidations);
-};
-
-const mapToInternalValidationCollection = (
-  fieldValidations: FieldValidation[]
-) =>
-  Array.isArray(fieldValidations)
-    ? fieldValidations.map(mapToInternalFieldValidation)
-    : [];
-
 const mapToInternalFieldValidation = (
   fieldValidation: FieldValidation
 ): InternalFieldValidation =>
@@ -49,6 +26,13 @@ const mapToInternalFieldValidation = (
         message: fieldValidation.message,
       };
 
+const mapToInternalValidationCollection = (
+  fieldValidations: FieldValidation[]
+) =>
+  Array.isArray(fieldValidations)
+    ? fieldValidations.map(mapToInternalFieldValidation)
+    : [];
+
 const buildIntertalSchema = (
   internalSchema: FieldIdInternalValidation[]
 ): InternalFieldValidationSchema =>
@@ -59,3 +43,19 @@ const buildIntertalSchema = (
     },
     {}
   );
+
+export const mapToInternalFieldValidationSchema = (
+  fieldValidationSchema: FieldValidationSchema
+): InternalFieldValidationSchema => {
+  const validationSchema =
+    fieldValidationSchema instanceof Object ? fieldValidationSchema : {};
+
+  const internalFieldValidations: FieldIdInternalValidation[] = Object.entries(
+    validationSchema
+  ).map(([fielId, fieldValidations]) => [
+    fielId,
+    mapToInternalValidationCollection(fieldValidations),
+  ]);
+
+  return buildIntertalSchema(internalFieldValidations);
+};
