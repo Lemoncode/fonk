@@ -1,98 +1,58 @@
 import {
   ValidationResult,
   FormValidationResult,
-  createDefaultFormValidationSummary,
-  FormFieldError,
+  createDefaultFormValidationResult,
+  createDefaultRecordValidationResult,
+  RecordValidationResult,
 } from './model';
 import { arrayContainsEntries } from './helper';
-import { recordFormValidationId } from './const';
 
 const didAllValidationsSucceeded = (
   validationResults: ValidationResult[]
 ): boolean => validationResults.every(fvr => fvr.succeeded);
 
-const extractFieldErrors = (
+const extractErrors = (
   validationResults: ValidationResult[]
-): FormFieldError[] => {
-  const fieldValidationResults = validationResults.filter(
-    fvr => fvr.key !== recordFormValidationId
-  );
+): { [id: string]: ValidationResult } =>
+  validationResults.reduce((errors, validationResult) => {
+    errors[validationResult.key] = validationResult;
+    return errors;
+  }, {});
 
-  return fieldValidationResults.map(validation => ({
-    key: validation.key,
-    validationResult: validation,
-  }));
-};
-
-const extractFormRecordErrors = (
+export const buildRecordValidationResult = (
   validationResults: ValidationResult[]
-): ValidationResult[] =>
-  validationResults.filter(fvr => fvr.key === recordFormValidationId);
-
-const removeNotValidValidationResults = (
-  validationResults: ValidationResult[]
-): ValidationResult[] => {
-  if (validationResults.some(fvr => fvr === undefined || fvr === null)) {
-    console.error(
-      'Some form validators are returning null / undefined, fix this'
-    );
-  }
-  return validationResults.filter(fvr => fvr !== undefined && fvr !== null);
-};
-
-const setEmptyKeysToRecordKeys = (
-  validationResults: ValidationResult[]
-): ValidationResult[] =>
-  validationResults.map(validationResult =>
-    validationResult.key
-      ? validationResult
-      : {
-          ...validationResult,
-          key: recordFormValidationId,
-        }
-  );
-
-const removeSucceededValidations = (validationResults: ValidationResult[]) =>
-  validationResults.filter(validationResult => !validationResult.succeeded);
-
-const cleanupValidationResultCollection = (
-  validationResults: ValidationResult[]
-): ValidationResult[] => {
-  let collectionProcessed = removeNotValidValidationResults(validationResults);
-  collectionProcessed = removeSucceededValidations(collectionProcessed);
-  // TODO check why this is needed
-  // Does it mean record validation arrive here with an empty key ''?
-  // then we map it to record?
-  collectionProcessed = setEmptyKeysToRecordKeys(collectionProcessed);
-
-  return collectionProcessed;
-};
-
-export const buildFormValidationResult = (
-  validationResults: ValidationResult[]
-): FormValidationResult => {
-  // TODO: [Dicussion needed here] Should we remove as well validation that had succeeded?
-  // Right now it returns all validations, I think it could make no sense
-  // just pass me the ones that failed, easier to manage?
-  const formValidationSummary = createDefaultFormValidationSummary();
+): RecordValidationResult => {
+  const recordValidationResult = createDefaultRecordValidationResult();
 
   if (arrayContainsEntries(validationResults)) {
-    const processedValidationResults = cleanupValidationResultCollection(
+    recordValidationResult.succeeded = didAllValidationsSucceeded(
       validationResults
     );
 
-    formValidationSummary.succeeded = didAllValidationsSucceeded(
-      processedValidationResults
-    );
+    recordValidationResult.recordErrors = extractErrors(validationResults);
+  }
+  return recordValidationResult;
+};
 
-    formValidationSummary.fieldErrors = extractFieldErrors(
-      processedValidationResults
-    );
+export const buildFormValidationResult = (
+  fieldValidationResults: ValidationResult[],
+  recordValidationResults: ValidationResult[]
+): FormValidationResult => {
+  const formValidationResult = createDefaultFormValidationResult();
 
-    formValidationSummary.recordErrors = extractFormRecordErrors(
-      processedValidationResults
+  if (arrayContainsEntries(fieldValidationResults)) {
+    formValidationResult.succeeded = didAllValidationsSucceeded(
+      fieldValidationResults
     );
+    formValidationResult.fieldErrors = extractErrors(fieldValidationResults);
   }
 
-  return formValidationSummary;
+  if (arrayContainsEntries(recordValidationResults)) {
+    const recordResults = buildRecordValidationResult(recordValidationResults);
+    formValidationResult.succeeded =
+      formValidationResult.succeeded && recordResults.succeeded;
+    formValidationResult.recordErrors = recordResults.recordErrors;
+  }
+
+  return formValidationResult;
 };

@@ -1,7 +1,7 @@
 import { ValidationResult } from './result.model';
 
 export interface RecordValidatorArgs {
-  value: any;
+  values: any;
   message?: string | string[];
 }
 

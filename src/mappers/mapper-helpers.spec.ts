@@ -4,13 +4,13 @@ import {
   FieldValidationFunctionAsync,
   FieldValidatorArgs,
   RecordValidatorArgs,
-} from './model';
+} from '../model';
 import {
   convertFieldValidationToAsyncIfNeeded,
   convertRecordValidationToAsyncIfNeeded,
-} from './mappers';
+} from './mapper-helpers';
 
-describe('mappers', () => {
+describe('mapper-helpers', () => {
   describe('convertFieldValidationToAsyncIfNeeded', () => {
     it('should return a function that returns a promise with default validation result when it feeds validation equals undefined', done => {
       // Arrange

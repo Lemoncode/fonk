@@ -1,7 +1,7 @@
 import {
   ValidationResult,
   createDefaultValidationResult,
-  FullFieldValidationAsync,
+  InternalFieldValidation,
 } from '../model';
 import { arrayContainsEntries, isUndefinedOrNull } from '../helper';
 
@@ -24,14 +24,14 @@ const checkValidationResult = (
 const fireValidation = (
   value,
   values,
-  fieldValidation: FullFieldValidationAsync
+  internalFieldValidation: InternalFieldValidation
 ): Promise<ValidationResult> =>
-  fieldValidation
+  internalFieldValidation
     .validator({
       value,
       values,
-      customArgs: fieldValidation.customArgs,
-      message: fieldValidation.message,
+      customArgs: internalFieldValidation.customArgs,
+      message: internalFieldValidation.message,
     })
     .then(checkValidationResult);
 
@@ -40,23 +40,27 @@ const fireValidation = (
 const iterateValidationsUntilFailOrAllSucceeded = (
   value: any,
   values: any,
-  fieldValidations: FullFieldValidationAsync[]
+  internalFieldValidations: InternalFieldValidation[]
 ): Promise<ValidationResult> =>
-  fieldValidations.reduce(
+  internalFieldValidations.reduce(
     (result, next) =>
       result.then((validationResult: ValidationResult) =>
         validationResult.succeeded
           ? fireValidation(value, values, next)
           : validationResult
       ),
-    fireValidation(value, values, fieldValidations[0]) // Initial reduce value
+    fireValidation(value, values, internalFieldValidations[0]) // Initial reduce value
   );
 
 export const fireSingleFieldValidations = (
-  values: any,
   value: any,
-  fieldValidations: FullFieldValidationAsync[]
+  values: any,
+  internalFieldValidations: InternalFieldValidation[]
 ): Promise<ValidationResult> =>
-  arrayContainsEntries(fieldValidations)
-    ? iterateValidationsUntilFailOrAllSucceeded(value, values, fieldValidations)
+  arrayContainsEntries(internalFieldValidations)
+    ? iterateValidationsUntilFailOrAllSucceeded(
+        value,
+        values,
+        internalFieldValidations
+      )
     : Promise.resolve(createDefaultValidationResult());

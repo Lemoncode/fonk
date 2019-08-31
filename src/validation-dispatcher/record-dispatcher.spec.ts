@@ -1,4 +1,4 @@
-import { fireRecordValidations } from './record-dispatcher';
+import { fireRecordValidations } from './tmp-record-dispatcher';
 import { FullRecordValidationAsync } from '../model';
 
 describe(`fireRecordValidations`, () => {

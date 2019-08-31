@@ -1,150 +1,109 @@
 import {
-  ValidationResult,
-  FormValidationResult,
+  InternalFieldValidationSchema,
   createDefaultValidationResult,
-  FullFieldValidationAsync,
-  FullRecordValidationAsync,
-  FullFieldValidationSchemaAsync,
-  FullRecordValidationSchemaAsync,
+  ValidationResult,
+  InternalRecordValidationSchema,
+  RecordValidationResult,
+  FormValidationResult,
 } from '../model';
-
+import {
+  fireSingleFieldValidations,
+  fireAllFieldsValidations,
+  fireSingleRecordValidations,
+  fireAllRecordsValidations,
+} from '../validation-dispatcher';
+import {
+  buildFormValidationResult,
+  buildRecordValidationResult,
+} from '../form-validation-summary-builder';
 import { isUndefinedOrNull } from '../helper';
 
-import {
-  fireAllFieldsValidations,
-  fireSingleFieldValidations,
-  fireRecordValidations,
-} from '../validation-dispatcher';
-import { buildFormValidationResult } from '../form-validation-summary-builder';
+const isIdInSchema = (fieldId: string, schema): boolean =>
+  !isUndefinedOrNull(schema[fieldId]);
 
-export class ValidationEngine {
-  private validationsPerField: FullFieldValidationSchemaAsync = {};
-  private recordVaslidations: FullRecordValidationSchemaAsync[] = [];
-
-  addFieldValidation(key: string, validationFull: FullFieldValidationAsync) {
-    if (!this.isFieldKeyMappingDefined(key)) {
-      this.validationsPerField[key] = [];
-    }
-
-    this.validationsPerField[key].push(validationFull);
-  }
-
-  addRecordValidation(recordValidation: FullRecordValidationAsync): void {
-    this.recordVaslidations.push(recordValidation);
-  }
-
-  public validateForm(values: any): Promise<FormValidationResult> {
-    const allValidations = this.fireFieldAndRecordValidations(values);
-    return this.buildValidationResults(allValidations);
-  }
-
-  validateField(
-    fieldId: string,
-    value: any,
-    values: any
-  ): Promise<ValidationResult> {
-    const asyncValidationPromise = this.fireFieldValidations(
-      values,
-      fieldId,
-      value
-    );
-
-    return asyncValidationPromise;
-  }
-
-  private fireFieldAndRecordValidations = (
-    values: any
-  ): Promise<ValidationResult>[] => {
-    let fieldValidationResults: Promise<
-      ValidationResult
-    >[] = fireAllFieldsValidations(
-      values,
-      Object.keys(this.validationsPerField),
-      this.fireFieldValidations
-    );
-
-    // Now record form validations
-    if (this.recordVaslidations.length > 0) {
-      fieldValidationResults = [
-        ...fieldValidationResults,
-        ...this.validateRecordValidations(values),
-      ];
-    }
-    return fieldValidationResults;
-  };
-
-  private buildValidationResults = (
-    validations: Promise<ValidationResult>[]
-  ): Promise<FormValidationResult> => {
-    return new Promise<FormValidationResult>((resolve, reject) => {
-      // Once all the single field validations have been resolved
-      // resolve the fullFormValidatePromise
-      // TODO: Finally issue race condition unit tests
-      Promise.all(validations)
-        .then((fieldValidationResults: ValidationResult[]) => {
-          const formValidationResult = buildFormValidationResult(
-            fieldValidationResults
-          );
-          resolve(formValidationResult);
-        })
-        .catch(result => {
-          // Build failed validation Result
-          const errorInformation = `Uncontrolled error when validating full form, check custom validations code`;
-          console.log(errorInformation);
-          reject(result);
-        });
-    });
-  };
-
-  public fireFieldValidations = (
-    values: any,
-    key: string,
-    value: any
-  ): Promise<ValidationResult> => {
-    const fieldValidationResultPromise = new Promise<ValidationResult>(
-      (resolve, reject) => {
-        if (!this.isFieldKeyMappingDefined(key)) {
-          resolve(createDefaultValidationResult());
-        } else {
-          fireSingleFieldValidations(
-            values,
-            value,
-            this.validationsPerField[key]
-          )
-            .then((fieldValidationResult: ValidationResult) => {
-              if (fieldValidationResult) {
-                fieldValidationResult.key = key;
-              }
-              resolve(fieldValidationResult);
-            })
-            .catch(result => {
-              // Build failed validation Result
-              const errorInformation = `Validation Exception, field: ${key}`;
-              console.log(errorInformation);
-              reject(result);
-            });
+export const validateField = (
+  fieldId: string,
+  value: any,
+  values: any,
+  schema: InternalFieldValidationSchema
+): Promise<ValidationResult> =>
+  !isIdInSchema(fieldId, schema)
+    ? Promise.resolve(createDefaultValidationResult())
+    : fireSingleFieldValidations(value, values, schema[fieldId]).catch(
+        error => {
+          const message = `Validation Exception, field: ${fieldId}`;
+          console.error(message);
+          throw error;
         }
-      }
-    );
-
-    return fieldValidationResultPromise;
-  };
-
-  private validateRecordValidations(values: any): Promise<ValidationResult>[] {
-    let recordResultValidations: Promise<ValidationResult>[] = [];
-
-    if (this.recordVaslidations.length > 0) {
-      const recordValidationResultsPromises = fireRecordValidations(
-        values,
-        this.recordVaslidations
       );
-      recordResultValidations = [...recordValidationResultsPromises];
-    }
 
-    return recordResultValidations;
-  }
+const validateRecord = (
+  recordId: string,
+  values: any,
+  schema: InternalRecordValidationSchema
+): Promise<ValidationResult> =>
+  !isIdInSchema(recordId, schema)
+    ? Promise.resolve(createDefaultValidationResult())
+    : fireSingleRecordValidations(values, schema[recordId]).catch(error => {
+        const message = `Validation Exception, record: ${recordId}`;
+        console.error(message);
+        throw error;
+      });
 
-  isFieldKeyMappingDefined(key: string): boolean {
-    return !isUndefinedOrNull(this.validationsPerField[key]);
-  }
-}
+export const validateRecords = (
+  values: any,
+  schema: InternalRecordValidationSchema
+): Promise<RecordValidationResult> => {
+  const promiseValidationResults = fireAllRecordsValidations(
+    Object.keys(schema),
+    values,
+    schema,
+    validateRecord
+  );
+
+  return Promise.all(promiseValidationResults)
+    .then(validationResults => buildRecordValidationResult(validationResults))
+    .catch(error => {
+      const message = 'Uncontrolled error validating records';
+      console.error(message);
+      throw error;
+    });
+};
+
+export const validateForm = (
+  values: any,
+  fieldSchema: InternalFieldValidationSchema,
+  recordSchema: InternalRecordValidationSchema
+): Promise<FormValidationResult> => {
+  const promiseFieldValidationResults = fireAllFieldsValidations(
+    Object.keys(fieldSchema),
+    values,
+    fieldSchema,
+    validateField
+  );
+
+  const promiseRecordValidationResults = fireAllRecordsValidations(
+    Object.keys(recordSchema),
+    values,
+    recordSchema,
+    validateRecord
+  );
+
+  return Promise.all(promiseFieldValidationResults)
+    .then(fieldValidationResults =>
+      Promise.all(promiseRecordValidationResults).then(
+        recordValidationResults => [
+          fieldValidationResults,
+          recordValidationResults,
+        ]
+      )
+    )
+    .then(([fieldValidationResults, recordValidationResults]) =>
+      buildFormValidationResult(fieldValidationResults, recordValidationResults)
+    )
+    .catch(error => {
+      const message = 'Uncontrolled error validating records';
+      console.error(message);
+      throw error;
+    });
+};
