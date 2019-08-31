@@ -29,9 +29,6 @@ export const createDefaultFormValidationSummary = (): FormValidationResult => ({
   recordErrors: [],
 });
 
-// Pending on ValidationEngine
-type ValidationResultSyncAsync = ValidationResult | Promise<ValidationResult>;
-
 export interface FieldValidatorArgs {
   value: any;
   values?: any;
