@@ -1,31 +1,44 @@
 import { FieldValidationFunctionSync } from '../model';
 
-export const VALIDATOR_TYPE = 'REQUIRED';
-const DEFAULT_MESSAGE = 'Please fill in this mandatory field.';
-export interface RequiredArgs {
-  trim: boolean;
+export const VALIDATOR_TYPE = 'PATTERN';
+const DEFAULT_MESSAGE = 'Please provide a valid format.';
+export interface PatternArgs {
+  pattern: string | RegExp;
 }
-const DEFAULT_PARAMS: RequiredArgs = { trim: true };
 
-const isStringValid = (value: string, trim: boolean): boolean =>
-  trim ? value.trim().length > 0 : value.length > 0;
+const BAD_PARAMETER =
+  'FieldValidationError: pattern option for pattern validation is mandatory. Example: { pattern: /d+/ }.';
+const DEFAULT_PARAMS: PatternArgs = null;
 
-const isNonStringValid = (value: any): boolean =>
-  value !== void 0 && value !== null;
+function getRegExp(pattern): RegExp {
+  return pattern instanceof RegExp ? pattern : new RegExp(pattern);
+}
 
-const isValidField = (value: any, trim: boolean): boolean =>
-  typeof value === 'string'
-    ? isStringValid(value, trim)
-    : isNonStringValid(value);
+function parsePattern({ pattern }: PatternArgs): RegExp {
+  // Avoid RegExp like /true/ /false/ and /null/ without an explicit "true", "false" or "null"
+  if (typeof pattern === 'boolean' || pattern === null) {
+    throw new Error(BAD_PARAMETER);
+  }
+  return getRegExp(pattern);
+}
 
-export const required: FieldValidationFunctionSync = fieldValidatorArgs => {
+function isEmptyValue(value) {
+  return value === null || value === undefined || value === '';
+}
+
+export function isValidField(value, pattern: RegExp): boolean {
+  return isEmptyValue(value) ? true : pattern.test(value);
+}
+
+export const pattern: FieldValidationFunctionSync = fieldValidatorArgs => {
   const {
     value,
-    customArgs = DEFAULT_PARAMS as RequiredArgs,
+    customArgs = DEFAULT_PARAMS as PatternArgs,
     message = DEFAULT_MESSAGE,
   } = fieldValidatorArgs;
 
-  const succeeded = isValidField(value, Boolean(customArgs.trim));
+  const pattern = parsePattern(customArgs);
+  const succeeded = isValidField(value, pattern);
 
   return {
     succeeded,
