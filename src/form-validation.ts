@@ -37,47 +37,18 @@ export class FormValidation {
 
   private setupValidationSchema(validationSchema: ValidationSchema) {
     if (validationSchema && typeof validationSchema === 'object') {
-      const { record, fields } = validationSchema;
+      const { records, fields } = validationSchema;
 
-      if (record && record instanceof Array) {
-        this.addRecordValidations(record);
-      }
       if (fields && typeof fields === 'object') {
         this.addAllFieldsValidations(fields);
+      }
+
+      if (records && records instanceof Array) {
+        this.addRecordValidations(records);
       }
     } else {
       console.error('ValidationSchema must be a valid object');
     }
-  }
-
-  private addRecordValidations(
-    recordValidationSchemaCollection: RecordValidationSchema[]
-  ) {
-    recordValidationSchemaCollection.forEach(
-      (recordValidation: RecordValidationSchema) => {
-        this.addRecordValidation(recordValidation);
-      }
-    );
-  }
-
-  private addRecordValidation(recordValidation: RecordValidationSchema) {
-    let recordValidationSchemaFullAsync: FullRecordValidationAsync = null;
-
-    if (isFunction(recordValidation)) {
-      recordValidationSchemaFullAsync = {
-        validation: convertRecordValidationToAsyncIfNeeded(recordValidation),
-        message: void 0,
-      };
-    } else {
-      recordValidationSchemaFullAsync = {
-        validation: convertRecordValidationToAsyncIfNeeded(
-          recordValidation.validation
-        ),
-        message: recordValidation.message,
-      };
-    }
-
-    this.validationEngine.addRecordValidation(recordValidationSchemaFullAsync);
   }
 
   private addAllFieldsValidations(fields: FieldsValidationSchema) {
@@ -117,6 +88,36 @@ export class FormValidation {
     }
 
     this.validationEngine.addFieldValidation(field, validationFullAsync);
+  }
+
+  private addRecordValidations(
+    recordValidationSchemaCollection: RecordValidationSchema[]
+  ) {
+    recordValidationSchemaCollection.forEach(
+      (recordValidation: RecordValidationSchema) => {
+        this.addRecordValidation(recordValidation);
+      }
+    );
+  }
+
+  private addRecordValidation(recordValidation: RecordValidationSchema) {
+    let recordValidationSchemaFullAsync: FullRecordValidationAsync = null;
+
+    if (isFunction(recordValidation)) {
+      recordValidationSchemaFullAsync = {
+        validation: convertRecordValidationToAsyncIfNeeded(recordValidation),
+        message: void 0,
+      };
+    } else {
+      recordValidationSchemaFullAsync = {
+        validation: convertRecordValidationToAsyncIfNeeded(
+          recordValidation.validation
+        ),
+        message: recordValidation.message,
+      };
+    }
+
+    this.validationEngine.addRecordValidation(recordValidationSchemaFullAsync);
   }
 }
 
