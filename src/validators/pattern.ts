@@ -1,7 +1,10 @@
 import { FieldValidationFunctionSync } from '../model';
 
 export const VALIDATOR_TYPE = 'PATTERN';
-const DEFAULT_MESSAGE = 'Please provide a valid format.';
+
+let defaultMessage = 'Please provide a valid format.';
+export const setErrorMessage = message => (defaultMessage = message);
+
 export interface PatternArgs {
   pattern: string | RegExp;
 }
@@ -37,7 +40,7 @@ export const pattern: FieldValidationFunctionSync = fieldValidatorArgs => {
   const {
     value,
     customArgs = DEFAULT_PARAMS as PatternArgs,
-    message = DEFAULT_MESSAGE,
+    message = defaultMessage,
   } = fieldValidatorArgs;
 
   const pattern = parsePattern(customArgs);

@@ -1,4 +1,9 @@
-import { pattern, VALIDATOR_TYPE, PatternArgs } from './pattern';
+import {
+  pattern,
+  VALIDATOR_TYPE,
+  PatternArgs,
+  setErrorMessage,
+} from './pattern';
 import { FieldValidatorArgs, ValidationResult } from '../model';
 
 describe(`pattern validator`, () => {
@@ -107,6 +112,29 @@ describe(`pattern validator`, () => {
       expect(validationResult.succeeded).toBeFalsy();
       expect(validationResult.type).toBe('PATTERN');
       expect(validationResult.message).toBe('Please provide a valid format.');
+    });
+    it(`should return validation failed + custom message when field does not match 
+    the pattern and custom message is set`, () => {
+      // Arrange
+      const value = 'test';
+      const values = undefined;
+      const patternArgs: PatternArgs = { pattern: '^abc.*$' };
+
+      setErrorMessage('my custom message');
+
+      // Act
+      const validationResult: ValidationResult = pattern({
+        value,
+        values,
+        customArgs: patternArgs,
+      });
+
+      // Assert
+      expect(validationResult.succeeded).toBeFalsy();
+      expect(validationResult.type).toBe('PATTERN');
+      expect(validationResult.message).toBe('my custom message');
+
+      setErrorMessage('Please provide a valid format.');
     });
   });
 });
