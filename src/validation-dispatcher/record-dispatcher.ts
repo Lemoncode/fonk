@@ -1,21 +1,21 @@
 import {
-  ValidationResult,
-  createDefaultValidationResult,
+  InternalValidationResult,
+  createDefaultInternalValidationResult,
   InternalRecordValidation,
 } from '../model';
 import { arrayContainsEntries, isUndefinedOrNull } from '../helper';
 
 const checkValidationResult = (
-  validationResult: ValidationResult
-): ValidationResult => {
-  let result: ValidationResult = validationResult;
+  validationResult: InternalValidationResult
+): InternalValidationResult => {
+  let result: InternalValidationResult = validationResult;
 
   if (!validationResult || isUndefinedOrNull(validationResult.succeeded)) {
     // show a console error, warn the user one of his validators is not well formed
     console.error(
       'form-validators: One of the record validator is returning a non expected value.'
     );
-    result = createDefaultValidationResult();
+    result = createDefaultInternalValidationResult();
   }
 
   return result;
@@ -24,7 +24,7 @@ const checkValidationResult = (
 const fireValidation = (
   values,
   internalRecordValidation: InternalRecordValidation
-): Promise<ValidationResult> =>
+): Promise<InternalValidationResult> =>
   internalRecordValidation
     .validator({
       values,
@@ -37,10 +37,10 @@ const fireValidation = (
 const iterateValidationsUntilFailOrAllSucceeded = (
   values: any,
   internalRecordValidations: InternalRecordValidation[]
-): Promise<ValidationResult> =>
+): Promise<InternalValidationResult> =>
   internalRecordValidations.reduce(
     (result, next) =>
-      result.then((validationResult: ValidationResult) =>
+      result.then((validationResult: InternalValidationResult) =>
         validationResult.succeeded
           ? fireValidation(values, next)
           : validationResult
@@ -51,10 +51,10 @@ const iterateValidationsUntilFailOrAllSucceeded = (
 export const fireSingleRecordValidations = (
   values: any,
   internalRecordValidations: InternalRecordValidation[]
-): Promise<ValidationResult> =>
+): Promise<InternalValidationResult> =>
   arrayContainsEntries(internalRecordValidations)
     ? iterateValidationsUntilFailOrAllSucceeded(
         values,
         internalRecordValidations
       )
-    : Promise.resolve(createDefaultValidationResult());
+    : Promise.resolve(createDefaultInternalValidationResult());

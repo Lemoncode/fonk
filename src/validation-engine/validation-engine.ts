@@ -1,8 +1,8 @@
 import {
   InternalFieldValidationSchema,
-  createDefaultValidationResult,
-  ValidationResult,
   InternalRecordValidationSchema,
+  InternalValidationResult,
+  createDefaultInternalValidationResult,
   RecordValidationResult,
   FormValidationResult,
 } from '../model';
@@ -26,29 +26,37 @@ export const validateField = (
   value: any,
   values: any,
   schema: InternalFieldValidationSchema
-): Promise<ValidationResult> =>
+): Promise<InternalValidationResult> =>
   !isIdInSchema(fieldId, schema)
-    ? Promise.resolve(createDefaultValidationResult())
-    : fireSingleFieldValidations(value, values, schema[fieldId]).catch(
-        error => {
+    ? Promise.resolve(createDefaultInternalValidationResult())
+    : fireSingleFieldValidations(value, values, schema[fieldId])
+        .then(validationResult => {
+          validationResult.key = fieldId;
+          return validationResult;
+        })
+        .catch(error => {
           const message = `Validation Exception, field: ${fieldId}`;
           console.error(message);
           throw error;
-        }
-      );
+        });
 
 const validateRecord = (
   recordId: string,
   values: any,
   schema: InternalRecordValidationSchema
-): Promise<ValidationResult> =>
+): Promise<InternalValidationResult> =>
   !isIdInSchema(recordId, schema)
-    ? Promise.resolve(createDefaultValidationResult())
-    : fireSingleRecordValidations(values, schema[recordId]).catch(error => {
-        const message = `Validation Exception, record: ${recordId}`;
-        console.error(message);
-        throw error;
-      });
+    ? Promise.resolve(createDefaultInternalValidationResult())
+    : fireSingleRecordValidations(values, schema[recordId])
+        .then(validationResult => {
+          validationResult.key = recordId;
+          return validationResult;
+        })
+        .catch(error => {
+          const message = `Validation Exception, record: ${recordId}`;
+          console.error(message);
+          throw error;
+        });
 
 export const validateRecords = (
   values: any,

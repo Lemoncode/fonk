@@ -1,6 +1,6 @@
 import get from 'lodash.get';
 import {
-  ValidationResult,
+  InternalValidationResult,
   InternalFieldValidationSchema,
   InternalRecordValidationSchema,
 } from '../model';
@@ -16,8 +16,8 @@ export const fireAllFieldsValidations = (
     value: any,
     values: any,
     schema: InternalFieldValidationSchema
-  ) => Promise<ValidationResult>
-): Promise<ValidationResult>[] =>
+  ) => Promise<InternalValidationResult>
+): Promise<InternalValidationResult>[] =>
   fieldIds.map(fieldId =>
     validateField(fieldId, get(values, fieldId, undefined), values, schema)
   );
@@ -30,6 +30,6 @@ export const fireAllRecordsValidations = (
     recordId: string,
     values: any,
     schema: InternalRecordValidationSchema
-  ) => Promise<ValidationResult>
-): Promise<ValidationResult>[] =>
+  ) => Promise<InternalValidationResult>
+): Promise<InternalValidationResult>[] =>
   recordIds.map(recordId => validateRecord(recordId, values, schema));

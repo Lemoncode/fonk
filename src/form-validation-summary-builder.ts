@@ -1,5 +1,6 @@
 import {
   ValidationResult,
+  InternalValidationResult,
   FormValidationResult,
   createDefaultFormValidationResult,
   createDefaultRecordValidationResult,
@@ -8,19 +9,19 @@ import {
 import { arrayContainsEntries } from './helper';
 
 const didAllValidationsSucceeded = (
-  validationResults: ValidationResult[]
+  validationResults: InternalValidationResult[]
 ): boolean => validationResults.every(fvr => fvr.succeeded);
 
 const extractErrors = (
-  validationResults: ValidationResult[]
+  validationResults: InternalValidationResult[]
 ): { [id: string]: ValidationResult } =>
-  validationResults.reduce((errors, validationResult) => {
-    errors[validationResult.key] = validationResult;
+  validationResults.reduce((errors, { key, ...validationResult }) => {
+    errors[key] = { ...validationResult };
     return errors;
   }, {});
 
 export const buildRecordValidationResult = (
-  validationResults: ValidationResult[]
+  validationResults: InternalValidationResult[]
 ): RecordValidationResult => {
   const recordValidationResult = createDefaultRecordValidationResult();
 
@@ -35,8 +36,8 @@ export const buildRecordValidationResult = (
 };
 
 export const buildFormValidationResult = (
-  fieldValidationResults: ValidationResult[],
-  recordValidationResults: ValidationResult[]
+  fieldValidationResults: InternalValidationResult[],
+  recordValidationResults: InternalValidationResult[]
 ): FormValidationResult => {
   const formValidationResult = createDefaultFormValidationResult();
 

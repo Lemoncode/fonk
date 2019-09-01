@@ -12,7 +12,7 @@ export type FieldValidation =
   | FullFieldValidation;
 
 export interface FieldValidationSchema {
-  [key: string]: FieldValidation[];
+  [fieldId: string]: FieldValidation[];
 }
 
 export type RecordValidation =
@@ -20,7 +20,7 @@ export type RecordValidation =
   | FullRecordValidation;
 
 export interface RecordValidationSchema {
-  [key: string]: RecordValidation[];
+  [recordId: string]: RecordValidation[];
 }
 
 export interface ValidationSchema {

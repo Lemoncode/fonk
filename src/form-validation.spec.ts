@@ -5,9 +5,10 @@ import {
   FieldValidationFunctionSync,
   RecordValidationFunctionAsync,
   RecordValidationFunctionSync,
+  FieldValidatorArgs,
 } from './model';
 
-describe('createFormValidation', () => {
+describe('validateField', () => {
   it(`spec #1: should return an instance of FormValidation
   when calling createFormValidation
   `, () => {
@@ -58,13 +59,11 @@ describe('createFormValidation', () => {
     firing a validation for that given field (include as well custom message override)
     `, done => {
       // Arrange
-      const mockValidationFn = jest.fn(
-        (fieldValidatorArgs): ValidationResult => ({
-          type: 'MY_TYPE',
-          succeeded: false,
-          message: 'mymessage',
-        })
-      );
+      const mockValidationFn = jest.fn().mockResolvedValue({
+        type: 'MY_TYPE',
+        succeeded: false,
+        message: 'mymessage',
+      });
 
       const validationSchema: ValidationSchema = {
         fields: {
@@ -164,16 +163,20 @@ describe('createFormValidation', () => {
     });
 
     it(`spec #6: should execute a field validation (defined as FullValidator, async function in schema) and fail when
-    adding a field validation in the schema on a given field
-    firing a validation for that given field
+    adding a field validation in the schema, using all possible args
     `, done => {
       // Arrange
       const mockValidationFn = jest.fn(
-        ({ message }): Promise<ValidationResult> =>
+        ({
+          value,
+          message,
+          customArgs,
+          values,
+        }: FieldValidatorArgs): Promise<ValidationResult> =>
           Promise.resolve<ValidationResult>({
             type: 'MY_TYPE',
             succeeded: false,
-            message: message ? (message as string) : 'mymessage',
+            message: `${value} ${message} ${customArgs} ${values}`,
           })
       );
 
@@ -182,6 +185,7 @@ describe('createFormValidation', () => {
           username: [
             {
               validator: mockValidationFn,
+              customArgs: 'custom-arg',
               message: 'myoverriddenmessage',
             },
           ],
@@ -190,13 +194,19 @@ describe('createFormValidation', () => {
 
       // Act
       const formValidation = createFormValidation(validationSchema);
-      const result = formValidation.validateField('username', 'whatever');
+      const result = formValidation.validateField(
+        'username',
+        'whatever',
+        'test-values'
+      );
 
       // Assert
       result.then(validationResult => {
         expect(validationResult.succeeded).toBe(false);
         expect(validationResult.type).toBe('MY_TYPE');
-        expect(validationResult.message).toBe('myoverriddenmessage');
+        expect(validationResult.message).toBe(
+          'whatever myoverriddenmessage custom-arg test-values'
+        );
         expect(mockValidationFn).toHaveBeenCalled();
         done();
       });
@@ -206,23 +216,23 @@ describe('createFormValidation', () => {
       custom args and failed when customArgs.fail === true
       `, done => {
       // Arrange
-      const validator: FieldValidationFunctionSync = ({
-        customArgs,
-      }): ValidationResult => {
-        if (customArgs.fail) {
-          return {
-            type: 'MY_TYPE',
-            succeeded: false,
-            message: 'received custom args fail true',
-          };
-        } else {
-          return {
-            type: 'MY_TYPE',
-            succeeded: true,
-            message: 'received custom args fail false',
-          };
+      const validator: FieldValidationFunctionSync = jest.fn(
+        ({ customArgs }): ValidationResult => {
+          if (customArgs.fail) {
+            return {
+              type: 'MY_TYPE',
+              succeeded: false,
+              message: 'received custom args fail true',
+            };
+          } else {
+            return {
+              type: 'MY_TYPE',
+              succeeded: true,
+              message: 'received custom args fail false',
+            };
+          }
         }
-      };
+      );
 
       const validationSchema: ValidationSchema = {
         fields: {
@@ -244,6 +254,7 @@ describe('createFormValidation', () => {
         expect(validationResult.succeeded).toBe(false);
         expect(validationResult.type).toBe('MY_TYPE');
         expect(validationResult.message).toBe('received custom args fail true');
+        expect(validator).toHaveBeenCalled();
         done();
       });
     });
@@ -252,23 +263,23 @@ describe('createFormValidation', () => {
       custom args and succeeded when customArgs.fail === false
       `, done => {
       // Arrange
-      const validator: FieldValidationFunctionSync = ({
-        customArgs,
-      }): ValidationResult => {
-        if (customArgs.fail) {
-          return {
-            type: 'MY_TYPE',
-            succeeded: false,
-            message: 'received custom args fail true',
-          };
-        } else {
-          return {
-            type: 'MY_TYPE',
-            succeeded: true,
-            message: 'received custom args fail false',
-          };
+      const validator: FieldValidationFunctionSync = jest.fn(
+        ({ customArgs }): ValidationResult => {
+          if (customArgs.fail) {
+            return {
+              type: 'MY_TYPE',
+              succeeded: false,
+              message: 'received custom args fail true',
+            };
+          } else {
+            return {
+              type: 'MY_TYPE',
+              succeeded: true,
+              message: 'received custom args fail false',
+            };
+          }
         }
-      };
+      );
 
       const validationSchema: ValidationSchema = {
         fields: {
@@ -288,11 +299,12 @@ describe('createFormValidation', () => {
       // Assert
       result.then(validationResult => {
         expect(validationResult.succeeded).toBe(true);
+        expect(validator).toHaveBeenCalled();
         done();
       });
     });
 
-    it(`spec #9:should execute two validations for a given field and succeed
+    it(`spec #9:should return succeed validation result
     when adding two validators to a given field and both succeed
 `, done => {
       // Arrange
@@ -320,12 +332,14 @@ describe('createFormValidation', () => {
 
       // Assert
       result.then(validationResult => {
-        expect(validationResult.succeeded).toBe(true);
+        expect(validationResult.succeeded).toBeTruthy();
+        expect(mockValidationFn1).toHaveBeenCalled();
+        expect(mockValidationFn2).toHaveBeenCalled();
         done();
       });
     });
 
-    it(`spec #10:should execute two validations for a given field and failed
+    it(`spec #10:should execute first validations for a given field and failed
 when adding two validators to a given field and first fails
 `, done => {
       // Arrange
@@ -355,6 +369,8 @@ when adding two validators to a given field and first fails
       result.then(validationResult => {
         expect(validationResult.succeeded).toBe(false);
         expect(validationResult.type).toBe('MY_VALIDATOR_A');
+        expect(mockValidationFn1).toHaveBeenCalled();
+        expect(mockValidationFn2).not.toHaveBeenCalled();
         done();
       });
     });
@@ -389,12 +405,79 @@ when adding two validators to a given field and second fails
       result.then(validationResult => {
         expect(validationResult.succeeded).toBe(false);
         expect(validationResult.type).toBe('MY_VALIDATOR_B');
+        expect(mockValidationFn1).toHaveBeenCalled();
+        expect(mockValidationFn2).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it(`spec #12:should execute first validation for a given field and failed
+when adding two validators to a given field fails and second fails
+`, done => {
+      // Arrange
+      const mockValidationFn1 = jest.fn().mockReturnValue({
+        type: 'MY_VALIDATOR_A',
+        succeeded: false,
+        message: 'mymessageA',
+      });
+
+      const mockValidationFn2 = jest.fn().mockReturnValue({
+        type: 'MY_VALIDATOR_B',
+        succeeded: false,
+        message: 'mymessageB',
+      });
+
+      const validationSchema: ValidationSchema = {
+        fields: {
+          username: [mockValidationFn1, mockValidationFn2],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateField('username', 'whatever');
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBe(false);
+        expect(validationResult.type).toBe('MY_VALIDATOR_A');
+        expect(mockValidationFn1).toHaveBeenCalled();
+        expect(mockValidationFn2).not.toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it(`spec #13:should execute validation for a given field and failed
+when adding one validator to a given nested field
+`, done => {
+      // Arrange
+      const mockValidationFn = jest.fn().mockReturnValue({
+        type: 'MY_VALIDATOR_A',
+        succeeded: false,
+        message: 'mymessageA',
+      });
+
+      const validationSchema: ValidationSchema = {
+        fields: {
+          'nested.field': [mockValidationFn],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateField('nested.field', 'whatever');
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBe(false);
+        expect(validationResult.type).toBe('MY_VALIDATOR_A');
+        expect(mockValidationFn).toHaveBeenCalled();
         done();
       });
     });
   });
 
-  describe(`FormValidations`, () => {
+  describe(`validateForm`, () => {
     it(`#Spec 1: should failed form validation
     when adding a record validation that fails (sync flavour function)
     `, done => {
@@ -408,7 +491,9 @@ when adding two validators to a given field and second fails
         });
 
       const validationSchema: ValidationSchema = {
-        record: [mockValidationFn],
+        records: {
+          MY_RECORD_VALIDATION: [mockValidationFn],
+        },
       };
 
       const values = {};
@@ -419,8 +504,16 @@ when adding two validators to a given field and second fails
 
       // Assert
       result.then(validationResult => {
+        expect(mockValidationFn).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.recordErrors.length).toBe(1);
+        expect(validationResult.fieldErrors).toEqual({});
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageA',
+          },
+        });
         done();
       });
     });
@@ -438,7 +531,9 @@ when adding two validators to a given field and second fails
         });
 
       const validationSchema: ValidationSchema = {
-        record: [mockValidationFn],
+        records: {
+          MY_RECORD_VALIDATION: [mockValidationFn],
+        },
       };
 
       const values = {};
@@ -449,31 +544,39 @@ when adding two validators to a given field and second fails
 
       // Assert
       result.then(validationResult => {
+        expect(mockValidationFn).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.recordErrors.length).toBe(1);
+        expect(validationResult.fieldErrors).toEqual({});
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageA',
+          },
+        });
         done();
       });
     });
 
     it(`#Spec 3: should failed form validation
-    when adding a record validation that fails (fullRecordValidationSchema entry,
-      async validator)
+    when adding a record validation that fails (fullRecordValidationSchema entry, async validator)
     `, done => {
       // Arrange
-      const validationFn: RecordValidationFunctionAsync = ({ message }) =>
-        Promise.resolve<ValidationResult>({
-          type: '',
-          succeeded: false,
-          message: message ? (message as string) : 'mymessageA',
-        });
+      const validationFn: RecordValidationFunctionAsync = jest.fn(
+        ({ message }) =>
+          Promise.resolve<ValidationResult>({
+            type: '',
+            succeeded: false,
+            message: message ? (message as string) : 'mymessageA',
+          })
+      );
 
       const validationSchema: ValidationSchema = {
-        record: [
-          {
-            validation: validationFn,
-            message: 'My custom message',
-          },
-        ],
+        records: {
+          MY_RECORD_VALIDATION: [
+            { validator: validationFn, message: 'My custom message' },
+          ],
+        },
       };
 
       const values = {};
@@ -484,33 +587,38 @@ when adding two validators to a given field and second fails
 
       // Assert
       result.then(validationResult => {
+        expect(validationFn).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.recordErrors.length).toBe(1);
-        expect(validationResult.recordErrors[0].message).toBe(
-          'My custom message'
-        );
+        expect(validationResult.fieldErrors).toEqual({});
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'My custom message',
+          },
+        });
         done();
       });
     });
 
     it(`#Spec 4: should failed form validation
-    when adding a record validation that fails (fullRecordValidationSchema entry,
-      sync validator)
+    when adding a record validation that fails (fullRecordValidationSchema entry, sync validator)
     `, done => {
       // Arrange
-      const validationFn: RecordValidationFunctionSync = ({ message }) => ({
-        type: '',
-        succeeded: false,
-        message: message ? (message as string) : 'mymessageA',
-      });
+      const validationFn: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageA',
+        })
+      );
 
       const validationSchema: ValidationSchema = {
-        record: [
-          {
-            validation: validationFn,
-            message: 'My custom message',
-          },
-        ],
+        records: {
+          MY_RECORD_VALIDATION: [
+            { validator: validationFn, message: 'My custom message' },
+          ],
+        },
       };
 
       const values = {};
@@ -521,33 +629,44 @@ when adding two validators to a given field and second fails
 
       // Assert
       result.then(validationResult => {
+        expect(validationFn).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.recordErrors.length).toBe(1);
-        expect(validationResult.recordErrors[0].message).toBe(
-          'My custom message'
-        );
+        expect(validationResult.fieldErrors).toEqual({});
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'My custom message',
+          },
+        });
         done();
       });
     });
 
     it(`#Spec 5: should failed form validation, and return back one validationResult on forms
-    when adding two record validation first fails, second succeeds
+    when adding one record with two validation first fails, second succeeds
     `, done => {
       // Arrange
-      const validationFn1: RecordValidationFunctionSync = ({ message }) => ({
-        type: '',
-        succeeded: false,
-        message: message ? (message as string) : 'mymessageA',
-      });
+      const validationFn1: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageA',
+        })
+      );
 
-      const validationFn2: RecordValidationFunctionSync = ({ message }) => ({
-        type: '',
-        succeeded: true,
-        message: message ? (message as string) : 'mymessageB',
-      });
+      const validationFn2: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: true,
+          message: message ? (message as string) : 'mymessageB',
+        })
+      );
 
       const validationSchema: ValidationSchema = {
-        record: [validationFn1, validationFn2, ,],
+        records: {
+          MY_RECORD_VALIDATION: [validationFn1, validationFn2],
+        },
       };
 
       const values = {};
@@ -558,31 +677,45 @@ when adding two validators to a given field and second fails
 
       // Assert
       result.then(validationResult => {
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).not.toHaveBeenCalled();
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.recordErrors.length).toBe(1);
-        expect(validationResult.recordErrors[0].message).toBe('mymessageA');
+        expect(validationResult.fieldErrors).toEqual({});
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageA',
+          },
+        });
         done();
       });
     });
 
     it(`#Spec 6: should failed form validation, and return back one validationResult on forms
-    when adding two record validation first succeeds, second fails
+    when adding one record with two validation first succeeds, second fails
     `, done => {
       // Arrange
-      const validationFn1: RecordValidationFunctionSync = ({ message }) => ({
-        type: '',
-        succeeded: true,
-        message: message ? (message as string) : 'mymessageA',
-      });
+      const validationFn1: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: true,
+          message: message ? (message as string) : 'mymessageA',
+        })
+      );
 
-      const validationFn2: RecordValidationFunctionSync = ({ message }) => ({
-        type: '',
-        succeeded: false,
-        message: message ? (message as string) : 'mymessageB',
-      });
+      const validationFn2: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageB',
+        })
+      );
 
       const validationSchema: ValidationSchema = {
-        record: [validationFn1, validationFn2, ,],
+        records: {
+          MY_RECORD_VALIDATION: [validationFn1, validationFn2],
+        },
       };
 
       const values = {};
@@ -593,31 +726,45 @@ when adding two validators to a given field and second fails
 
       // Assert
       result.then(validationResult => {
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.recordErrors.length).toBe(1);
-        expect(validationResult.recordErrors[0].message).toBe('mymessageB');
+        expect(validationResult.fieldErrors).toEqual({});
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageB',
+          },
+        });
         done();
       });
     });
 
-    it(`#Spec 7: should failed form validation, and return back two validationResult on forms
-    when adding two record validation first fails, second fails
+    it(`#Spec 7: should failed form validation, and return back one validationResult on forms
+    when adding one record with two validation first fails, second fails
     `, done => {
       // Arrange
-      const validationFn1: RecordValidationFunctionSync = ({ message }) => ({
-        type: '',
-        succeeded: false,
-        message: message ? (message as string) : 'mymessageA',
-      });
+      const validationFn1: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageA',
+        })
+      );
 
-      const validationFn2: RecordValidationFunctionSync = ({ message }) => ({
-        type: '',
-        succeeded: false,
-        message: message ? (message as string) : 'mymessageB',
-      });
+      const validationFn2: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageB',
+        })
+      );
 
       const validationSchema: ValidationSchema = {
-        record: [validationFn1, validationFn2, ,],
+        records: {
+          MY_RECORD_VALIDATION: [validationFn1, validationFn2],
+        },
       };
 
       const values = {};
@@ -628,38 +775,153 @@ when adding two validators to a given field and second fails
 
       // Assert
       result.then(validationResult => {
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).not.toHaveBeenCalled();
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.recordErrors.length).toBe(2);
-        expect(validationResult.recordErrors[0].message).toBe('mymessageA');
-        expect(validationResult.recordErrors[1].message).toBe('mymessageB');
+        expect(validationResult.fieldErrors).toEqual({});
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageA',
+          },
+        });
         done();
       });
     });
 
-    it(`#Spec 8: should failed form validation, and return back a field validation result
+    it(`#Spec 8: should succed form validation, and return back one validationResult on forms
+    when adding one record with two validation first and second succeded
+    `, done => {
+      // Arrange
+      const validationFn1: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: true,
+          message: message ? (message as string) : 'mymessageA',
+        })
+      );
+
+      const validationFn2: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: true,
+          message: message ? (message as string) : 'mymessageB',
+        })
+      );
+
+      const validationSchema: ValidationSchema = {
+        records: {
+          MY_RECORD_VALIDATION: [validationFn1, validationFn2],
+        },
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeTruthy();
+        expect(validationResult.fieldErrors).toEqual({});
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: true,
+            message: 'mymessageB',
+          },
+        });
+        done();
+      });
+    });
+
+    it(`#Spec 9: should fail form validation, and return back two validationResult on forms
+    when adding two record with one validation first and second fails
+    `, done => {
+      // Arrange
+      const validationFn1: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageA',
+        })
+      );
+
+      const validationFn2: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageB',
+        })
+      );
+
+      const validationSchema: ValidationSchema = {
+        records: {
+          MY_RECORD_VALIDATION1: [validationFn1],
+          MY_RECORD_VALIDATION2: [validationFn2],
+        },
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.fieldErrors).toEqual({});
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION1: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageA',
+          },
+          MY_RECORD_VALIDATION2: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageB',
+          },
+        });
+        done();
+      });
+    });
+
+    it(`#Spec 10: should failed form validation, and return back a field validation result
     a form validation result
     when adding one field validation that fails and record validation that fails
     `, done => {
       // Arrange
-      const myFieldValidation: FieldValidationFunctionSync = fieldValidatorArgs => ({
-        type: 'MY_TYPE',
-        succeeded: false,
-        message: 'mymessage',
-      });
+      const myFieldValidation: FieldValidationFunctionSync = jest.fn(
+        fieldValidatorArgs => ({
+          type: 'MY_TYPE',
+          succeeded: false,
+          message: 'mymessageA',
+        })
+      );
 
-      const myrecordValidation: RecordValidationFunctionSync = ({
-        message,
-      }) => ({
-        type: '',
-        succeeded: false,
-        message: message ? (message as string) : 'mymessageA',
-      });
+      const myRecordValidation: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageB',
+        })
+      );
 
       const validationSchema: ValidationSchema = {
         fields: {
           username: [myFieldValidation],
         },
-        record: [myrecordValidation],
+        records: {
+          MY_RECORD_VALIDATION: [myRecordValidation],
+        },
       };
 
       const values = {};
@@ -670,37 +932,54 @@ when adding two validators to a given field and second fails
 
       // Assert
       result.then(validationResult => {
+        expect(myFieldValidation).toHaveBeenCalled();
+        expect(myRecordValidation).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.fieldErrors.length).toBe(1);
-        expect(validationResult.recordErrors.length).toBe(1);
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: 'mymessageA',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageB',
+          },
+        });
         done();
       });
     });
 
-    it(`#Spec 8: should failed form validation, and return back a zero field validation result
-    a form validation result
+    it(`#Spec 11: should failed form validation, and return back a one field validation result and one record validation result
     when adding one field validation that succeeds and record validation that fails
     `, done => {
       // Arrange
-      const myFieldValidation: FieldValidationFunctionSync = fieldValidatorArgs => ({
-        type: 'MY_TYPE',
-        succeeded: true,
-        message: 'mymessage',
-      });
+      const myFieldValidation: FieldValidationFunctionSync = jest.fn(
+        fieldValidatorArgs => ({
+          type: 'MY_TYPE',
+          succeeded: true,
+          message: 'mymessageA',
+        })
+      );
 
-      const myrecordValidation: RecordValidationFunctionSync = ({
-        message,
-      }) => ({
-        type: '',
-        succeeded: false,
-        message: message ? (message as string) : 'mymessageA',
-      });
+      const myRecordValidation: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageB',
+        })
+      );
 
       const validationSchema: ValidationSchema = {
         fields: {
           username: [myFieldValidation],
         },
-        record: [myrecordValidation],
+        records: {
+          MY_RECORD_VALIDATION: [myRecordValidation],
+        },
       };
 
       const values = {};
@@ -711,37 +990,55 @@ when adding two validators to a given field and second fails
 
       // Assert
       result.then(validationResult => {
+        expect(myFieldValidation).toHaveBeenCalled();
+        expect(myRecordValidation).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.fieldErrors.length).toBe(0);
-        expect(validationResult.recordErrors.length).toBe(1);
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
+            type: 'MY_TYPE',
+            succeeded: true,
+            message: 'mymessageA',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageB',
+          },
+        });
         done();
       });
     });
 
-    it(`#Spec 9: should failed form validation, and return back a field validation result
+    it(`#Spec 12: should failed form validation, and return back a field validation result
     and zero form validation result
     when adding one field validation that fails and record validation that succeeds
     `, done => {
       // Arrange
-      const myFieldValidation: FieldValidationFunctionSync = fieldValidatorArgs => ({
-        type: 'MY_TYPE',
-        succeeded: false,
-        message: 'mymessage',
-      });
+      const myFieldValidation: FieldValidationFunctionSync = jest.fn(
+        fieldValidatorArgs => ({
+          type: 'MY_TYPE',
+          succeeded: false,
+          message: 'mymessageA',
+        })
+      );
 
-      const myrecordValidation: RecordValidationFunctionSync = ({
-        message,
-      }) => ({
-        type: '',
-        succeeded: true,
-        message: message ? (message as string) : 'mymessageA',
-      });
+      const myRecordValidation: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: true,
+          message: message ? (message as string) : 'mymessageB',
+        })
+      );
 
       const validationSchema: ValidationSchema = {
         fields: {
           username: [myFieldValidation],
         },
-        record: [myrecordValidation],
+        records: {
+          MY_RECORD_VALIDATION: [myRecordValidation],
+        },
       };
 
       const values = {};
@@ -752,40 +1049,58 @@ when adding two validators to a given field and second fails
 
       // Assert
       result.then(validationResult => {
+        expect(myFieldValidation).toHaveBeenCalled();
+        expect(myRecordValidation).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.fieldErrors.length).toBe(1);
-        expect(validationResult.recordErrors.length).toBe(0);
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: 'mymessageA',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: true,
+            message: 'mymessageB',
+          },
+        });
         done();
       });
     });
 
-    it(`#Spec 9: should succeed form validation, and return back zero field validation result
+    it(`#Spec 13: should succeed form validation, and return back zero field validation result
     and zero form validation result
     when adding one field validation that succeeds and record validation that succeeds
     `, done => {
       // Arrange
-      const myFieldValidation: FieldValidationFunctionSync = fieldValidatorArgs => ({
-        type: 'MY_TYPE',
-        succeeded: true,
-        message: 'mymessage',
-      });
+      const myFieldValidation: FieldValidationFunctionSync = jest.fn(
+        fieldValidatorArgs => ({
+          type: 'MY_TYPE',
+          succeeded: true,
+          message: 'mymessageA',
+        })
+      );
 
-      const myrecordValidation: RecordValidationFunctionSync = ({
-        message,
-      }) => ({
-        type: '',
-        succeeded: true,
-        message: message ? (message as string) : 'mymessageA',
-      });
+      const myRecordValidation: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: true,
+          message: message ? (message as string) : 'mymessageB',
+        })
+      );
 
       const validationSchema: ValidationSchema = {
         fields: {
           username: [myFieldValidation],
         },
-        record: [myrecordValidation],
+        records: {
+          MY_RECORD_VALIDATION: [myRecordValidation],
+        },
       };
 
-      const values = {};
+      const values = { username: 'test-value' };
 
       // Act
       const formValidation = createFormValidation(validationSchema);
@@ -793,9 +1108,23 @@ when adding two validators to a given field and second fails
 
       // Assert
       result.then(validationResult => {
+        expect(myFieldValidation).toHaveBeenCalled();
+        expect(myRecordValidation).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeTruthy();
-        expect(validationResult.fieldErrors.length).toBe(0);
-        expect(validationResult.recordErrors.length).toBe(0);
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
+            type: 'MY_TYPE',
+            succeeded: true,
+            message: 'mymessageA',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: true,
+            message: 'mymessageB',
+          },
+        });
         done();
       });
     });

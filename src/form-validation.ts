@@ -34,7 +34,7 @@ export class FormValidation {
         );
       }
 
-      if (records && records instanceof Array) {
+      if (records && typeof records === 'object') {
         this.recordSchema = mapToInternalRecordValidationSchema(
           validationSchema.records
         );
@@ -49,7 +49,9 @@ export class FormValidation {
     value: any,
     values?: any
   ): Promise<ValidationResult> {
-    return validateField(fieldId, value, values, this.fieldSchema);
+    return validateField(fieldId, value, values, this.fieldSchema).then(
+      ({ key, ...validationResult }) => ({ ...validationResult })
+    );
   }
 
   public validateRecords(values?: any): Promise<RecordValidationResult> {

@@ -1,11 +1,11 @@
 import { buildFormValidationResult } from './form-validation-summary-builder';
-import { ValidationResult } from './model';
+import { InternalValidationResult } from './model';
 
 describe(`buildFormValidationResult`, () => {
   it(`Spec #1 => should returns new FormValidationResult equals { succeeded: true }
   when passing fieldValidationResults equals undefined`, () => {
     // Arrange
-    const validationResults: ValidationResult[] = void 0;
+    const validationResults: InternalValidationResult[] = void 0;
 
     // Act
     const formValidationSummary = buildFormValidationResult(validationResults);

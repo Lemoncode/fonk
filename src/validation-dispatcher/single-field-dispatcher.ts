@@ -1,21 +1,21 @@
 import {
-  ValidationResult,
-  createDefaultValidationResult,
+  InternalValidationResult,
+  createDefaultInternalValidationResult,
   InternalFieldValidation,
 } from '../model';
 import { arrayContainsEntries, isUndefinedOrNull } from '../helper';
 
 const checkValidationResult = (
-  validationResult: ValidationResult
-): ValidationResult => {
-  let result: ValidationResult = validationResult;
+  validationResult: InternalValidationResult
+): InternalValidationResult => {
+  let result: InternalValidationResult = validationResult;
 
   if (!validationResult || isUndefinedOrNull(validationResult.succeeded)) {
     // show a console error, warn the user one of his validators is not well formed
     console.error(
       'form-validators: One of the field validator is returning a non expected value.'
     );
-    result = createDefaultValidationResult();
+    result = createDefaultInternalValidationResult();
   }
 
   return result;
@@ -25,7 +25,7 @@ const fireValidation = (
   value,
   values,
   internalFieldValidation: InternalFieldValidation
-): Promise<ValidationResult> =>
+): Promise<InternalValidationResult> =>
   internalFieldValidation
     .validator({
       value,
@@ -41,10 +41,10 @@ const iterateValidationsUntilFailOrAllSucceeded = (
   value: any,
   values: any,
   internalFieldValidations: InternalFieldValidation[]
-): Promise<ValidationResult> =>
+): Promise<InternalValidationResult> =>
   internalFieldValidations.reduce(
     (result, next) =>
-      result.then((validationResult: ValidationResult) =>
+      result.then((validationResult: InternalValidationResult) =>
         validationResult.succeeded
           ? fireValidation(value, values, next)
           : validationResult
@@ -56,11 +56,11 @@ export const fireSingleFieldValidations = (
   value: any,
   values: any,
   internalFieldValidations: InternalFieldValidation[]
-): Promise<ValidationResult> =>
+): Promise<InternalValidationResult> =>
   arrayContainsEntries(internalFieldValidations)
     ? iterateValidationsUntilFailOrAllSucceeded(
         value,
         values,
         internalFieldValidations
       )
-    : Promise.resolve(createDefaultValidationResult());
+    : Promise.resolve(createDefaultInternalValidationResult());
