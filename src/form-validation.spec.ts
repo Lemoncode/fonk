@@ -477,6 +477,415 @@ when adding one validator to a given nested field
     });
   });
 
+  describe('validateRecords', () => {
+    it(`#Spec 1: should failed form validation
+    when adding a record validation that fails (sync flavour function)
+    `, done => {
+      // Arrange
+      const mockValidationFn: RecordValidationFunctionSync = jest
+        .fn()
+        .mockReturnValue({
+          type: '',
+          succeeded: false,
+          message: 'mymessageA',
+        });
+
+      const validationSchema: ValidationSchema = {
+        records: {
+          MY_RECORD_VALIDATION: [mockValidationFn],
+        },
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateRecords(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(mockValidationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageA',
+          },
+        });
+        done();
+      });
+    });
+
+    it(`#Spec 2: should failed form validation
+    when adding a record validation that fails (async flavour function)
+    `, done => {
+      // Arrange
+      const mockValidationFn: RecordValidationFunctionSync = jest
+        .fn()
+        .mockResolvedValue({
+          type: '',
+          succeeded: false,
+          message: 'mymessageA',
+        });
+
+      const validationSchema: ValidationSchema = {
+        records: {
+          MY_RECORD_VALIDATION: [mockValidationFn],
+        },
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateRecords(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(mockValidationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageA',
+          },
+        });
+        done();
+      });
+    });
+
+    it(`#Spec 3: should failed form validation
+    when adding a record validation that fails (fullRecordValidationSchema entry, async validator)
+    `, done => {
+      // Arrange
+      const validationFn: RecordValidationFunctionAsync = jest.fn(
+        ({ message }) =>
+          Promise.resolve<ValidationResult>({
+            type: '',
+            succeeded: false,
+            message: message ? (message as string) : 'mymessageA',
+          })
+      );
+
+      const validationSchema: ValidationSchema = {
+        records: {
+          MY_RECORD_VALIDATION: [
+            { validator: validationFn, message: 'My custom message' },
+          ],
+        },
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateRecords(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'My custom message',
+          },
+        });
+        done();
+      });
+    });
+
+    it(`#Spec 4: should failed form validation
+    when adding a record validation that fails (fullRecordValidationSchema entry, sync validator)
+    `, done => {
+      // Arrange
+      const validationFn: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageA',
+        })
+      );
+
+      const validationSchema: ValidationSchema = {
+        records: {
+          MY_RECORD_VALIDATION: [
+            { validator: validationFn, message: 'My custom message' },
+          ],
+        },
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateRecords(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'My custom message',
+          },
+        });
+        done();
+      });
+    });
+
+    it(`#Spec 5: should failed form validation, and return back one validationResult on forms
+    when adding one record with two validation first fails, second succeeds
+    `, done => {
+      // Arrange
+      const validationFn1: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageA',
+        })
+      );
+
+      const validationFn2: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: true,
+          message: message ? (message as string) : 'mymessageB',
+        })
+      );
+
+      const validationSchema: ValidationSchema = {
+        records: {
+          MY_RECORD_VALIDATION: [validationFn1, validationFn2],
+        },
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateRecords(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).not.toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageA',
+          },
+        });
+        done();
+      });
+    });
+
+    it(`#Spec 6: should failed form validation, and return back one validationResult on forms
+    when adding one record with two validation first succeeds, second fails
+    `, done => {
+      // Arrange
+      const validationFn1: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: true,
+          message: message ? (message as string) : 'mymessageA',
+        })
+      );
+
+      const validationFn2: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageB',
+        })
+      );
+
+      const validationSchema: ValidationSchema = {
+        records: {
+          MY_RECORD_VALIDATION: [validationFn1, validationFn2],
+        },
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateRecords(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageB',
+          },
+        });
+        done();
+      });
+    });
+
+    it(`#Spec 7: should failed form validation, and return back one validationResult on forms
+    when adding one record with two validation first fails, second fails
+    `, done => {
+      // Arrange
+      const validationFn1: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageA',
+        })
+      );
+
+      const validationFn2: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageB',
+        })
+      );
+
+      const validationSchema: ValidationSchema = {
+        records: {
+          MY_RECORD_VALIDATION: [validationFn1, validationFn2],
+        },
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateRecords(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).not.toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageA',
+          },
+        });
+        done();
+      });
+    });
+
+    it(`#Spec 8: should succed form validation, and return back one validationResult on forms
+    when adding one record with two validation first and second succeded
+    `, done => {
+      // Arrange
+      const validationFn1: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: true,
+          message: message ? (message as string) : 'mymessageA',
+        })
+      );
+
+      const validationFn2: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: true,
+          message: message ? (message as string) : 'mymessageB',
+        })
+      );
+
+      const validationSchema: ValidationSchema = {
+        records: {
+          MY_RECORD_VALIDATION: [validationFn1, validationFn2],
+        },
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateRecords(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeTruthy();
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: true,
+            message: 'mymessageB',
+          },
+        });
+        done();
+      });
+    });
+
+    it(`#Spec 9: should fail form validation, and return back two validationResult on forms
+    when adding two record with one validation first and second fails
+    `, done => {
+      // Arrange
+      const validationFn1: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageA',
+        })
+      );
+
+      const validationFn2: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageB',
+        })
+      );
+
+      const validationSchema: ValidationSchema = {
+        records: {
+          MY_RECORD_VALIDATION1: [validationFn1],
+          MY_RECORD_VALIDATION2: [validationFn2],
+        },
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateRecords(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationFn1).toHaveBeenCalled();
+        expect(validationFn2).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION1: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageA',
+          },
+          MY_RECORD_VALIDATION2: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageB',
+          },
+        });
+        done();
+      });
+    });
+  });
+
   describe(`validateForm`, () => {
     it(`#Spec 1: should failed form validation
     when adding a record validation that fails (sync flavour function)
@@ -1070,8 +1479,8 @@ when adding one validator to a given nested field
       });
     });
 
-    it(`#Spec 13: should succeed form validation, and return back zero field validation result
-    and zero form validation result
+    it(`#Spec 13: should succeed form validation, and return back one field validation result
+    and one record validation result
     when adding one field validation that succeeds and record validation that succeeds
     `, done => {
       // Arrange
@@ -1125,6 +1534,47 @@ when adding one validator to a given nested field
             message: 'mymessageB',
           },
         });
+        done();
+      });
+    });
+
+    it(`#Spec 14: should fail form validation, and return one field validation result
+    and zero form validation result
+    when adding one field validation that fails with nested field
+    `, done => {
+      // Arrange
+      const myFieldValidation: FieldValidationFunctionSync = jest.fn(
+        fieldValidatorArgs => ({
+          type: 'MY_TYPE',
+          succeeded: true,
+          message: 'mymessageA',
+        })
+      );
+
+      const validationSchema: ValidationSchema = {
+        fields: {
+          'nested.field': [myFieldValidation],
+        },
+      };
+
+      const values = { username: 'test-value' };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(myFieldValidation).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeTruthy();
+        expect(validationResult.fieldErrors).toEqual({
+          'nested.field': {
+            type: 'MY_TYPE',
+            succeeded: true,
+            message: 'mymessageA',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({});
         done();
       });
     });
