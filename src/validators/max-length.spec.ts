@@ -95,7 +95,7 @@ describe('[maxLength] validation rule tests =>', () => {
       expect(validationResult.succeeded).toBeFalsy;
       expect(validationResult.type).toBe(VALIDATOR_TYPE);
       expect(validationResult.message).toBe(
-        'The value provided does not fulfil max length'
+        'The value provided does not fulfill max length'
       );
     });
 

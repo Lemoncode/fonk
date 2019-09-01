@@ -3,7 +3,7 @@ import { FieldValidationFunctionSync } from '../model';
 
 export const VALIDATOR_TYPE = 'MIN_LENGTH';
 
-let defaultMessage = 'The value provided does not fulfil min length';
+let defaultMessage = 'The value provided does not fulfill min length';
 export const setErrorMessage = message => (defaultMessage = message);
 
 const BAD_PARAMETER =

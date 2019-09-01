@@ -3,7 +3,7 @@ import { FieldValidationFunctionSync } from '../model';
 
 export const VALIDATOR_TYPE = 'MAX_LENGTH';
 
-let defaultMessage = 'The value provided does not fulfil max length';
+let defaultMessage = 'The value provided does not fulfill max length';
 export const setErrorMessage = message => (defaultMessage = message);
 
 const BAD_PARAMETER =
