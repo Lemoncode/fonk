@@ -11,9 +11,8 @@ const BAD_PARAMETER =
 
 const DEFAULT_PARAMS: LengthArgs = null;
 
-function isStringLengthValid(value: string, length: number): boolean {
-  return value.length >= length;
-}
+const isStringLengthValid = (value: string, length: number): boolean =>
+  value.length >= length;
 
 export const minLength: FieldValidationFunctionSync = fieldValidatorArgs => {
   if (!fieldValidatorArgs.customArgs) {
