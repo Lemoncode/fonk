@@ -1,21 +1,21 @@
 import { LengthArgs, parseLengthParams, isLengthValid } from './length';
 import { FieldValidationFunctionSync } from '../model';
 
-export const VALIDATOR_TYPE = 'MIN_LENGTH';
+export const VALIDATOR_TYPE = 'MAX_LENGTH';
 
-let defaultMessage = 'The value provided does not fulfil min length';
+let defaultMessage = 'The value provided does not fulfil max length';
 export const setErrorMessage = message => (defaultMessage = message);
 
 const BAD_PARAMETER =
-  'FieldValidationError: Parameter "length" for minLength in customArgs is mandatory and should be a valid number. Example: { length: 4 }.';
+  'FieldValidationError: Parameter "length" for maxLength in customArgs is mandatory and should be a valid number. Example: { length: 4 }.';
 
 const DEFAULT_PARAMS: LengthArgs = null;
 
 function isStringLengthValid(value: string, length: number): boolean {
-  return value.length >= length;
+  return value.length <= length;
 }
 
-export const minLength: FieldValidationFunctionSync = fieldValidatorArgs => {
+export const maxLength: FieldValidationFunctionSync = fieldValidatorArgs => {
   if (!fieldValidatorArgs.customArgs) {
     throw new Error(BAD_PARAMETER);
   }

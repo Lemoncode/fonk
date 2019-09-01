@@ -1,7 +1,7 @@
-import { minLength, VALIDATOR_TYPE, setErrorMessage } from './min-length';
+import { maxLength, VALIDATOR_TYPE, setErrorMessage } from './max-length';
 import { LengthArgs } from './length';
 
-describe('[minLength] validation rule tests =>', () => {
+describe('[maxLength] validation rule tests =>', () => {
   describe('When validating a non string value', () => {
     it('should return true if value is undefined', () => {
       // Arrange
@@ -11,7 +11,7 @@ describe('[minLength] validation rule tests =>', () => {
         length: 3,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = maxLength({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy;
@@ -26,7 +26,7 @@ describe('[minLength] validation rule tests =>', () => {
         length: 3,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = maxLength({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy;
@@ -44,7 +44,7 @@ describe('[minLength] validation rule tests =>', () => {
         length: 3,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = maxLength({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy;
@@ -59,14 +59,29 @@ describe('[minLength] validation rule tests =>', () => {
         length: 0,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = maxLength({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy;
       expect(validationResult.type).toBe(VALIDATOR_TYPE);
     });
 
-    it('should return true if value length is greater than length option', () => {
+    it('should return true if value length is less than length option', () => {
+      // Arrange
+      const value = '1234';
+      const values = undefined;
+      const customArgs: LengthArgs = {
+        length: 5,
+      };
+      // Act
+      const validationResult = maxLength({ value, customArgs });
+
+      // Assert
+      expect(validationResult.succeeded).toBeTruthy;
+      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+    });
+
+    it('should return false if value length is greater than length option', () => {
       // Arrange
       const value = '1234';
       const values = undefined;
@@ -74,34 +89,19 @@ describe('[minLength] validation rule tests =>', () => {
         length: 3,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
-
-      // Assert
-      expect(validationResult.succeeded).toBeTruthy;
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
-    });
-
-    it('should return false if value length is lesser than length option', () => {
-      // Arrange
-      const value = '12';
-      const values = undefined;
-      const customArgs: LengthArgs = {
-        length: 3,
-      };
-      // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = maxLength({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeFalsy;
       expect(validationResult.type).toBe(VALIDATOR_TYPE);
       expect(validationResult.message).toBe(
-        'The value provided does not fulfil min length'
+        'The value provided does not fulfil max length'
       );
     });
 
-    it('should return false if value length is lesser than length option and display custom message', () => {
+    it('should return false if value length is greater than length option and display custom message', () => {
       // Arrange
-      const value = '12';
+      const value = '1234';
       const values = undefined;
       const customArgs: LengthArgs = {
         length: 3,
@@ -109,7 +109,7 @@ describe('[minLength] validation rule tests =>', () => {
 
       setErrorMessage('my custom message');
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = maxLength({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeFalsy;
@@ -125,14 +125,14 @@ describe('[minLength] validation rule tests =>', () => {
         length: 3,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = maxLength({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy;
       expect(validationResult.type).toBe(VALIDATOR_TYPE);
     });
 
-    it('should return true if value has length greater than 0 and length option is 0', () => {
+    it('should return failed if value has length greater than 0 and length option is 0', () => {
       // Arrange
       const value = '1';
       const values = undefined;
@@ -140,10 +140,10 @@ describe('[minLength] validation rule tests =>', () => {
         length: 0,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = maxLength({ value, customArgs });
 
       // Assert
-      expect(validationResult.succeeded).toBeTruthy;
+      expect(validationResult.succeeded).toBeFalsy();
       expect(validationResult.type).toBe(VALIDATOR_TYPE);
     });
   });
@@ -157,14 +157,14 @@ describe('[minLength] validation rule tests =>', () => {
       // Act
       // TODO: check how to acomplish this using jest toThrowError
       try {
-        minLength({
+        maxLength({
           value,
           values,
         });
       } catch (error) {
         // Assert
         expect(error.message).toBe(
-          'FieldValidationError: Parameter "length" for minLength in customArgs is mandatory and should be a valid number. Example: { length: 4 }.'
+          'FieldValidationError: Parameter "length" for maxLength in customArgs is mandatory and should be a valid number. Example: { length: 4 }.'
         );
       }
     });
@@ -178,7 +178,7 @@ describe('[minLength] validation rule tests =>', () => {
       // Act
       // TODO: check how to acomplish this using jest toThrowError
       try {
-        minLength({
+        maxLength({
           value,
           values,
           customArgs: lengthArgs,
@@ -186,7 +186,7 @@ describe('[minLength] validation rule tests =>', () => {
       } catch (error) {
         // Assert
         expect(error.message).toBe(
-          'FieldValidationError: Parameter "length" for minLength in customArgs is mandatory and should be a valid number. Example: { length: 4 }.'
+          'FieldValidationError: Parameter "length" for maxLength in customArgs is mandatory and should be a valid number. Example: { length: 4 }.'
         );
       }
     });
