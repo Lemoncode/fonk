@@ -26,17 +26,17 @@ export class FormValidation {
 
   private setupValidationSchema(validationSchema: ValidationSchema) {
     if (validationSchema && typeof validationSchema === 'object') {
-      const { records, fields } = validationSchema;
+      const { record, field } = validationSchema;
 
-      if (fields && typeof fields === 'object') {
+      if (field && typeof field === 'object') {
         this.fieldSchema = mapToInternalFieldValidationSchema(
-          validationSchema.fields
+          validationSchema.field
         );
       }
 
-      if (records && typeof records === 'object') {
+      if (record && typeof record === 'object') {
         this.recordSchema = mapToInternalRecordValidationSchema(
-          validationSchema.records
+          validationSchema.record
         );
       }
     } else {

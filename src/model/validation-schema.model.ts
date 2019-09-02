@@ -24,6 +24,6 @@ export interface RecordValidationSchema {
 }
 
 export interface ValidationSchema {
-  fields?: FieldValidationSchema;
-  records?: RecordValidationSchema;
+  field?: FieldValidationSchema;
+  record?: RecordValidationSchema;
 }

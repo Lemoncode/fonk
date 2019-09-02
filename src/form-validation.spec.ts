@@ -8,7 +8,7 @@ import {
   FieldValidatorArgs,
 } from './model';
 
-describe('validateField', () => {
+describe('FormValidation', () => {
   it(`spec #1: should return an instance of FormValidation
   when calling createFormValidation
   `, () => {
@@ -22,8 +22,8 @@ describe('validateField', () => {
     expect(formValidation).toBeInstanceOf(FormValidation);
   });
 
-  describe(`FieldValidations`, () => {
-    it(`spec #2:should execute a field validation (sync and using function in schema) and fail when
+  describe(`validateField`, () => {
+    it(`spec #1:should execute a field validation (sync and using function in schema) and fail when
     adding a field validation in the schema on a given field
     firing a validation for that given field
     `, done => {
@@ -35,7 +35,7 @@ describe('validateField', () => {
       });
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
           username: [mockValidationFn],
         },
       };
@@ -54,7 +54,7 @@ describe('validateField', () => {
       });
     });
 
-    it(`spec #3: should execute a field validation (async and using function in schema) and fail when
+    it(`spec #2: should execute a field validation (async and using function in schema) and fail when
     adding a field validation in the schema on a given field
     firing a validation for that given field (include as well custom message override)
     `, done => {
@@ -66,7 +66,7 @@ describe('validateField', () => {
       });
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
           username: [mockValidationFn],
         },
       };
@@ -85,7 +85,7 @@ describe('validateField', () => {
       });
     });
 
-    it(`spec #4: should execute a field validation (defined as FullValidator, sync function in schema) and fail when
+    it(`spec #3: should execute a field validation (defined as FullValidator, sync function in schema) and fail when
     adding a field validation in the schema on a given field
     firing a validation for that given field
     `, done => {
@@ -99,7 +99,46 @@ describe('validateField', () => {
       );
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
+          username: [
+            {
+              validator: mockValidationFn,
+              message: 'myoverriddenmessage',
+            },
+          ],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateField('username', 'whatever');
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBe(false);
+        expect(validationResult.type).toBe('MY_TYPE');
+        expect(validationResult.message).toBe('myoverriddenmessage');
+        expect(mockValidationFn).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it(`spec #4: should execute a field validation (defined as FullValidator, async function in schema) and fail when
+    adding a field validation in the schema on a given field
+    firing a validation for that given field
+    `, done => {
+      // Arrange
+      const mockValidationFn = jest.fn(
+        ({ message }): Promise<ValidationResult> =>
+          Promise.resolve<ValidationResult>({
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: message ? (message as string) : 'mymessage',
+          })
+      );
+
+      const validationSchema: ValidationSchema = {
+        field: {
           username: [
             {
               validator: mockValidationFn,
@@ -124,45 +163,6 @@ describe('validateField', () => {
     });
 
     it(`spec #5: should execute a field validation (defined as FullValidator, async function in schema) and fail when
-    adding a field validation in the schema on a given field
-    firing a validation for that given field
-    `, done => {
-      // Arrange
-      const mockValidationFn = jest.fn(
-        ({ message }): Promise<ValidationResult> =>
-          Promise.resolve<ValidationResult>({
-            type: 'MY_TYPE',
-            succeeded: false,
-            message: message ? (message as string) : 'mymessage',
-          })
-      );
-
-      const validationSchema: ValidationSchema = {
-        fields: {
-          username: [
-            {
-              validator: mockValidationFn,
-              message: 'myoverriddenmessage',
-            },
-          ],
-        },
-      };
-
-      // Act
-      const formValidation = createFormValidation(validationSchema);
-      const result = formValidation.validateField('username', 'whatever');
-
-      // Assert
-      result.then(validationResult => {
-        expect(validationResult.succeeded).toBe(false);
-        expect(validationResult.type).toBe('MY_TYPE');
-        expect(validationResult.message).toBe('myoverriddenmessage');
-        expect(mockValidationFn).toHaveBeenCalled();
-        done();
-      });
-    });
-
-    it(`spec #6: should execute a field validation (defined as FullValidator, async function in schema) and fail when
     adding a field validation in the schema, using all possible args
     `, done => {
       // Arrange
@@ -181,7 +181,7 @@ describe('validateField', () => {
       );
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
           username: [
             {
               validator: mockValidationFn,
@@ -212,7 +212,7 @@ describe('validateField', () => {
       });
     });
 
-    it(`spec #7:should execute a field validation (sync and using full schema) passing
+    it(`spec #6:should execute a field validation (sync and using full schema) passing
       custom args and failed when customArgs.fail === true
       `, done => {
       // Arrange
@@ -235,7 +235,7 @@ describe('validateField', () => {
       );
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
           username: [
             {
               validator: validator,
@@ -259,7 +259,7 @@ describe('validateField', () => {
       });
     });
 
-    it(`spec #8:should execute a field validation (sync and using full schema) passing
+    it(`spec #7:should execute a field validation (sync and using full schema) passing
       custom args and succeeded when customArgs.fail === false
       `, done => {
       // Arrange
@@ -282,7 +282,7 @@ describe('validateField', () => {
       );
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
           username: [
             {
               validator: validator,
@@ -304,7 +304,7 @@ describe('validateField', () => {
       });
     });
 
-    it(`spec #9:should return succeed validation result
+    it(`spec #8:should return succeed validation result
     when adding two validators to a given field and both succeed
 `, done => {
       // Arrange
@@ -321,7 +321,7 @@ describe('validateField', () => {
       });
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
           username: [mockValidationFn1, mockValidationFn2],
         },
       };
@@ -339,7 +339,7 @@ describe('validateField', () => {
       });
     });
 
-    it(`spec #10:should execute first validations for a given field and failed
+    it(`spec #9:should execute first validations for a given field and failed
 when adding two validators to a given field and first fails
 `, done => {
       // Arrange
@@ -356,7 +356,7 @@ when adding two validators to a given field and first fails
       });
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
           username: [mockValidationFn1, mockValidationFn2],
         },
       };
@@ -375,7 +375,7 @@ when adding two validators to a given field and first fails
       });
     });
 
-    it(`spec #11:should execute two validations for a given field and failed
+    it(`spec #10:should execute two validations for a given field and failed
 when adding two validators to a given field and second fails
 `, done => {
       // Arrange
@@ -392,7 +392,7 @@ when adding two validators to a given field and second fails
       });
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
           username: [mockValidationFn1, mockValidationFn2],
         },
       };
@@ -411,7 +411,7 @@ when adding two validators to a given field and second fails
       });
     });
 
-    it(`spec #12:should execute first validation for a given field and failed
+    it(`spec #11:should execute first validation for a given field and failed
 when adding two validators to a given field fails and second fails
 `, done => {
       // Arrange
@@ -428,7 +428,7 @@ when adding two validators to a given field fails and second fails
       });
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
           username: [mockValidationFn1, mockValidationFn2],
         },
       };
@@ -447,7 +447,7 @@ when adding two validators to a given field fails and second fails
       });
     });
 
-    it(`spec #13:should execute validation for a given field and failed
+    it(`spec #12:should execute validation for a given field and failed
 when adding one validator to a given nested field
 `, done => {
       // Arrange
@@ -458,7 +458,7 @@ when adding one validator to a given nested field
       });
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
           'nested.field': [mockValidationFn],
         },
       };
@@ -491,7 +491,7 @@ when adding one validator to a given nested field
         });
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [mockValidationFn],
         },
       };
@@ -530,7 +530,7 @@ when adding one validator to a given nested field
         });
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [mockValidationFn],
         },
       };
@@ -570,7 +570,7 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [
             { validator: validationFn, message: 'My custom message' },
           ],
@@ -611,7 +611,7 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [
             { validator: validationFn, message: 'My custom message' },
           ],
@@ -660,7 +660,7 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [validationFn1, validationFn2],
         },
       };
@@ -708,7 +708,7 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [validationFn1, validationFn2],
         },
       };
@@ -756,7 +756,7 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [validationFn1, validationFn2],
         },
       };
@@ -804,7 +804,7 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [validationFn1, validationFn2],
         },
       };
@@ -852,7 +852,7 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION1: [validationFn1],
           MY_RECORD_VALIDATION2: [validationFn2],
         },
@@ -900,7 +900,7 @@ when adding one validator to a given nested field
         });
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [mockValidationFn],
         },
       };
@@ -940,7 +940,7 @@ when adding one validator to a given nested field
         });
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [mockValidationFn],
         },
       };
@@ -981,7 +981,7 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [
             { validator: validationFn, message: 'My custom message' },
           ],
@@ -1023,7 +1023,7 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [
             { validator: validationFn, message: 'My custom message' },
           ],
@@ -1073,7 +1073,7 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [validationFn1, validationFn2],
         },
       };
@@ -1122,7 +1122,7 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [validationFn1, validationFn2],
         },
       };
@@ -1171,7 +1171,7 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [validationFn1, validationFn2],
         },
       };
@@ -1220,7 +1220,7 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [validationFn1, validationFn2],
         },
       };
@@ -1269,7 +1269,7 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        records: {
+        record: {
           MY_RECORD_VALIDATION1: [validationFn1],
           MY_RECORD_VALIDATION2: [validationFn2],
         },
@@ -1325,10 +1325,10 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
           username: [myFieldValidation],
         },
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [myRecordValidation],
         },
       };
@@ -1383,10 +1383,10 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
           username: [myFieldValidation],
         },
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [myRecordValidation],
         },
       };
@@ -1442,10 +1442,10 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
           username: [myFieldValidation],
         },
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [myRecordValidation],
         },
       };
@@ -1501,10 +1501,10 @@ when adding one validator to a given nested field
       );
 
       const validationSchema: ValidationSchema = {
-        fields: {
+        field: {
           username: [myFieldValidation],
         },
-        records: {
+        record: {
           MY_RECORD_VALIDATION: [myRecordValidation],
         },
       };
@@ -1539,25 +1539,33 @@ when adding one validator to a given nested field
     });
 
     it(`#Spec 14: should fail form validation, and return one field validation result
-    and zero form validation result
-    when adding one field validation that fails with nested field
+    and form validation result
+    when adding two fields validation that succeed with nested fields
     `, done => {
       // Arrange
-      const myFieldValidation: FieldValidationFunctionSync = jest.fn(
+      const myFieldValidation1: FieldValidationFunctionSync = jest.fn(
         fieldValidatorArgs => ({
-          type: 'MY_TYPE',
+          type: 'MY_TYPE_A',
           succeeded: true,
           message: 'mymessageA',
         })
       );
+      const myFieldValidation2: FieldValidationFunctionSync = jest.fn(
+        fieldValidatorArgs => ({
+          type: 'MY_TYPE_B',
+          succeeded: true,
+          message: 'mymessageB',
+        })
+      );
 
       const validationSchema: ValidationSchema = {
-        fields: {
-          'nested.field': [myFieldValidation],
+        field: {
+          'nested.field1': [myFieldValidation1],
+          'nested.field2': [myFieldValidation2],
         },
       };
 
-      const values = { username: 'test-value' };
+      const values = {};
 
       // Act
       const formValidation = createFormValidation(validationSchema);
@@ -1565,12 +1573,523 @@ when adding one validator to a given nested field
 
       // Assert
       result.then(validationResult => {
-        expect(myFieldValidation).toHaveBeenCalled();
+        expect(myFieldValidation1).toHaveBeenCalled();
+        expect(myFieldValidation2).toHaveBeenCalled();
         expect(validationResult.succeeded).toBeTruthy();
         expect(validationResult.fieldErrors).toEqual({
-          'nested.field': {
+          'nested.field1': {
+            type: 'MY_TYPE_A',
+            succeeded: true,
+            message: 'mymessageA',
+          },
+          'nested.field2': {
+            type: 'MY_TYPE_B',
+            succeeded: true,
+            message: 'mymessageB',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({});
+        done();
+      });
+    });
+
+    it(`spec #15:should execute a validateForm with field (sync and using function in schema) and fail when
+    adding a field validation in the schema on a given field
+    firing a validation for that given field
+    `, done => {
+      // Arrange
+      const mockValidationFn = jest.fn().mockReturnValue({
+        type: 'MY_TYPE',
+        succeeded: false,
+        message: 'mymessage',
+      });
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          username: [mockValidationFn],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const values = {};
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(mockValidationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: 'mymessage',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({});
+        done();
+      });
+    });
+
+    it(`spec #16: should execute a validateForm with field (async and using function in schema) and fail when
+    adding a field validation in the schema on a given field
+    firing a validation for that given field (include as well custom message override)
+    `, done => {
+      // Arrange
+      const mockValidationFn = jest.fn().mockResolvedValue({
+        type: 'MY_TYPE',
+        succeeded: false,
+        message: 'mymessage',
+      });
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          username: [mockValidationFn],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const values = {};
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(mockValidationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: 'mymessage',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({});
+        done();
+      });
+    });
+
+    it(`spec #17: should execute a validateForm with field (defined as FullValidator, sync function in schema) and fail when
+    adding a field validation in the schema on a given field
+    firing a validation for that given field
+    `, done => {
+      // Arrange
+      const mockValidationFn = jest.fn(
+        ({ message }): ValidationResult => ({
+          type: 'MY_TYPE',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessage',
+        })
+      );
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          username: [
+            {
+              validator: mockValidationFn,
+              message: 'myoverriddenmessage',
+            },
+          ],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const values = {};
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(mockValidationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: 'myoverriddenmessage',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({});
+        done();
+      });
+    });
+
+    it(`spec #18: should execute a validateForm with field (defined as FullValidator, async function in schema) and fail when
+    adding a field validation in the schema on a given field
+    firing a validation for that given field
+    `, done => {
+      // Arrange
+      const mockValidationFn = jest.fn(
+        ({ message }): Promise<ValidationResult> =>
+          Promise.resolve<ValidationResult>({
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: message ? (message as string) : 'mymessage',
+          })
+      );
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          username: [
+            {
+              validator: mockValidationFn,
+              message: 'myoverriddenmessage',
+            },
+          ],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const values = {};
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(mockValidationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: 'myoverriddenmessage',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({});
+        done();
+      });
+    });
+
+    it(`spec #19: should execute a validateForm with field (defined as FullValidator, async function in schema) and fail when
+    adding a field validation in the schema, using all possible args
+    `, done => {
+      // Arrange
+      const mockValidationFn = jest.fn(
+        ({
+          value,
+          message,
+          customArgs,
+          values,
+        }: FieldValidatorArgs): Promise<ValidationResult> =>
+          Promise.resolve<ValidationResult>({
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: `${value} ${message} ${customArgs} ${JSON.stringify(
+              values
+            )}`,
+          })
+      );
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          username: [
+            {
+              validator: mockValidationFn,
+              customArgs: 'custom-arg',
+              message: 'myoverriddenmessage',
+            },
+          ],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const values = { username: 'whatever' };
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(mockValidationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
+            type: 'MY_TYPE',
+            succeeded: false,
+            message:
+              'whatever myoverriddenmessage custom-arg {"username":"whatever"}',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({});
+        done();
+      });
+    });
+
+    it(`spec #20:should execute a validateForm with field (sync and using full schema) passing
+      custom args and failed when customArgs.fail === true
+      `, done => {
+      // Arrange
+      const mockValidationFn: FieldValidationFunctionSync = jest.fn(
+        ({ customArgs }): ValidationResult => {
+          if (customArgs.fail) {
+            return {
+              type: 'MY_TYPE',
+              succeeded: false,
+              message: 'received custom args fail true',
+            };
+          } else {
+            return {
+              type: 'MY_TYPE',
+              succeeded: true,
+              message: 'received custom args fail false',
+            };
+          }
+        }
+      );
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          username: [
+            {
+              validator: mockValidationFn,
+              customArgs: { fail: true },
+            },
+          ],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const values = {};
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(mockValidationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: 'received custom args fail true',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({});
+        done();
+      });
+    });
+
+    it(`spec #21:should execute a validateForm with field (sync and using full schema) passing
+      custom args and succeeded when customArgs.fail === false
+      `, done => {
+      // Arrange
+      const mockValidationFn: FieldValidationFunctionSync = jest.fn(
+        ({ customArgs }): ValidationResult => {
+          if (customArgs.fail) {
+            return {
+              type: 'MY_TYPE',
+              succeeded: false,
+              message: 'received custom args fail true',
+            };
+          } else {
+            return {
+              type: 'MY_TYPE',
+              succeeded: true,
+              message: 'received custom args fail false',
+            };
+          }
+        }
+      );
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          username: [
+            {
+              validator: mockValidationFn,
+              customArgs: { fail: false },
+            },
+          ],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const values = {};
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(mockValidationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeTruthy();
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
             type: 'MY_TYPE',
             succeeded: true,
+            message: 'received custom args fail false',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({});
+        done();
+      });
+    });
+
+    it(`spec #22:should return succeed validateForm with field
+    when adding two validators to a given field and both succeed
+`, done => {
+      // Arrange
+      const mockValidationFn1 = jest.fn().mockReturnValue({
+        type: 'MY_VALIDATOR_A',
+        succeeded: true,
+        message: 'mymessage',
+      });
+
+      const mockValidationFn2 = jest.fn().mockReturnValue({
+        type: 'MY_VALIDATOR_B',
+        succeeded: true,
+        message: 'mymessage',
+      });
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          username: [mockValidationFn1, mockValidationFn2],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const values = {};
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(mockValidationFn1).toHaveBeenCalled();
+        expect(mockValidationFn2).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeTruthy();
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
+            type: 'MY_VALIDATOR_B',
+            succeeded: true,
+            message: 'mymessage',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({});
+        done();
+      });
+    });
+
+    it(`spec #23:should execute first validations for a given field and failed validateForm with field
+when adding two validators to a given field and first fails
+`, done => {
+      // Arrange
+      const mockValidationFn1 = jest.fn().mockReturnValue({
+        type: 'MY_VALIDATOR_A',
+        succeeded: false,
+        message: 'mymessageA',
+      });
+
+      const mockValidationFn2 = jest.fn().mockReturnValue({
+        type: 'MY_VALIDATOR_B',
+        succeeded: true,
+        message: 'mymessageB',
+      });
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          username: [mockValidationFn1, mockValidationFn2],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const values = {};
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(mockValidationFn1).toHaveBeenCalled();
+        expect(mockValidationFn2).not.toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
+            type: 'MY_VALIDATOR_A',
+            succeeded: false,
+            message: 'mymessageA',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({});
+        done();
+      });
+    });
+
+    it(`spec #24:should execute two validations for a given field and failed validateForm with field
+when adding two validators to a given field and second fails
+`, done => {
+      // Arrange
+      const mockValidationFn1 = jest.fn().mockReturnValue({
+        type: 'MY_VALIDATOR_A',
+        succeeded: true,
+        message: 'mymessageA',
+      });
+
+      const mockValidationFn2 = jest.fn().mockReturnValue({
+        type: 'MY_VALIDATOR_B',
+        succeeded: false,
+        message: 'mymessageB',
+      });
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          username: [mockValidationFn1, mockValidationFn2],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const values = {};
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(mockValidationFn1).toHaveBeenCalled();
+        expect(mockValidationFn2).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
+            type: 'MY_VALIDATOR_B',
+            succeeded: false,
+            message: 'mymessageB',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({});
+        done();
+      });
+    });
+
+    it(`spec #25:should execute first validation for a given field and failed validateForm with field
+when adding two validators to a given field fails and second fails
+`, done => {
+      // Arrange
+      const mockValidationFn1 = jest.fn().mockReturnValue({
+        type: 'MY_VALIDATOR_A',
+        succeeded: false,
+        message: 'mymessageA',
+      });
+
+      const mockValidationFn2 = jest.fn().mockReturnValue({
+        type: 'MY_VALIDATOR_B',
+        succeeded: false,
+        message: 'mymessageB',
+      });
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          username: [mockValidationFn1, mockValidationFn2],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const values = {};
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(mockValidationFn1).toHaveBeenCalled();
+        expect(mockValidationFn2).not.toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.fieldErrors).toEqual({
+          username: {
+            type: 'MY_VALIDATOR_A',
+            succeeded: false,
             message: 'mymessageA',
           },
         });
