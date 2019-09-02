@@ -1,4 +1,5 @@
 import { FieldValidationFunctionSync } from '../model';
+import { isValidPattern } from './pattern-helpers';
 
 export const VALIDATOR_TYPE = 'EMAIL';
 
@@ -7,17 +8,6 @@ export const setErrorMessage = message => (defaultMessage = message);
 
 // RegExp from http://emailregex.com
 const EMAIL_PATTERN = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-// ===
-// TODO: once done import this functions from ./pattern
-function isEmptyValue(value) {
-  return value === null || value === undefined || value === '';
-}
-
-function isValidPattern(value, pattern: RegExp): boolean {
-  return isEmptyValue(value) ? true : pattern.test(value);
-}
-// ====
 
 const isValidField = (value): boolean => isValidPattern(value, EMAIL_PATTERN);
 

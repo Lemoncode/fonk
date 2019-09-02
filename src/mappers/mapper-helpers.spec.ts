@@ -4,13 +4,15 @@ import {
   FieldValidationFunctionAsync,
   FieldValidatorArgs,
   RecordValidatorArgs,
-} from './model';
+  RecordValidationFunctionSync,
+  RecordValidationFunctionAsync,
+} from '../model';
 import {
   convertFieldValidationToAsyncIfNeeded,
   convertRecordValidationToAsyncIfNeeded,
-} from './mappers';
+} from './mapper-helpers';
 
-describe('mappers', () => {
+describe('mapper-helpers', () => {
   describe('convertFieldValidationToAsyncIfNeeded', () => {
     it('should return a function that returns a promise with default validation result when it feeds validation equals undefined', done => {
       // Arrange
@@ -117,7 +119,7 @@ describe('mappers', () => {
   describe('convertRecordValidationToAsyncIfNeeded', () => {
     it('should return a function that returns a promise with default validation result when it feeds validation equals undefined', done => {
       // Arrange
-      const validation: FieldValidationFunctionSync = void 0;
+      const validation: RecordValidationFunctionSync = void 0;
 
       // Act
       const result = convertRecordValidationToAsyncIfNeeded(validation);
@@ -125,7 +127,7 @@ describe('mappers', () => {
       // Assert
       expect(result).toBeInstanceOf(Function);
       const recordValidatorArgs: RecordValidatorArgs = {
-        value: 'test value',
+        values: 'test value',
       };
       const promise = result(recordValidatorArgs);
       expect(promise).toBeInstanceOf(Promise);
@@ -137,7 +139,7 @@ describe('mappers', () => {
 
     it('should return a function that returns a promise with default validation result when it feeds validation equals null', done => {
       // Arrange
-      const validation: FieldValidationFunctionSync = null;
+      const validation: RecordValidationFunctionSync = null;
 
       // Act
       const result = convertRecordValidationToAsyncIfNeeded(validation);
@@ -145,7 +147,7 @@ describe('mappers', () => {
       // Assert
       expect(result).toBeInstanceOf(Function);
       const recordValidatorArgs: RecordValidatorArgs = {
-        value: 'test value',
+        values: 'test value',
       };
       const promise = result(recordValidatorArgs);
       expect(promise).toBeInstanceOf(Promise);
@@ -157,7 +159,7 @@ describe('mappers', () => {
 
     it('should return a function that returns a promise with provided validation result when it feeds validation equals sync function', done => {
       // Arrange
-      const validation: FieldValidationFunctionSync = () => ({
+      const validation: RecordValidationFunctionSync = () => ({
         key: 'test key',
         message: 'test message',
         type: 'test type',
@@ -170,7 +172,7 @@ describe('mappers', () => {
       // Assert
       expect(result).toBeInstanceOf(Function);
       const recordValidatorArgs: RecordValidatorArgs = {
-        value: 'test value',
+        values: 'test value',
       };
       const promise = result(recordValidatorArgs);
       expect(promise).toBeInstanceOf(Promise);
@@ -187,7 +189,7 @@ describe('mappers', () => {
 
     it('should return a function that returns a promise with provided validation result when it feeds validation equals async function', done => {
       // Arrange
-      const validation: FieldValidationFunctionAsync = () =>
+      const validation: RecordValidationFunctionAsync = () =>
         Promise.resolve({
           key: 'test key',
           message: 'test message',
@@ -201,7 +203,7 @@ describe('mappers', () => {
       // Assert
       expect(result).toBeInstanceOf(Function);
       const recordValidatorArgs: RecordValidatorArgs = {
-        value: 'test value',
+        values: 'test value',
       };
       const promise = result(recordValidatorArgs);
       expect(promise).toBeInstanceOf(Promise);

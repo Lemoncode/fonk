@@ -1,7 +1,7 @@
 import {
   InternalValidationResult,
   createDefaultInternalValidationResult,
-  InternalFieldValidation,
+  InternalRecordValidation,
 } from '../model';
 import { arrayContainsEntries, isUndefinedOrNull } from '../helper';
 
@@ -13,7 +13,7 @@ const checkValidationResult = (
   if (!validationResult || isUndefinedOrNull(validationResult.succeeded)) {
     // show a console error, warn the user one of his validators is not well formed
     console.error(
-      'form-validators: One of the field validator is returning a non expected value.'
+      'form-validators: One of the record validator is returning a non expected value.'
     );
     result = createDefaultInternalValidationResult();
   }
@@ -22,45 +22,39 @@ const checkValidationResult = (
 };
 
 const fireValidation = (
-  value,
   values,
-  internalFieldValidation: InternalFieldValidation
+  internalRecordValidation: InternalRecordValidation
 ): Promise<InternalValidationResult> =>
-  internalFieldValidation
+  internalRecordValidation
     .validator({
-      value,
       values,
-      customArgs: internalFieldValidation.customArgs,
-      message: internalFieldValidation.message,
+      message: internalRecordValidation.message,
     })
     .then(checkValidationResult);
 
 // Sequentially resolve promises with reduce: https://css-tricks.com/why-using-reduce-to-sequentially-resolve-promises-works/
 // Example run promises until one succeeds: https://gist.github.com/greggman/0b6eafb335de4bbb557c
 const iterateValidationsUntilFailOrAllSucceeded = (
-  value: any,
   values: any,
-  internalFieldValidations: InternalFieldValidation[]
+  internalRecordValidations: InternalRecordValidation[]
 ): Promise<InternalValidationResult> =>
-  internalFieldValidations.reduce(
+  internalRecordValidations.reduce(
     (result, next) =>
       result.then((validationResult: InternalValidationResult) =>
         validationResult.succeeded
-          ? fireValidation(value, values, next)
+          ? fireValidation(values, next)
           : validationResult
       ),
-    fireValidation(value, values, internalFieldValidations[0]) // Initial reduce value
+    fireValidation(values, internalRecordValidations[0]) // Initial reduce value
   );
 
-export const fireSingleFieldValidations = (
-  value: any,
+export const fireSingleRecordValidations = (
   values: any,
-  internalFieldValidations: InternalFieldValidation[]
+  internalRecordValidations: InternalRecordValidation[]
 ): Promise<InternalValidationResult> =>
-  arrayContainsEntries(internalFieldValidations)
+  arrayContainsEntries(internalRecordValidations)
     ? iterateValidationsUntilFailOrAllSucceeded(
-        value,
         values,
-        internalFieldValidations
+        internalRecordValidations
       )
     : Promise.resolve(createDefaultInternalValidationResult());

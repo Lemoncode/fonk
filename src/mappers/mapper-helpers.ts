@@ -7,8 +7,8 @@ import {
   createDefaultValidationResult,
   FieldValidatorArgs,
   RecordValidatorArgs,
-} from './model';
-import { isPromise } from './helper';
+} from '../model';
+import { isPromise } from '../helper';
 
 // Sugar we admit both flavors syncrhonous and asynchronous validators
 export const convertFieldValidationToAsyncIfNeeded = (

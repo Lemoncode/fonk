@@ -1,28 +1,28 @@
 import { fireSingleFieldValidations } from './single-field-dispatcher';
 import {
   FieldValidatorArgs,
-  FullFieldValidationAsync,
   FieldValidationFunctionAsync,
+  InternalFieldValidation,
 } from '../model';
 
-// TODO: we could check console log errors are spit out: https://stackoverflow.com/questions/44344801/how-to-use-jest-with-jsdom-to-test-console-log
+// Checking console log errors: https://stackoverflow.com/questions/44344801/how-to-use-jest-with-jsdom-to-test-console-log
 describe('single-field-dispatcher', () => {
   describe('fireSingleFieldValidations', () => {
     it(`
         Spec #1
-        When passing vm equals undefined, value equals undefined and validationsPerField equals undefined
+        When passing vm equals undefined, value equals undefined and internalFieldValidations equals undefined
         should return succeeded FieldValidationResult
       `, done => {
       //Arrange
       const values = undefined;
       const value = undefined;
-      const validationsPerField = undefined;
+      const internalFieldValidations: InternalFieldValidation[] = undefined;
 
       //Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -34,19 +34,19 @@ describe('single-field-dispatcher', () => {
 
     it(`
         Spec #2
-        When passing vm equals undefined, value equals undefined and validationsPerField equals null
+        When passing vm equals undefined, value equals undefined and internalFieldValidations equals null
         should return succeeded FieldValidationResult
       `, done => {
       //Arrange
       const values = undefined;
       const value = undefined;
-      const validationsPerField = null;
+      const internalFieldValidations: InternalFieldValidation[] = null;
 
       //Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -58,19 +58,19 @@ describe('single-field-dispatcher', () => {
 
     it(`
         Spec #2.1
-        When passing vm equals undefined, value equals undefined and validationsPerField is an empty array
+        When passing vm equals undefined, value equals undefined and internalFieldValidations is an empty array
         should return succeeded FieldValidationResult and calls to successful validation function
       `, done => {
       //Arrange
       const values = undefined;
       const value = undefined;
-      const validationsPerField = null;
+      const internalFieldValidations: InternalFieldValidation[] = null;
 
       //Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -82,7 +82,7 @@ describe('single-field-dispatcher', () => {
 
     it(`
     Spec #6
-    When passing vm equals undefined, value equals undefined and validationsPerField equals array with one item
+    When passing vm equals undefined, value equals undefined and internalFieldValidations equals array with one item
         equals failed validation function
         should return succeeded false FieldValidationResult and calls to successful validation function
         just passing full validation info async
@@ -98,19 +98,21 @@ describe('single-field-dispatcher', () => {
         key: '',
       });
 
-      const fullValidation: FullFieldValidationAsync = {
+      const fullValidation: InternalFieldValidation = {
         validator: validationFn,
         customArgs: {},
         message: 'myError',
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [fullValidation];
+      const internalFieldValidations: InternalFieldValidation[] = [
+        fullValidation,
+      ];
 
       //Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -123,7 +125,7 @@ describe('single-field-dispatcher', () => {
 
     it(`
     Spec #7
-      When passing vm equals undefined, value equals undefined and validationsPerField equals array with two items
+      When passing vm equals undefined, value equals undefined and internalFieldValidations equals array with two items
       first equals failed validation function
       second equals failed validation function
       should return failed FieldValidationResult and calls only to first validation function
@@ -146,24 +148,24 @@ describe('single-field-dispatcher', () => {
         key: '',
       });
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+      const fullFieldValidationAsync2: InternalFieldValidation = {
         validator: validationFn2,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
         fullFieldValidationAsync2,
       ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -177,7 +179,7 @@ describe('single-field-dispatcher', () => {
 
     it(`
     Spec #8
-      When passing vm equals undefined, value equals undefined and validationsPerField equals array with two items
+      When passing vm equals undefined, value equals undefined and internalFieldValidations equals array with two items
       first equals failed validation function
       second equals success validation function
       should return failed FieldValidationResult and calls only to first validation function
@@ -200,24 +202,24 @@ describe('single-field-dispatcher', () => {
         key: '',
       });
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+      const fullFieldValidationAsync2: InternalFieldValidation = {
         validator: validationFn2,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
         fullFieldValidationAsync2,
       ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -231,7 +233,7 @@ describe('single-field-dispatcher', () => {
 
     it(`
     Spec #9
-      When passing vm equals undefined, value equals undefined and validationsPerField equals array with two items
+      When passing vm equals undefined, value equals undefined and internalFieldValidations equals array with two items
       first equals success validation function
       second equals failed validation function
       should return failed FieldValidationResult and calls only to first validation function
@@ -254,24 +256,24 @@ describe('single-field-dispatcher', () => {
         key: '',
       });
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+      const fullFieldValidationAsync2: InternalFieldValidation = {
         validator: validationFn2,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
         fullFieldValidationAsync2,
       ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -285,7 +287,7 @@ describe('single-field-dispatcher', () => {
 
     it(`
     Spec #10
-      When passing vm equals undefined, value equals undefined and validationsPerField equals array with two items
+      When passing vm equals undefined, value equals undefined and internalFieldValidations equals array with two items
       first equals success validation function
       second equals success validation function
       should return success FieldValidationResult and calls only to first validation function
@@ -308,24 +310,24 @@ describe('single-field-dispatcher', () => {
         key: '',
       });
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+      const fullFieldValidationAsync2: InternalFieldValidation = {
         validator: validationFn2,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
         fullFieldValidationAsync2,
       ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -340,7 +342,7 @@ describe('single-field-dispatcher', () => {
     // TODO: Review this, should just skip that faulty validator and just show warning/error in console?
     it(`
     Spec #11
-      When passing vm equals undefined, value equals undefined and validationsPerField equals array with one items
+      When passing vm equals undefined, value equals undefined and internalFieldValidations equals array with one items
       but returning undefined in the validator (wrong behavior)
       should return succeeded FieldValidationResult and calls to validation functions
       console.error should be called
@@ -354,19 +356,19 @@ describe('single-field-dispatcher', () => {
 
       const validationFn1 = jest.fn().mockResolvedValue(void 0);
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
       ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -381,7 +383,7 @@ describe('single-field-dispatcher', () => {
     // TODO: Review this, should just skip that faulty validator and just show warning/error in console?
     it(`
     Spec #12
-      When passing vm equals undefined, value equals undefined and validationsPerField equals array with one item
+      When passing vm equals undefined, value equals undefined and internalFieldValidations equals array with one item
       but returning null in the validator (wrong behavior)
       should return succeded FieldValidationResult and calls to validation functions
     `, done => {
@@ -391,11 +393,11 @@ describe('single-field-dispatcher', () => {
 
       const validationFn1 = jest.fn().mockResolvedValue(null);
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
       ];
 
@@ -405,9 +407,9 @@ describe('single-field-dispatcher', () => {
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -422,7 +424,7 @@ describe('single-field-dispatcher', () => {
     // Original Spec 12 (lc-form) check if assert makes sense
     it(`
     Spec #13
-      When passing vm equals undefined, value equals undefined and validationsPerField equals array with one item
+      When passing vm equals undefined, value equals undefined and internalFieldValidations equals array with one item
       equals validation function resolving a fieldValidationResult equals ""
       should return succeded FieldValidationResult and calls to validation functions and should display a console.error
     `, done => {
@@ -432,11 +434,11 @@ describe('single-field-dispatcher', () => {
 
       const validationFn1 = jest.fn().mockResolvedValue('');
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
       ];
 
@@ -446,9 +448,9 @@ describe('single-field-dispatcher', () => {
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -462,7 +464,7 @@ describe('single-field-dispatcher', () => {
 
     it(`
     Spec #13.1
-      When passing vm equals undefined, value equals undefined and validationsPerField equals array with one item
+      When passing vm equals undefined, value equals undefined and internalFieldValidations equals array with one item
       equals validation function resolving a fieldValidationResult equals "error"
       should return succeded FieldValidationResult and calls to validation functions, and it should display
       a console.error
@@ -473,11 +475,11 @@ describe('single-field-dispatcher', () => {
 
       const validationFn1 = jest.fn().mockResolvedValue('error');
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
       ];
 
@@ -487,9 +489,9 @@ describe('single-field-dispatcher', () => {
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -503,7 +505,7 @@ describe('single-field-dispatcher', () => {
 
     it(`
     Spec #14.
-      When passing vm equals undefined, value equals undefined and validationsPerField equals array with two items
+      When passing vm equals undefined, value equals undefined and internalFieldValidations equals array with two items
       first equals validation function resolving a fieldValidationResult equals undefined
       second equals successful validation function
       should return succeded FieldValidationResult and calls to validation functions, and it should display
@@ -521,15 +523,15 @@ describe('single-field-dispatcher', () => {
         key: '',
       });
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+      const fullFieldValidationAsync2: InternalFieldValidation = {
         validator: validationFn2,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
         fullFieldValidationAsync2,
       ];
@@ -540,9 +542,9 @@ describe('single-field-dispatcher', () => {
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -557,7 +559,7 @@ describe('single-field-dispatcher', () => {
 
     it(`
     Spec #15.
-      When passing vm equals undefined, value equals undefined and validationsPerField equals array with two items
+      When passing vm equals undefined, value equals undefined and internalFieldValidations equals array with two items
       first equals validation function resolving a fieldValidationResult equals undefined
       second equals failed validation function
       should return failed FieldValidationResult and calls to validation functions, and it should display
@@ -575,15 +577,15 @@ describe('single-field-dispatcher', () => {
         key: '',
       });
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+      const fullFieldValidationAsync2: InternalFieldValidation = {
         validator: validationFn2,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
         fullFieldValidationAsync2,
       ];
@@ -594,9 +596,9 @@ describe('single-field-dispatcher', () => {
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -611,7 +613,7 @@ describe('single-field-dispatcher', () => {
 
     it(`
     Spec #16.
-      When passing values equals undefined, value equals undefined and validationsPerField equals array with two items
+      When passing values equals undefined, value equals undefined and internalFieldValidations equals array with two items
       first equals failed validation function
       second equals validation function resolving a fieldValidationResult equals undefined
       should return failed FieldValidationResult (no console error since faulty validation is not
@@ -629,24 +631,24 @@ describe('single-field-dispatcher', () => {
       });
       const validationFn2 = jest.fn().mockResolvedValue(void 0);
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+      const fullFieldValidationAsync2: InternalFieldValidation = {
         validator: validationFn2,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
         fullFieldValidationAsync2,
       ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -660,7 +662,7 @@ describe('single-field-dispatcher', () => {
 
     it(`
     Spec #17.
-      When passing vm equals undefined, value equals undefined and validationsPerField equals array with two items
+      When passing vm equals undefined, value equals undefined and internalFieldValidations equals array with two items
       first equals successful validation function
       second equals validation function resolving a fieldValidationResult equals undefined
       should return succeeded FieldValidationResult and console error warning about faulty validator in form
@@ -677,15 +679,15 @@ describe('single-field-dispatcher', () => {
       });
       const validationFn2 = jest.fn().mockResolvedValue(void 0);
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+      const fullFieldValidationAsync2: InternalFieldValidation = {
         validator: validationFn2,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
         fullFieldValidationAsync2,
       ];
@@ -696,9 +698,9 @@ describe('single-field-dispatcher', () => {
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -729,21 +731,21 @@ describe('single-field-dispatcher', () => {
 
       const customArgs1 = { myCheck: 1 };
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
         customArgs: customArgs1,
         message: 'my error message',
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
       ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -774,21 +776,21 @@ describe('single-field-dispatcher', () => {
 
       const customArgs1 = { myCheck: 0 };
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
         customArgs: customArgs1,
         message: 'my error message',
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
       ];
 
       // Act
       const fieldValidationResultPromise = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -838,25 +840,25 @@ describe('single-field-dispatcher', () => {
       const validationFn4 = createValidationFn('key4', true, 30);
       const validationFn5 = createValidationFn('key5', true, 50);
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+      const fullFieldValidationAsync2: InternalFieldValidation = {
         validator: validationFn2,
       };
 
-      const fullFieldValidationAsync3: FullFieldValidationAsync = {
+      const fullFieldValidationAsync3: InternalFieldValidation = {
         validator: validationFn3,
       };
-      const fullFieldValidationAsync4: FullFieldValidationAsync = {
+      const fullFieldValidationAsync4: InternalFieldValidation = {
         validator: validationFn4,
       };
-      const fullFieldValidationAsync5: FullFieldValidationAsync = {
+      const fullFieldValidationAsync5: InternalFieldValidation = {
         validator: validationFn5,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
         fullFieldValidationAsync2,
         fullFieldValidationAsync3,
@@ -866,9 +868,9 @@ describe('single-field-dispatcher', () => {
 
       // Act
       const result = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -916,25 +918,25 @@ describe('single-field-dispatcher', () => {
       const validationFn4 = createValidationFn('key4', false, 30);
       const validationFn5 = createValidationFn('key5', false, 50);
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+      const fullFieldValidationAsync2: InternalFieldValidation = {
         validator: validationFn2,
       };
 
-      const fullFieldValidationAsync3: FullFieldValidationAsync = {
+      const fullFieldValidationAsync3: InternalFieldValidation = {
         validator: validationFn3,
       };
-      const fullFieldValidationAsync4: FullFieldValidationAsync = {
+      const fullFieldValidationAsync4: InternalFieldValidation = {
         validator: validationFn4,
       };
-      const fullFieldValidationAsync5: FullFieldValidationAsync = {
+      const fullFieldValidationAsync5: InternalFieldValidation = {
         validator: validationFn5,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
         fullFieldValidationAsync2,
         fullFieldValidationAsync3,
@@ -944,9 +946,9 @@ describe('single-field-dispatcher', () => {
 
       // Act
       const result = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -994,25 +996,25 @@ describe('single-field-dispatcher', () => {
       const validationFn4 = createValidationFn('key4', true, 30);
       const validationFn5 = createValidationFn('key5', false, 50);
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+      const fullFieldValidationAsync2: InternalFieldValidation = {
         validator: validationFn2,
       };
 
-      const fullFieldValidationAsync3: FullFieldValidationAsync = {
+      const fullFieldValidationAsync3: InternalFieldValidation = {
         validator: validationFn3,
       };
-      const fullFieldValidationAsync4: FullFieldValidationAsync = {
+      const fullFieldValidationAsync4: InternalFieldValidation = {
         validator: validationFn4,
       };
-      const fullFieldValidationAsync5: FullFieldValidationAsync = {
+      const fullFieldValidationAsync5: InternalFieldValidation = {
         validator: validationFn5,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
         fullFieldValidationAsync2,
         fullFieldValidationAsync3,
@@ -1022,9 +1024,9 @@ describe('single-field-dispatcher', () => {
 
       // Act
       const result = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
@@ -1072,25 +1074,25 @@ describe('single-field-dispatcher', () => {
       const validationFn4 = createValidationFn('key4', true, 30);
       const validationFn5 = createValidationFn('key5', true, 50);
 
-      const fullFieldValidationAsync1: FullFieldValidationAsync = {
+      const fullFieldValidationAsync1: InternalFieldValidation = {
         validator: validationFn1,
       };
 
-      const fullFieldValidationAsync2: FullFieldValidationAsync = {
+      const fullFieldValidationAsync2: InternalFieldValidation = {
         validator: validationFn2,
       };
 
-      const fullFieldValidationAsync3: FullFieldValidationAsync = {
+      const fullFieldValidationAsync3: InternalFieldValidation = {
         validator: validationFn3,
       };
-      const fullFieldValidationAsync4: FullFieldValidationAsync = {
+      const fullFieldValidationAsync4: InternalFieldValidation = {
         validator: validationFn4,
       };
-      const fullFieldValidationAsync5: FullFieldValidationAsync = {
+      const fullFieldValidationAsync5: InternalFieldValidation = {
         validator: validationFn5,
       };
 
-      const validationsPerField: FullFieldValidationAsync[] = [
+      const internalFieldValidations: InternalFieldValidation[] = [
         fullFieldValidationAsync1,
         fullFieldValidationAsync2,
         fullFieldValidationAsync3,
@@ -1100,9 +1102,9 @@ describe('single-field-dispatcher', () => {
 
       // Act
       const result = fireSingleFieldValidations(
-        values,
         value,
-        validationsPerField
+        values,
+        internalFieldValidations
       );
 
       // Assert
