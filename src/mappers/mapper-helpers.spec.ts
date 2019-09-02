@@ -5,6 +5,7 @@ import {
   FieldValidatorArgs,
   RecordValidatorArgs,
   RecordValidationFunctionSync,
+  RecordValidationFunctionAsync,
 } from '../model';
 import {
   convertFieldValidationToAsyncIfNeeded,
