@@ -1,10 +1,5 @@
-import {
-  pattern,
-  VALIDATOR_TYPE,
-  PatternArgs,
-  setErrorMessage,
-} from './pattern';
-import { FieldValidatorArgs, ValidationResult } from '../model';
+import { pattern, PatternArgs, setErrorMessage } from './pattern';
+import { ValidationResult } from '../model';
 
 describe(`pattern validator`, () => {
   describe('Pattern option boundaries =>', () => {
@@ -113,7 +108,7 @@ describe(`pattern validator`, () => {
       expect(validationResult.type).toBe('PATTERN');
       expect(validationResult.message).toBe('Please provide a valid format.');
     });
-    it(`should return validation failed + custom message when field does not match 
+    it(`should return validation failed + custom message when field does not match
     the pattern and custom message is set`, () => {
       // Arrange
       const value = 'test';

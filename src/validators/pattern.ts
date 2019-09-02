@@ -1,4 +1,5 @@
 import { FieldValidationFunctionSync } from '../model';
+import { isValidPattern } from './pattern-helpers';
 
 export const VALIDATOR_TYPE = 'PATTERN';
 
@@ -25,14 +26,6 @@ function parsePattern({ pattern }: PatternArgs): RegExp {
   return getRegExp(pattern);
 }
 
-function isEmptyValue(value) {
-  return value === null || value === undefined || value === '';
-}
-
-export function isValidField(value, pattern: RegExp): boolean {
-  return isEmptyValue(value) ? true : pattern.test(value);
-}
-
 export const pattern: FieldValidationFunctionSync = fieldValidatorArgs => {
   if (!fieldValidatorArgs.customArgs) {
     throw new Error(BAD_PARAMETER);
@@ -44,7 +37,7 @@ export const pattern: FieldValidationFunctionSync = fieldValidatorArgs => {
   } = fieldValidatorArgs;
 
   const pattern = parsePattern(customArgs);
-  const succeeded = isValidField(value, pattern);
+  const succeeded = isValidPattern(value, pattern);
 
   return {
     succeeded,
