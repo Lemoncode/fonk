@@ -60,7 +60,7 @@ const validateSingleRecord = (
 
 export const validateRecord = (
   values: any,
-  schema: InternalRecordValidationSchema
+  schema: InternalRecordValidationSchema = {}
 ): Promise<RecordValidationResult> => {
   const promiseValidationResults = fireAllRecordsValidations(
     Object.keys(schema),
@@ -80,8 +80,8 @@ export const validateRecord = (
 
 export const validateForm = (
   values: any,
-  fieldSchema: InternalFieldValidationSchema,
-  recordSchema: InternalRecordValidationSchema
+  fieldSchema: InternalFieldValidationSchema = {},
+  recordSchema: InternalRecordValidationSchema = {}
 ): Promise<FormValidationResult> => {
   const promiseFieldValidationResults = fireAllFieldsValidations(
     Object.keys(fieldSchema),
