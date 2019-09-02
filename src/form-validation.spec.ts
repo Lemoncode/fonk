@@ -475,6 +475,38 @@ when adding one validator to a given nested field
         done();
       });
     });
+
+    it(`spec #13:should execute validation for a given field and failed
+when adding one validator to a given nested field with kebap case
+`, done => {
+      // Arrange
+      const mockValidationFn = jest.fn().mockReturnValue({
+        type: 'MY_VALIDATOR_A',
+        succeeded: false,
+        message: 'mymessageA',
+      });
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          'this-is-a-nested.field': [mockValidationFn],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateField(
+        'this-is-a-nested.field',
+        'whatever'
+      );
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBe(false);
+        expect(validationResult.type).toBe('MY_VALIDATOR_A');
+        expect(mockValidationFn).toHaveBeenCalled();
+        done();
+      });
+    });
   });
 
   describe('validateRecords', () => {
@@ -2091,6 +2123,68 @@ when adding two validators to a given field fails and second fails
             type: 'MY_VALIDATOR_A',
             succeeded: false,
             message: 'mymessageA',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({});
+        done();
+      });
+    });
+
+    it(`#Spec 26: should fail form validation, and return one field validation result
+    and form validation result
+    when adding two fields validation that succeed with nested fields with kebap case
+    `, done => {
+      // Arrange
+      const myFieldValidation1: FieldValidationFunctionSync = jest.fn(
+        ({ value }) => ({
+          type: 'MY_TYPE_A',
+          succeeded: true,
+          message: `mymessageA ${value}`,
+        })
+      );
+      const myFieldValidation2: FieldValidationFunctionSync = jest.fn(
+        ({ value }) => ({
+          type: 'MY_TYPE_B',
+          succeeded: true,
+          message: `mymessageB ${value}`,
+        })
+      );
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          'this-is-a-nested.field1': [myFieldValidation1],
+          'nested.field-2': [myFieldValidation2],
+        },
+      };
+
+      const values = {
+        'this-is-a-nested': {
+          field1: 'value1',
+        },
+        nested: {
+          'field-2': 'value2',
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(myFieldValidation1).toHaveBeenCalled();
+        expect(myFieldValidation2).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeTruthy();
+        expect(validationResult.fieldErrors).toEqual({
+          'this-is-a-nested.field1': {
+            type: 'MY_TYPE_A',
+            succeeded: true,
+            message: 'mymessageA value1',
+          },
+          'nested.field-2': {
+            type: 'MY_TYPE_B',
+            succeeded: true,
+            message: 'mymessageB value2',
           },
         });
         expect(validationResult.recordErrors).toEqual({});

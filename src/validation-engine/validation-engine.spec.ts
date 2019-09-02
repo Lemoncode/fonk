@@ -4,7 +4,6 @@ import {
   FieldValidationFunctionAsync,
   InternalValidationResult,
   RecordValidationResult,
-  createDefaultRecordValidationResult,
   InternalRecordValidationSchema,
   RecordValidationFunctionAsync,
 } from '../model';
@@ -695,49 +694,7 @@ describe('validation-engine specs', () => {
       });
     });
 
-    it('spec #3: should return promise default RecordValidationResult when it feeds values equals null and schema equals defined', done => {
-      // Arrange
-      const values: string = null;
-      const validator: RecordValidationFunctionAsync = jest
-        .fn()
-        .mockImplementation(
-          (): Promise<InternalValidationResult> =>
-            Promise.resolve({
-              key: '',
-              type: '',
-              succeeded: true,
-              message: '',
-            })
-        );
-      const schema: InternalRecordValidationSchema = {
-        myRecord: [
-          {
-            validator,
-            message: void 0,
-          },
-        ],
-      };
-
-      // Act
-      const promise = validateRecord(values, schema);
-
-      // Assert
-      promise.then(result => {
-        expect(result).toEqual({
-          succeeded: true,
-          recordErrors: {
-            myRecord: {
-              type: '',
-              succeeded: true,
-              message: '',
-            },
-          },
-        });
-        done();
-      });
-    });
-
-    it('spec #4: should return promise with RecordValidationResult when it feeds schema equals defined with one validator, values and message equals undefined', done => {
+    it('spec #3: should return promise with RecordValidationResult when it feeds schema equals defined with one validator, values and message equals undefined', done => {
       // Arrange
       const values: string = void 0;
       const validator: RecordValidationFunctionAsync = jest
@@ -780,7 +737,7 @@ describe('validation-engine specs', () => {
       });
     });
 
-    it('spec #5: should return promise with RecordValidationResult when it feeds schema equals defined with one validator, values and message equals null', done => {
+    it('spec #4: should return promise with RecordValidationResult when it feeds schema equals defined with one validator, values and message equals null', done => {
       // Arrange
       const values: string = null;
       const validator: RecordValidationFunctionAsync = jest
@@ -823,7 +780,7 @@ describe('validation-engine specs', () => {
       });
     });
 
-    it('spec #6: should return promise with RecordValidationResult when it feeds schema equals defined with one validator and values, message defined', done => {
+    it('spec #5: should return promise with RecordValidationResult when it feeds schema equals defined with one validator and values, message defined', done => {
       // Arrange
       const values: string = 'test values';
       const validator: RecordValidationFunctionAsync = jest
@@ -866,7 +823,7 @@ describe('validation-engine specs', () => {
       });
     });
 
-    it('spec #7: should return promise with RecordValidationResult when it feeds schema equals defined with two validators with succeded equals true', done => {
+    it('spec #6: should return promise with RecordValidationResult when it feeds schema equals defined with two validators with succeded equals true', done => {
       // Arrange
       const values: string = null;
       const validator1: RecordValidationFunctionAsync = jest
@@ -923,7 +880,7 @@ describe('validation-engine specs', () => {
       });
     });
 
-    it('spec #8: should return promise with RecordValidationResult when it feeds schema equals defined with two validators with first succeded equals true and second succeede equals false', done => {
+    it('spec #7: should return promise with RecordValidationResult when it feeds schema equals defined with two validators with first succeded equals true and second succeede equals false', done => {
       // Arrange
       const values: string = null;
       const validator1: RecordValidationFunctionAsync = jest
@@ -980,7 +937,7 @@ describe('validation-engine specs', () => {
       });
     });
 
-    it('spec #9: should return promise with RecordValidationResult when it feeds schema equals defined with two validators with first succeded equals false and second succeede equals true', done => {
+    it('spec #8: should return promise with RecordValidationResult when it feeds schema equals defined with two validators with first succeded equals false and second succeede equals true', done => {
       // Arrange
       const values: string = null;
       const validator1: RecordValidationFunctionAsync = jest
@@ -1037,7 +994,7 @@ describe('validation-engine specs', () => {
       });
     });
 
-    it('spec #10: should return promise with RecordValidationResult when it feeds schema equals defined with two validators with first succeded equals false and second succeede equals false', done => {
+    it('spec #9: should return promise with RecordValidationResult when it feeds schema equals defined with two validators with first succeded equals false and second succeede equals false', done => {
       // Arrange
       const values: string = null;
       const validator1: RecordValidationFunctionAsync = jest
@@ -1094,13 +1051,13 @@ describe('validation-engine specs', () => {
       });
     });
 
-    it('spec #11: should call console.error when it feeds schema equals defined with one validator that throw an error', done => {
+    it('spec #10: should call console.error when it feeds schema equals defined with one validator that throw an error', done => {
       // Arrange
       const values: string = null;
       const validator: RecordValidationFunctionAsync = jest
         .fn()
         .mockImplementation(
-          (): Promise<RecordValidationResult> =>
+          (): Promise<InternalValidationResult> =>
             Promise.reject('Test validator error')
         );
       const schema: InternalRecordValidationSchema = {
@@ -1123,6 +1080,688 @@ describe('validation-engine specs', () => {
         expect(result).toEqual('Test validator error');
         expect(validator).toHaveBeenCalled();
         expect(consoleErrorStub.mock.calls).toEqual([
+          ['Validation Exception, record: myRecord'],
+          ['Uncontrolled error validating records'],
+        ]);
+        done();
+      });
+    });
+  });
+
+  describe('validateForm', () => {
+    it('spec #1: should return promise default FormValidationResult when it feeds values equals undefined and fieldSchema and recordSchema equals defined', done => {
+      // Arrange
+      const values: string = void 0;
+      const validator = jest.fn().mockImplementation(
+        (): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: '',
+            succeeded: true,
+            message: '',
+          })
+      );
+      const fieldSchema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator,
+            message: void 0,
+            customArgs: void 0,
+          },
+        ],
+      };
+      const recordSchema: InternalRecordValidationSchema = {
+        myRecord: [
+          {
+            validator,
+            message: void 0,
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateForm(values, fieldSchema, recordSchema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          succeeded: true,
+          fieldErrors: {
+            myField: {
+              type: '',
+              succeeded: true,
+              message: '',
+            },
+          },
+          recordErrors: {
+            myRecord: {
+              type: '',
+              succeeded: true,
+              message: '',
+            },
+          },
+        });
+        done();
+      });
+    });
+
+    it('spec #2: should return promise default FormValidationResult when it feeds values equals null and fieldSchema and recordSchema equals defined', done => {
+      // Arrange
+      const values: string = null;
+      const validator = jest.fn().mockImplementation(
+        (): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: '',
+            succeeded: true,
+            message: '',
+          })
+      );
+      const fieldSchema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator,
+            message: void 0,
+            customArgs: void 0,
+          },
+        ],
+      };
+      const recordSchema: InternalRecordValidationSchema = {
+        myRecord: [
+          {
+            validator,
+            message: void 0,
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateForm(values, fieldSchema, recordSchema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          succeeded: true,
+          fieldErrors: {
+            myField: {
+              type: '',
+              succeeded: true,
+              message: '',
+            },
+          },
+          recordErrors: {
+            myRecord: {
+              type: '',
+              succeeded: true,
+              message: '',
+            },
+          },
+        });
+        done();
+      });
+    });
+
+    it('spec #3: should return promise default FormValidationResult when it feeds schema equals defined with one validator, values and message equals undefined', done => {
+      // Arrange
+      const values: string = void 0;
+      const validator = jest.fn().mockImplementation(
+        ({
+          value,
+          values,
+          message,
+          customArgs,
+        }): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: 'test type',
+            succeeded: true,
+            message: `test message, ${values}, ${message}, ${value}, ${customArgs}`,
+          })
+      );
+      const fieldSchema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator,
+            message: void 0,
+            customArgs: void 0,
+          },
+        ],
+      };
+      const recordSchema: InternalRecordValidationSchema = {
+        myRecord: [
+          {
+            validator,
+            message: void 0,
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateForm(values, fieldSchema, recordSchema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          succeeded: true,
+          fieldErrors: {
+            myField: {
+              type: 'test type',
+              succeeded: true,
+              message:
+                'test message, undefined, undefined, undefined, undefined',
+            },
+          },
+          recordErrors: {
+            myRecord: {
+              type: 'test type',
+              succeeded: true,
+              message:
+                'test message, undefined, undefined, undefined, undefined',
+            },
+          },
+        });
+        done();
+      });
+    });
+
+    it('spec #4: should return promise default FormValidationResult when it feeds schema equals defined with one validator, values and message equals null', done => {
+      // Arrange
+      const values: string = null;
+      const validator = jest.fn().mockImplementation(
+        ({
+          value,
+          values,
+          message,
+          customArgs,
+        }): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: 'test type',
+            succeeded: true,
+            message: `test message, ${values}, ${message}, ${value}, ${customArgs}`,
+          })
+      );
+      const fieldSchema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator,
+            message: null,
+            customArgs: null,
+          },
+        ],
+      };
+      const recordSchema: InternalRecordValidationSchema = {
+        myRecord: [
+          {
+            validator,
+            message: null,
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateForm(values, fieldSchema, recordSchema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          succeeded: true,
+          fieldErrors: {
+            myField: {
+              type: 'test type',
+              succeeded: true,
+              message: 'test message, null, null, undefined, null',
+            },
+          },
+          recordErrors: {
+            myRecord: {
+              type: 'test type',
+              succeeded: true,
+              message: 'test message, null, null, undefined, undefined',
+            },
+          },
+        });
+        done();
+      });
+    });
+
+    it('spec #5: should return promise default FormValidationResult when it feeds schema equals defined with one validator, values and message defined', done => {
+      // Arrange
+      const values = { myField: 'test value' };
+      const validator = jest.fn().mockImplementation(
+        ({
+          value,
+          values,
+          message,
+          customArgs,
+        }): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: 'test type',
+            succeeded: true,
+            message: `test message, ${JSON.stringify(
+              values
+            )}, ${message}, ${value}, ${customArgs}`,
+          })
+      );
+      const fieldSchema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator,
+            message: 'field message',
+            customArgs: 'field args',
+          },
+        ],
+      };
+      const recordSchema: InternalRecordValidationSchema = {
+        myRecord: [
+          {
+            validator,
+            message: 'record message',
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateForm(values, fieldSchema, recordSchema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          succeeded: true,
+          fieldErrors: {
+            myField: {
+              type: 'test type',
+              succeeded: true,
+              message:
+                'test message, {"myField":"test value"}, field message, test value, field args',
+            },
+          },
+          recordErrors: {
+            myRecord: {
+              type: 'test type',
+              succeeded: true,
+              message:
+                'test message, {"myField":"test value"}, record message, undefined, undefined',
+            },
+          },
+        });
+        done();
+      });
+    });
+
+    it('spec #6: should return promise default FormValidationResult when it feeds schema equals defined with two validators with succeded equals true', done => {
+      // Arrange
+      const values = { myField: 'test value' };
+      const validator1 = jest.fn().mockImplementation(
+        (): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: 'test type 1',
+            succeeded: true,
+            message: 'test message 1',
+          })
+      );
+      const validator2 = jest.fn().mockImplementation(
+        (): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: 'test type 2',
+            succeeded: true,
+            message: 'test message 2',
+          })
+      );
+      const fieldSchema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator: validator1,
+          },
+        ],
+      };
+      const recordSchema: InternalRecordValidationSchema = {
+        myRecord: [
+          {
+            validator: validator2,
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateForm(values, fieldSchema, recordSchema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          succeeded: true,
+          fieldErrors: {
+            myField: {
+              type: 'test type 1',
+              succeeded: true,
+              message: 'test message 1',
+            },
+          },
+          recordErrors: {
+            myRecord: {
+              type: 'test type 2',
+              succeeded: true,
+              message: 'test message 2',
+            },
+          },
+        });
+        expect(validator1).toHaveBeenCalled();
+        expect(validator2).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('spec #7: should return promise default FormValidationResult when it feeds schema equals defined with two validators with first succeded equals true and second succeede equals false', done => {
+      // Arrange
+      const values = { myField: 'test value' };
+      const validator1 = jest.fn().mockImplementation(
+        (): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: 'test type 1',
+            succeeded: true,
+            message: 'test message 1',
+          })
+      );
+      const validator2 = jest.fn().mockImplementation(
+        (): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: 'test type 2',
+            succeeded: false,
+            message: 'test message 2',
+          })
+      );
+      const fieldSchema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator: validator1,
+          },
+        ],
+      };
+      const recordSchema: InternalRecordValidationSchema = {
+        myRecord: [
+          {
+            validator: validator2,
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateForm(values, fieldSchema, recordSchema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          succeeded: false,
+          fieldErrors: {
+            myField: {
+              type: 'test type 1',
+              succeeded: true,
+              message: 'test message 1',
+            },
+          },
+          recordErrors: {
+            myRecord: {
+              type: 'test type 2',
+              succeeded: false,
+              message: 'test message 2',
+            },
+          },
+        });
+        expect(validator1).toHaveBeenCalled();
+        expect(validator2).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('spec #8: should return promise default FormValidationResult when it feeds schema equals defined with two validators with first succeded equals false and second succeede equals true', done => {
+      // Arrange
+      const values = { myField: 'test value' };
+      const validator1 = jest.fn().mockImplementation(
+        (): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: 'test type 1',
+            succeeded: false,
+            message: 'test message 1',
+          })
+      );
+      const validator2 = jest.fn().mockImplementation(
+        (): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: 'test type 2',
+            succeeded: true,
+            message: 'test message 2',
+          })
+      );
+      const fieldSchema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator: validator1,
+          },
+        ],
+      };
+      const recordSchema: InternalRecordValidationSchema = {
+        myRecord: [
+          {
+            validator: validator2,
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateForm(values, fieldSchema, recordSchema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          succeeded: false,
+          fieldErrors: {
+            myField: {
+              type: 'test type 1',
+              succeeded: false,
+              message: 'test message 1',
+            },
+          },
+          recordErrors: {
+            myRecord: {
+              type: 'test type 2',
+              succeeded: true,
+              message: 'test message 2',
+            },
+          },
+        });
+        expect(validator1).toHaveBeenCalled();
+        expect(validator2).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('spec #9: should return promise default FormValidationResult when it feeds schema equals defined with two validators with first succeded equals false and second succeede equals false', done => {
+      // Arrange
+      const values = { myField: 'test value' };
+      const validator1 = jest.fn().mockImplementation(
+        (): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: 'test type 1',
+            succeeded: false,
+            message: 'test message 1',
+          })
+      );
+      const validator2 = jest.fn().mockImplementation(
+        (): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: 'test type 2',
+            succeeded: false,
+            message: 'test message 2',
+          })
+      );
+      const fieldSchema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator: validator1,
+          },
+        ],
+      };
+      const recordSchema: InternalRecordValidationSchema = {
+        myRecord: [
+          {
+            validator: validator2,
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateForm(values, fieldSchema, recordSchema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          succeeded: false,
+          fieldErrors: {
+            myField: {
+              type: 'test type 1',
+              succeeded: false,
+              message: 'test message 1',
+            },
+          },
+          recordErrors: {
+            myRecord: {
+              type: 'test type 2',
+              succeeded: false,
+              message: 'test message 2',
+            },
+          },
+        });
+        expect(validator1).toHaveBeenCalled();
+        expect(validator2).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('spec #10: should return promise default FormValidationResult when it feeds schema equals defined with two validators and fieldSchema with nested fields', done => {
+      // Arrange
+      const values = {
+        nested: {
+          field1: 'field1 value',
+        },
+        'my-second-nested': { field2: 'field2 value' },
+      };
+      const validator1 = jest.fn().mockImplementation(
+        ({ value }): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: 'test type 1',
+            succeeded: false,
+            message: `test message 1 ${value}`,
+          })
+      );
+      const validator2 = jest.fn().mockImplementation(
+        (): Promise<InternalValidationResult> =>
+          Promise.resolve({
+            key: '',
+            type: 'test type 2',
+            succeeded: false,
+            message: 'test message 2',
+          })
+      );
+      const fieldSchema: InternalFieldValidationSchema = {
+        'nested.field1': [
+          {
+            validator: validator1,
+          },
+        ],
+        'my-second-nested.field2': [
+          {
+            validator: validator1,
+          },
+        ],
+      };
+      const recordSchema: InternalRecordValidationSchema = {
+        myRecord: [
+          {
+            validator: validator2,
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateForm(values, fieldSchema, recordSchema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          succeeded: false,
+          fieldErrors: {
+            'nested.field1': {
+              type: 'test type 1',
+              succeeded: false,
+              message: 'test message 1 field1 value',
+            },
+            'my-second-nested.field2': {
+              type: 'test type 1',
+              succeeded: false,
+              message: 'test message 1 field2 value',
+            },
+          },
+          recordErrors: {
+            myRecord: {
+              type: 'test type 2',
+              succeeded: false,
+              message: 'test message 2',
+            },
+          },
+        });
+        expect(validator1).toHaveBeenCalled();
+        expect(validator2).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('spec #11: should call console.error when it feeds schema equals defined with one validator that throw an error', done => {
+      // Arrange
+      const values: string = null;
+      const validator = jest
+        .fn()
+        .mockImplementation(
+          (): Promise<InternalValidationResult> =>
+            Promise.reject('Test validator error')
+        );
+      const fieldSchema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator,
+          },
+        ],
+      };
+      const recordSchema: InternalRecordValidationSchema = {
+        myRecord: [
+          {
+            validator,
+          },
+        ],
+      };
+
+      const consoleErrorStub = jest
+        .spyOn(global.console, 'error')
+        .mockImplementation(() => {});
+
+      // Act
+      const promise = validateForm(values, fieldSchema, recordSchema);
+
+      // Assert
+      promise.catch(result => {
+        expect(result).toEqual('Test validator error');
+        expect(validator).toHaveBeenCalled();
+        expect(consoleErrorStub.mock.calls).toEqual([
+          ['Validation Exception, field: myField'],
           ['Validation Exception, record: myRecord'],
           ['Uncontrolled error validating records'],
         ]);
