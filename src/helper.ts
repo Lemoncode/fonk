@@ -18,3 +18,6 @@ export const areAllElementsInArrayDefined = <T>(collection: T[]) =>
 
 export const isPromise = <T>(value: any): value is Promise<T> =>
   value instanceof Promise;
+
+export const safeObjectKeys = (value): string[] =>
+  Boolean(value) ? Object.keys(value) : [];

@@ -6,6 +6,7 @@ import {
   areAllElementsInArrayDefined,
   isLastIndexInArray,
   isPromise,
+  safeObjectKeys,
 } from './helper';
 
 describe('safeArrayLength', () => {
@@ -766,5 +767,62 @@ describe('isPromise', () => {
 
     // Assert
     expect(result).toBeTruthy();
+  });
+});
+
+describe('safeObjectKeys', () => {
+  it('Should return [] when feeding value equals undefined', () => {
+    // Arrange
+    const value = void 0;
+
+    // Act
+    const result = safeObjectKeys(value);
+
+    // Assert
+    expect(result).toEqual([]);
+  });
+
+  it('Should return [] when feeding value equals null', () => {
+    // Arrange
+    const value = null;
+
+    // Act
+    const result = safeObjectKeys(value);
+
+    // Assert
+    expect(result).toEqual([]);
+  });
+
+  it('Should return [] when feeding value equals empty object', () => {
+    // Arrange
+    const value = {};
+
+    // Act
+    const result = safeObjectKeys(value);
+
+    // Assert
+    expect(result).toEqual([]);
+  });
+
+  it('Should return ["field"] when feeding value equals { field: 1 }', () => {
+    // Arrange
+    const value = { field: 1 };
+
+    // Act
+    const result = safeObjectKeys(value);
+
+    // Assert
+    expect(result).toEqual(['field']);
+  });
+
+  it('Should return ["field", "other"] when feeding value equals { field: 1, other: 2 }', () => {
+    // Arrange
+    const value = { field: 1, other: 2 };
+
+    // Act
+    const result = safeObjectKeys(value);
+
+    // Assert
+    expect(result).toEqual(['field', 'other']);
   });
 });

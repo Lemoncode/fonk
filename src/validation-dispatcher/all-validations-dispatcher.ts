@@ -5,8 +5,6 @@ import {
   InternalRecordValidationSchema,
 } from '../model';
 
-// TODO: Pending adding unit tests
-
 export const fireAllFieldsValidations = (
   fieldIds: string[],
   values: any,

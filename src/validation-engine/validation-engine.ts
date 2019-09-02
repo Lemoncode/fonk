@@ -16,7 +16,7 @@ import {
   buildFormValidationResult,
   buildRecordValidationResult,
 } from '../form-validation-summary-builder';
-import { isUndefinedOrNull } from '../helper';
+import { isUndefinedOrNull, safeObjectKeys } from '../helper';
 
 const isIdInSchema = (fieldId: string, schema): boolean =>
   !isUndefinedOrNull(schema) && !isUndefinedOrNull(schema[fieldId]);
@@ -63,7 +63,7 @@ export const validateRecord = (
   schema: InternalRecordValidationSchema
 ): Promise<RecordValidationResult> => {
   const promiseValidationResults = fireAllRecordsValidations(
-    Object.keys(schema),
+    safeObjectKeys(schema),
     values,
     schema,
     validateSingleRecord
@@ -84,14 +84,14 @@ export const validateForm = (
   recordSchema: InternalRecordValidationSchema
 ): Promise<FormValidationResult> => {
   const promiseFieldValidationResults = fireAllFieldsValidations(
-    Object.keys(fieldSchema),
+    safeObjectKeys(fieldSchema),
     values,
     fieldSchema,
     validateField
   );
 
   const promiseRecordValidationResults = fireAllRecordsValidations(
-    Object.keys(recordSchema),
+    safeObjectKeys(recordSchema),
     values,
     recordSchema,
     validateSingleRecord
