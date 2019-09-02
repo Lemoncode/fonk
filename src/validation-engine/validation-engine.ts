@@ -19,7 +19,7 @@ import {
 import { isUndefinedOrNull } from '../helper';
 
 const isIdInSchema = (fieldId: string, schema): boolean =>
-  !isUndefinedOrNull(schema[fieldId]);
+  !isUndefinedOrNull(schema) && !isUndefinedOrNull(schema[fieldId]);
 
 export const validateField = (
   fieldId: string,

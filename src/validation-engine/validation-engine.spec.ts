@@ -1,606 +1,556 @@
 import {
+  InternalFieldValidationSchema,
+  createDefaultInternalValidationResult,
+  FieldValidationFunctionAsync,
+  InternalValidationResult,
+  RecordValidationResult,
+  createDefaultRecordValidationResult,
+  InternalRecordValidationSchema,
+} from '../model';
+import {
   validateField,
   validateRecord,
   validateForm,
 } from './validation-engine';
-import {
-  ValidationResult,
-  FieldValidationFunctionSyncAsync,
-  FullFieldValidationAsync,
-  FullRecordValidationAsync,
-  FieldValidationFunctionAsync,
-  RecordValidationFunctionAsync,
-} from '../model';
 
-describe('ValidationEngine tests', () => {
-  describe('AddFieldValidation', () => {
-    it(`Should fire the added validation (async flavour) and succeed
-        when adding a validation to a given field and firing validation
-        on that field
-    `, done => {
+describe('validation-engine specs', () => {
+  describe('validateField', () => {
+    it('spec #1: should return promise default InternalValidationResult when it feeds fieldId and schema equals undefined', done => {
       // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
+      const fieldId: string = void 0;
+      const value: string = void 0;
+      const values: string = void 0;
+      const schema: InternalFieldValidationSchema = void 0;
 
-      const validationFn = (value): Promise<ValidationResult> => {
-        const promise = new Promise<ValidationResult>((resolve, reject) => {
-          setTimeout(() => {
-            resolve({
-              key: 'username',
-              type: 'REQUIRED',
+      // Act
+      const promise = validateField(fieldId, value, values, schema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual(createDefaultInternalValidationResult());
+        done();
+      });
+    });
+
+    it('spec #2: should return promise default InternalValidationResult when it feeds fieldId and schema equals null', done => {
+      // Arrange
+      const fieldId: string = null;
+      const value: string = null;
+      const values: string = null;
+      const schema: InternalFieldValidationSchema = null;
+
+      // Act
+      const promise = validateField(fieldId, value, values, schema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual(createDefaultInternalValidationResult());
+        done();
+      });
+    });
+
+    it('spec #3: should return promise default InternalValidationResult when it feeds fieldId equals undefined and schema equals defined', done => {
+      // Arrange
+      const fieldId: string = void 0;
+      const value: string = null;
+      const values: string = null;
+      const validator: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          (): Promise<InternalValidationResult> =>
+            Promise.resolve({
+              key: '',
+              type: '',
               succeeded: true,
               message: '',
-            });
-          }, 500);
+            })
+        );
+      const schema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator,
+            message: void 0,
+            customArgs: void 0,
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateField(fieldId, value, values, schema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual(createDefaultInternalValidationResult());
+        done();
+      });
+    });
+
+    it('spec #4: should return promise default InternalValidationResult when it feeds fieldId equals null and schema equals defined', done => {
+      // Arrange
+      const fieldId: string = null;
+      const value: string = null;
+      const values: string = null;
+      const validator: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          (): Promise<InternalValidationResult> =>
+            Promise.resolve({
+              key: '',
+              type: '',
+              succeeded: true,
+              message: '',
+            })
+        );
+      const schema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator,
+            message: void 0,
+            customArgs: void 0,
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateField(fieldId, value, values, schema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual(createDefaultInternalValidationResult());
+        done();
+      });
+    });
+
+    it('spec #5: should return promise default InternalValidationResult when it feeds fieldId equals otherField and schema equals defined', done => {
+      // Arrange
+      const fieldId: string = 'otherField';
+      const value: string = null;
+      const values: string = null;
+      const validator: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          (): Promise<InternalValidationResult> =>
+            Promise.resolve({
+              key: '',
+              type: '',
+              succeeded: true,
+              message: '',
+            })
+        );
+      const schema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator,
+            message: void 0,
+            customArgs: void 0,
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateField(fieldId, value, values, schema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual(createDefaultInternalValidationResult());
+        done();
+      });
+    });
+
+    it('spec #6: should return promise with InternalValidationResult when it feeds fieldId equals myField and schema equals defined with one validator and message and customArgs equals undefined', done => {
+      // Arrange
+      const fieldId: string = 'myField';
+      const value: string = void 0;
+      const values: string = void 0;
+      const validator: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          ({
+            value,
+            values,
+            message,
+            customArgs,
+          }): Promise<InternalValidationResult> =>
+            Promise.resolve({
+              key: '',
+              type: 'test type',
+              succeeded: true,
+              message: `test message, ${value}, ${values}, ${message}, ${customArgs}`,
+            })
+        );
+      const schema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator,
+            message: void 0,
+            customArgs: void 0,
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateField(fieldId, value, values, schema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          key: 'myField',
+          type: 'test type',
+          succeeded: true,
+          message: 'test message, undefined, undefined, undefined, undefined',
         });
-        return promise;
-      };
+        done();
+      });
+    });
 
-      const fullFieldValidation: FullFieldValidationAsync = {
-        validator: validationFn,
+    it('spec #7: should return promise with InternalValidationResult when it feeds fieldId equals myField and schema equals defined with one validator and value, values, message and customArgs equals null', done => {
+      // Arrange
+      const fieldId: string = 'myField';
+      const value: string = null;
+      const values: string = null;
+      const validator: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          ({
+            value,
+            values,
+            message,
+            customArgs,
+          }): Promise<InternalValidationResult> =>
+            Promise.resolve({
+              key: '',
+              type: 'test type',
+              succeeded: true,
+              message: `test message, ${value}, ${values}, ${message}, ${customArgs}`,
+            })
+        );
+      const schema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator,
+            message: null,
+            customArgs: null,
+          },
+        ],
       };
 
       // Act
-      validationEngine.addFieldValidation('username', fullFieldValidation);
+      const promise = validateField(fieldId, value, values, schema);
 
-      validationEngine
-        .validateField('username', 'newContent', values)
-        .then(validationResult => {
-          // Assert
-          expect(validationResult.succeeded).toBeTruthy();
-          expect(validationResult.type).toBe('REQUIRED');
-          done();
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          key: 'myField',
+          type: 'test type',
+          succeeded: true,
+          message: 'test message, null, null, null, null',
         });
-    });
-    it(`Should not fire the added validation on first
-        when adding a validation to a given field and firing validation
-        on another field, sync
-    `, done => {
-      // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
-
-      const validationFn = jest.fn().mockResolvedValue({
-        key: 'username',
-        type: 'REQUIRED',
-        succeeded: true,
-        message: '',
+        done();
       });
+    });
 
-      const fullFieldValidation: FullFieldValidationAsync = {
-        validator: validationFn,
+    it('spec #8: should return promise with InternalValidationResult when it feeds fieldId equals myField and schema equals defined with one validator and value, values, message and customArgs defined', done => {
+      // Arrange
+      const fieldId: string = 'myField';
+      const value: string = 'test value';
+      const values: string = 'test values';
+      const validator: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          ({
+            value,
+            values,
+            message,
+            customArgs,
+          }): Promise<InternalValidationResult> =>
+            Promise.resolve({
+              key: '',
+              type: 'test type',
+              succeeded: true,
+              message: `test message, ${value}, ${values}, ${message}, ${customArgs}`,
+            })
+        );
+      const schema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator,
+            message: 'custom message',
+            customArgs: 'test customArgs',
+          },
+        ],
       };
 
       // Act
-      validationEngine.addFieldValidation('username', fullFieldValidation);
+      const promise = validateField(fieldId, value, values, schema);
 
-      validationEngine
-        .validateField('lastname', 'sellers', values)
-        .then(validationResult => {
-          // Assert
-          expect(validationFn).not.toHaveBeenCalled();
-          expect(validationResult.key).toBe('');
-          expect(validationResult.succeeded).toBeTruthy();
-          done();
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          key: 'myField',
+          type: 'test type',
+          succeeded: true,
+          message:
+            'test message, test value, test values, custom message, test customArgs',
         });
+        done();
+      });
     });
 
-    it(`Should not fire the added validation on first instance then on second run fire and succeed
-        when adding a validation to a given field and firing validation
-        on another field, after than firing on the expected field.
-    `, done => {
+    it('spec #9: should return promise with InternalValidationResult when it feeds fieldId equals myField and schema equals defined with two validators with succeded equals true', done => {
       // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
-
-      const validationFn = jest.fn().mockResolvedValue({
-        key: 'username',
-        type: 'REQUIRED',
-        succeeded: true,
-        message: '',
-      });
-
-      const fullFieldValidation: FullFieldValidationAsync = {
-        validator: validationFn,
+      const fieldId: string = 'myField';
+      const value: string = null;
+      const values: string = null;
+      const validator1: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          (): Promise<InternalValidationResult> =>
+            Promise.resolve({
+              key: '',
+              type: 'test type 1',
+              succeeded: true,
+              message: 'test message 1',
+            })
+        );
+      const validator2: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          (): Promise<InternalValidationResult> =>
+            Promise.resolve({
+              key: '',
+              type: 'test type 2',
+              succeeded: true,
+              message: 'test message 2',
+            })
+        );
+      const schema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator: validator1,
+          },
+          {
+            validator: validator2,
+          },
+        ],
       };
 
       // Act
-      validationEngine.addFieldValidation('username', fullFieldValidation);
+      const promise = validateField(fieldId, value, values, schema);
 
-      validationEngine
-        .validateField('lastname', 'sellers', values)
-        .then(validationResult => {
-          // Assert
-          expect(validationFn).not.toHaveBeenCalled();
-          validationEngine
-            .validateField('username', 'Mary', values)
-            .then(validationResult => {
-              expect(validationFn).toHaveBeenCalled();
-              expect(validationResult.succeeded).toBeTruthy();
-              expect(validationResult.type).toBe('REQUIRED');
-              expect(validationResult);
-            });
-          done();
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          key: 'myField',
+          type: 'test type 2',
+          succeeded: true,
+          message: 'test message 2',
         });
-    });
-    it(`Should fire the added validation
-    when calling ValidateForm`, done => {
-      // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
-      const validationFn = jest.fn().mockResolvedValue({
-        key: 'username',
-        type: 'REQUIRED',
-        succeeded: true,
-        message: '',
-      });
-
-      const fullFieldValidation: FullFieldValidationAsync = {
-        validator: validationFn,
-      };
-
-      // Act
-      validationEngine.addFieldValidation('username', fullFieldValidation);
-
-      validationEngine.validateForm(values).then(validationResult => {
-        // Assert
-        expect(validationFn).toHaveBeenCalled();
-        expect(validationResult.succeeded).toBeTruthy();
-        // HERE
-        //expect(validationEngine.)
-        done();
-      });
-    });
-  });
-
-  describe('addRecordValidation', () => {
-    it(`Should fire the added form validation (async) when calling
-      fire all validations and return succeeded
-    `, done => {
-      // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
-      const validationFn = jest.fn().mockResolvedValue({
-        key: '',
-        type: '',
-        succeeded: true,
-        message: '',
-      });
-
-      const recordValidation: FullRecordValidationAsync = {
-        validation: validationFn,
-      };
-
-      // Act
-      validationEngine.addRecordValidation(recordValidation);
-
-      validationEngine.validateForm(values).then(validationResult => {
-        // Assert
-        expect(validationFn).toHaveBeenCalled();
-        expect(validationResult.succeeded).toBeTruthy();
-        expect(validationResult.recordErrors.length).toBe(0);
+        expect(validator1).toHaveBeenCalled();
+        expect(validator2).toHaveBeenCalled();
         done();
       });
     });
 
-    it(`Should fire the added form validation (async) when calling
-      fire all validations and return failed and formvalidation in the queue
-    `, done => {
+    it('spec #10: should return promise with InternalValidationResult when it feeds fieldId equals myField and schema equals defined with two validators with first succeded equals true and second succeede equals false', done => {
       // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
-      const validationFn = jest.fn().mockResolvedValue({
-        key: '',
-        type: '',
-        succeeded: false,
-        message: '',
-      });
-
-      const recordValidation: FullRecordValidationAsync = {
-        validation: validationFn,
-      };
-
-      // Act
-      validationEngine.addRecordValidation(recordValidation);
-
-      validationEngine.validateForm(values).then(validationResult => {
-        // Assert
-        expect(validationFn).toHaveBeenCalled();
-        expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.recordErrors.length).toBe(1);
-        // expect(validationResult.recordErrors[0].key).toBe(
-        //   recordFormValidationId
-        // );
-        done();
-      });
-    });
-
-    it(`Should fire the two added form validation (succeeded) when calling
-      fire all validations
-    `, done => {
-      // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
-      const validationFn1 = jest.fn().mockResolvedValue({
-        key: '',
-        type: '',
-        succeeded: true,
-        message: '',
-      });
-
-      const validationFn2 = jest.fn().mockResolvedValue({
-        key: '',
-        type: '',
-        succeeded: true,
-        message: '',
-      });
-
-      const recordValidation1: FullRecordValidationAsync = {
-        validation: validationFn1,
-      };
-
-      const recordValidation2: FullRecordValidationAsync = {
-        validation: validationFn2,
-      };
-
-      // Act
-      validationEngine.addRecordValidation(recordValidation1);
-      validationEngine.addRecordValidation(recordValidation2);
-
-      validationEngine.validateForm(values).then(validationResult => {
-        // Assert
-        expect(validationFn1).toHaveBeenCalled();
-        expect(validationFn2).toHaveBeenCalled();
-        expect(validationResult.succeeded).toBeTruthy();
-        expect(validationResult.recordErrors.length).toBe(0);
-        done();
-      });
-    });
-
-    it(`Should fire the two added form validation (failed first), but only failed validation
-    in the form result list. when first form validation fails, second succeeds
-    `, done => {
-      // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
-      const validationFn1 = jest.fn().mockResolvedValue({
-        key: '',
-        type: '',
-        succeeded: false,
-        message: '',
-      });
-
-      const validationFn2 = jest.fn().mockResolvedValue({
-        key: '',
-        type: '',
-        succeeded: true,
-        message: '',
-      });
-
-      const recordValidation1: FullRecordValidationAsync = {
-        validation: validationFn1,
-      };
-
-      const recordValidation2: FullRecordValidationAsync = {
-        validation: validationFn2,
-      };
-
-      // Act
-      validationEngine.addRecordValidation(recordValidation1);
-      validationEngine.addRecordValidation(recordValidation2);
-
-      validationEngine.validateForm(values).then(validationResult => {
-        // Assert
-        expect(validationFn1).toHaveBeenCalled();
-        expect(validationFn2).toHaveBeenCalled();
-        expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.recordErrors.length).toBe(1);
-        done();
-      });
-    });
-
-    it(`Should fire the two added form validation (both failed), adn both in
-    the form validation result
-      fire all validations, and first form validation fails, second fails
-    `, done => {
-      // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
-      const validationFn1 = jest.fn().mockResolvedValue({
-        key: '',
-        type: '',
-        succeeded: false,
-        message: '',
-      });
-
-      const validationFn2 = jest.fn().mockResolvedValue({
-        key: '',
-        type: '',
-        succeeded: false,
-        message: '',
-      });
-
-      const recordValidation1: FullRecordValidationAsync = {
-        validation: validationFn1,
-      };
-
-      const recordValidation2: FullRecordValidationAsync = {
-        validation: validationFn2,
-      };
-
-      // Act
-      validationEngine.addRecordValidation(recordValidation1);
-      validationEngine.addRecordValidation(recordValidation2);
-
-      validationEngine.validateForm(values).then(validationResult => {
-        // Assert
-        expect(validationFn1).toHaveBeenCalled();
-        expect(validationFn2).toHaveBeenCalled();
-        expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.recordErrors.length).toBe(2);
-        done();
-      });
-    });
-
-    it(`Should not fire the added form validation when calling
-      fire field validations
-    `, done => {
-      // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
-      const validationFn = jest.fn().mockResolvedValue({
-        key: '',
-        type: '',
-        succeeded: false,
-        customArgs: {},
-        message: '',
-      });
-
-      const recordValidation: FullRecordValidationAsync = {
-        validation: validationFn,
-      };
-
-      // Act
-      validationEngine.addRecordValidation(recordValidation);
-
-      validationEngine
-        .validateField('username', 'John', values)
-        .then(validationResult => {
-          // Assert
-          expect(validationFn).not.toHaveBeenCalled();
-          expect(validationResult.succeeded).toBeTruthy();
-          done();
-        });
-    });
-
-    it(`Should fire the added validation (async flavour) and display
-    a customized message
-    when adding a validation and indicating customized message in
-    the addFieldValidation function`, done => {
-      // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
-
-      const validationFn: FieldValidationFunctionAsync = ({
-        message,
-      }): Promise<ValidationResult> => {
-        const promise = new Promise<ValidationResult>((resolve, reject) => {
-          setTimeout(() => {
-            resolve({
-              key: 'username',
-              type: 'REQUIRED',
+      const fieldId: string = 'myField';
+      const value: string = null;
+      const values: string = null;
+      const validator1: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          (): Promise<InternalValidationResult> =>
+            Promise.resolve({
+              key: '',
+              type: 'test type 1',
+              succeeded: true,
+              message: 'test message 1',
+            })
+        );
+      const validator2: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          (): Promise<InternalValidationResult> =>
+            Promise.resolve({
+              key: '',
+              type: 'test type 2',
               succeeded: false,
-              message: (message ? message : '') as string,
-            });
-          }, 500);
-        });
-        return promise;
-      };
-
-      const fullFieldValidation: FullFieldValidationAsync = {
-        validator: validationFn,
-        customArgs: {},
-        message: 'my custom message',
+              message: 'test message 2',
+            })
+        );
+      const schema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator: validator1,
+          },
+          {
+            validator: validator2,
+          },
+        ],
       };
 
       // Act
-      validationEngine.addFieldValidation('username', fullFieldValidation);
+      const promise = validateField(fieldId, value, values, schema);
 
-      validationEngine
-        .validateField('username', 'peter', values)
-        .then(validationResult => {
-          // Assert
-          expect(validationResult.message).toBe('my custom message');
-          done();
-        });
-    });
-
-    it(`Should fire the added form validation (async) and display a custom message when calling
-      fire all validations and return failed
-    `, done => {
-      // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
-      const validationFn: RecordValidationFunctionAsync = ({ message }) =>
-        Promise.resolve({
-          key: '',
-          type: '',
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          key: 'myField',
+          type: 'test type 2',
           succeeded: false,
-          message: (message ? message : 'no custom message') as string,
+          message: 'test message 2',
         });
-
-      const recordValidation: FullRecordValidationAsync = {
-        validation: validationFn,
-        message: 'custom message',
-      };
-
-      // Act
-      validationEngine.addRecordValidation(recordValidation);
-
-      validationEngine.validateForm(values).then(validationResult => {
-        // Assert
-        expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.recordErrors.length).toBe(1);
-        expect(validationResult.recordErrors[0].message).toBe('custom message');
+        expect(validator1).toHaveBeenCalled();
+        expect(validator2).toHaveBeenCalled();
         done();
       });
     });
 
-    it(`Should fire the added form validation (async) and display a custom message when calling
-      fire all validations and return failed
-    `, done => {
+    it('spec #11: should return promise with InternalValidationResult when it feeds fieldId equals myField and schema equals defined with two validators with first succeded equals false and second succeede equals true', done => {
       // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
-      const validationFn = (recordValidatorArgs): Promise<ValidationResult> =>
-        Promise.resolve({
-          key: '',
-          type: '',
+      const fieldId: string = 'myField';
+      const value: string = null;
+      const values: string = null;
+      const validator1: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          (): Promise<InternalValidationResult> =>
+            Promise.resolve({
+              key: '',
+              type: 'test type 1',
+              succeeded: false,
+              message: 'test message 1',
+            })
+        );
+      const validator2: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          (): Promise<InternalValidationResult> =>
+            Promise.resolve({
+              key: '',
+              type: 'test type 2',
+              succeeded: true,
+              message: 'test message 2',
+            })
+        );
+      const schema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator: validator1,
+          },
+          {
+            validator: validator2,
+          },
+        ],
+      };
+
+      // Act
+      const promise = validateField(fieldId, value, values, schema);
+
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          key: 'myField',
+          type: 'test type 1',
           succeeded: false,
-          message: recordValidatorArgs.message
-            ? recordValidatorArgs.message
-            : 'no custom message',
+          message: 'test message 1',
         });
-
-      const recordValidation: FullRecordValidationAsync = {
-        validation: validationFn,
-        message: 'custom message',
-      };
-
-      // Act
-      validationEngine.addRecordValidation(recordValidation);
-
-      validationEngine.validateForm(values).then(validationResult => {
-        // Assert
-        expect(validationResult.succeeded).toBeFalsy();
-        expect(validationResult.recordErrors.length).toBe(1);
-        expect(validationResult.recordErrors[0].message).toBe('custom message');
+        expect(validator1).toHaveBeenCalled();
+        expect(validator2).not.toHaveBeenCalled();
         done();
       });
     });
-  });
 
-  describe('FireFieldValidation', () => {
-    it(`Should fire first validation and not second
-    when adding two validations to same field and first one is failing
-    `, done => {
+    it('spec #12: should return promise with InternalValidationResult when it feeds fieldId equals myField and schema equals defined with two validators with first succeded equals false and second succeede equals false', done => {
       // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
-      const validationFn1: FieldValidationFunctionSyncAsync = (
-        fieldValidatorArgs
-      ): Promise<ValidationResult> => {
-        const promise = new Promise<ValidationResult>((resolve, reject) => {
-          setTimeout(() => {
-            resolve({
-              key: 'username',
-              type: 'REQUIRED',
+      const fieldId: string = 'myField';
+      const value: string = null;
+      const values: string = null;
+      const validator1: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          (): Promise<InternalValidationResult> =>
+            Promise.resolve({
+              key: '',
+              type: 'test type 1',
               succeeded: false,
-              message: '',
-            });
-          }, 500);
-        });
-        return promise;
-      };
-
-      const validationFn2: FieldValidationFunctionSyncAsync = (
-        fieldValidatorArgs
-      ): Promise<ValidationResult> => {
-        const promise = new Promise<ValidationResult>((resolve, reject) => {
-          setTimeout(() => {
-            resolve({
-              key: 'username',
-              type: 'ANOTHER',
-              succeeded: true,
-              message: '',
-            });
-          }, 20);
-        });
-        return promise;
-      };
-
-      const fullFieldValidation1: FullFieldValidationAsync = {
-        validator: validationFn1,
-      };
-
-      const fullFieldValidation2: FullFieldValidationAsync = {
-        validator: validationFn2,
+              message: 'test message 1',
+            })
+        );
+      const validator2: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          (): Promise<InternalValidationResult> =>
+            Promise.resolve({
+              key: '',
+              type: 'test type 2',
+              succeeded: false,
+              message: 'test message 2',
+            })
+        );
+      const schema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator: validator1,
+          },
+          {
+            validator: validator2,
+          },
+        ],
       };
 
       // Act
-      validationEngine.addFieldValidation('username', fullFieldValidation1);
+      const promise = validateField(fieldId, value, values, schema);
 
-      validationEngine.addFieldValidation('username', fullFieldValidation2);
-
-      validationEngine
-        .validateField('username', 'newContent', values)
-        .then(validationResult => {
-          // Assert
-          expect(validationResult.succeeded).toBeFalsy();
-          expect(validationResult.type).toBe('REQUIRED');
-          done();
+      // Assert
+      promise.then(result => {
+        expect(result).toEqual({
+          key: 'myField',
+          type: 'test type 1',
+          succeeded: false,
+          message: 'test message 1',
         });
+        expect(validator1).toHaveBeenCalled();
+        expect(validator2).not.toHaveBeenCalled();
+        done();
+      });
     });
 
-    it(`Should fire first validation and  second
-    when adding two validation to same field and first one succeed and second failing
-    `, done => {
+    it('spec #13: should call console.error when it feeds fieldId equals myField and schema equals defined with one validator that throw an error', done => {
       // Arrange
-      const validationEngine: ValidationEngine = new ValidationEngine();
-      const values = [{ username: 'john', lastname: 'doe' }];
-      const validationFn1: FieldValidationFunctionSyncAsync = (
-        fieldValidatorArgs
-      ): Promise<ValidationResult> => {
-        const promise = new Promise<ValidationResult>((resolve, reject) => {
-          setTimeout(() => {
-            resolve({
-              key: 'username',
-              type: 'REQUIRED',
-              succeeded: true,
-              message: '',
-            });
-          }, 500);
-        });
-        return promise;
+      const fieldId: string = 'myField';
+      const value: string = null;
+      const values: string = null;
+      const validator: FieldValidationFunctionAsync = jest
+        .fn()
+        .mockImplementation(
+          (): Promise<InternalValidationResult> =>
+            Promise.reject('Test validator error')
+        );
+      const schema: InternalFieldValidationSchema = {
+        myField: [
+          {
+            validator,
+          },
+        ],
       };
 
-      const validationFn2: FieldValidationFunctionAsync = (
-        fieldValidatorArgs
-      ): Promise<ValidationResult> => {
-        const promise = new Promise<ValidationResult>((resolve, reject) => {
-          setTimeout(done => {
-            resolve({
-              key: 'username',
-              type: 'ANOTHER',
-              succeeded: false,
-              message: '',
-            });
-          }, 20);
-        });
-        return promise;
-      };
-
-      const fullFieldValidation1: FullFieldValidationAsync = {
-        validator: validationFn1,
-      };
-
-      const fullFieldValidation2: FullFieldValidationAsync = {
-        validator: validationFn2,
-      };
+      const consoleErrorStub = jest
+        .spyOn(global.console, 'error')
+        .mockImplementation(() => {});
 
       // Act
-      validationEngine.addFieldValidation('username', fullFieldValidation1);
+      const promise = validateField(fieldId, value, values, schema);
 
-      validationEngine.addFieldValidation('username', fullFieldValidation2);
-
-      validationEngine
-        .validateField('username', 'newContent', values)
-        .then(validationResult => {
-          // Assert
-          expect(validationResult.succeeded).toBeFalsy();
-          expect(validationResult.type).toBe('ANOTHER');
-          done();
-        });
+      // Assert
+      promise.catch(result => {
+        expect(result).toEqual('Test validator error');
+        expect(validator).toHaveBeenCalled();
+        expect(consoleErrorStub).toHaveBeenCalledWith(
+          'Validation Exception, field: myField'
+        );
+        done();
+      });
     });
   });
 });
