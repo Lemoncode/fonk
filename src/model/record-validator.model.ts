@@ -22,13 +22,11 @@ export interface FullRecordValidation {
   message?: string | string[];
 }
 
-// FullRecordValidationAsync
 export interface InternalRecordValidation {
   validator: RecordValidationFunctionAsync;
   message?: string | string[];
 }
 
-// FullRecordValidationSchemaAsync
 export type InternalRecordValidationSchema = {
-  [key: string]: InternalRecordValidation[];
+  [recordId: string]: InternalRecordValidation[];
 };

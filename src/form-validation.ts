@@ -12,7 +12,7 @@ import {
 } from './mappers';
 import {
   validateField,
-  validateRecords,
+  validateRecord,
   validateForm,
 } from './validation-engine';
 
@@ -54,8 +54,8 @@ export class FormValidation {
     );
   }
 
-  public validateRecords(values?: any): Promise<RecordValidationResult> {
-    return validateRecords(values, this.recordSchema);
+  public validateRecord(values?: any): Promise<RecordValidationResult> {
+    return validateRecord(values, this.recordSchema);
   }
 
   public validateForm(values: any): Promise<FormValidationResult> {

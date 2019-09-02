@@ -40,7 +40,7 @@ export const validateField = (
           throw error;
         });
 
-const validateRecord = (
+const validateSingleRecord = (
   recordId: string,
   values: any,
   schema: InternalRecordValidationSchema
@@ -58,7 +58,7 @@ const validateRecord = (
           throw error;
         });
 
-export const validateRecords = (
+export const validateRecord = (
   values: any,
   schema: InternalRecordValidationSchema
 ): Promise<RecordValidationResult> => {
@@ -66,7 +66,7 @@ export const validateRecords = (
     Object.keys(schema),
     values,
     schema,
-    validateRecord
+    validateSingleRecord
   );
 
   return Promise.all(promiseValidationResults)
@@ -94,7 +94,7 @@ export const validateForm = (
     Object.keys(recordSchema),
     values,
     recordSchema,
-    validateRecord
+    validateSingleRecord
   );
 
   return Promise.all(promiseFieldValidationResults)

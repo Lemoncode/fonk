@@ -500,7 +500,7 @@ when adding one validator to a given nested field
 
       // Act
       const formValidation = createFormValidation(validationSchema);
-      const result = formValidation.validateRecords(values);
+      const result = formValidation.validateRecord(values);
 
       // Assert
       result.then(validationResult => {
@@ -539,7 +539,7 @@ when adding one validator to a given nested field
 
       // Act
       const formValidation = createFormValidation(validationSchema);
-      const result = formValidation.validateRecords(values);
+      const result = formValidation.validateRecord(values);
 
       // Assert
       result.then(validationResult => {
@@ -581,7 +581,7 @@ when adding one validator to a given nested field
 
       // Act
       const formValidation = createFormValidation(validationSchema);
-      const result = formValidation.validateRecords(values);
+      const result = formValidation.validateRecord(values);
 
       // Assert
       result.then(validationResult => {
@@ -622,7 +622,7 @@ when adding one validator to a given nested field
 
       // Act
       const formValidation = createFormValidation(validationSchema);
-      const result = formValidation.validateRecords(values);
+      const result = formValidation.validateRecord(values);
 
       // Assert
       result.then(validationResult => {
@@ -669,7 +669,7 @@ when adding one validator to a given nested field
 
       // Act
       const formValidation = createFormValidation(validationSchema);
-      const result = formValidation.validateRecords(values);
+      const result = formValidation.validateRecord(values);
 
       // Assert
       result.then(validationResult => {
@@ -717,7 +717,7 @@ when adding one validator to a given nested field
 
       // Act
       const formValidation = createFormValidation(validationSchema);
-      const result = formValidation.validateRecords(values);
+      const result = formValidation.validateRecord(values);
 
       // Assert
       result.then(validationResult => {
@@ -765,7 +765,7 @@ when adding one validator to a given nested field
 
       // Act
       const formValidation = createFormValidation(validationSchema);
-      const result = formValidation.validateRecords(values);
+      const result = formValidation.validateRecord(values);
 
       // Assert
       result.then(validationResult => {
@@ -813,7 +813,7 @@ when adding one validator to a given nested field
 
       // Act
       const formValidation = createFormValidation(validationSchema);
-      const result = formValidation.validateRecords(values);
+      const result = formValidation.validateRecord(values);
 
       // Assert
       result.then(validationResult => {
@@ -862,7 +862,7 @@ when adding one validator to a given nested field
 
       // Act
       const formValidation = createFormValidation(validationSchema);
-      const result = formValidation.validateRecords(values);
+      const result = formValidation.validateRecord(values);
 
       // Assert
       result.then(validationResult => {

@@ -25,14 +25,12 @@ export interface FullFieldValidation {
   message?: string | string[];
 }
 
-// FullFieldValidationAsync
 export interface InternalFieldValidation {
   validator: FieldValidationFunctionAsync;
   customArgs?: any;
   message?: string | string[];
 }
 
-// FullFieldValidationSchemaAsync
 export interface InternalFieldValidationSchema {
-  [key: string]: InternalFieldValidation[];
+  [fieldId: string]: InternalFieldValidation[];
 }
