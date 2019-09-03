@@ -1,4 +1,4 @@
-import { minLength, VALIDATOR_TYPE, setErrorMessage } from './min-length';
+import { validator, setErrorMessage } from './min-length';
 import { LengthArgs } from './length';
 
 describe('[minLength] validation rule tests =>', () => {
@@ -11,11 +11,11 @@ describe('[minLength] validation rule tests =>', () => {
         length: 3,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = validator({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy;
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('MIN_LENGTH');
     });
 
     it('should return true if value is null', () => {
@@ -26,11 +26,11 @@ describe('[minLength] validation rule tests =>', () => {
         length: 3,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = validator({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy;
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('MIN_LENGTH');
     });
   });
 
@@ -44,11 +44,11 @@ describe('[minLength] validation rule tests =>', () => {
         length: 3,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = validator({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy;
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('MIN_LENGTH');
     });
 
     it('should succeed for empty strings and min-length === 0', () => {
@@ -59,11 +59,11 @@ describe('[minLength] validation rule tests =>', () => {
         length: 0,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = validator({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy;
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('MIN_LENGTH');
     });
 
     it('should return true if value length is greater than length option', () => {
@@ -74,11 +74,11 @@ describe('[minLength] validation rule tests =>', () => {
         length: 3,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = validator({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy;
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('MIN_LENGTH');
     });
 
     it('should return false if value length is lesser than length option', () => {
@@ -89,11 +89,11 @@ describe('[minLength] validation rule tests =>', () => {
         length: 3,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = validator({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeFalsy;
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('MIN_LENGTH');
       expect(validationResult.message).toBe(
         'The value provided does not fulfill min length'
       );
@@ -109,11 +109,11 @@ describe('[minLength] validation rule tests =>', () => {
 
       setErrorMessage('my custom message');
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = validator({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeFalsy;
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('MIN_LENGTH');
       expect(validationResult.message).toBe('my custom message');
     });
 
@@ -125,11 +125,11 @@ describe('[minLength] validation rule tests =>', () => {
         length: 3,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = validator({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy;
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('MIN_LENGTH');
     });
 
     it('should return true if value has length greater than 0 and length option is 0', () => {
@@ -140,11 +140,11 @@ describe('[minLength] validation rule tests =>', () => {
         length: 0,
       };
       // Act
-      const validationResult = minLength({ value, customArgs });
+      const validationResult = validator({ value, customArgs });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy;
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('MIN_LENGTH');
     });
   });
 
@@ -157,7 +157,7 @@ describe('[minLength] validation rule tests =>', () => {
       // Act
       // TODO: check how to acomplish this using jest toThrowError
       try {
-        minLength({
+        validator({
           value,
           values,
         });
@@ -178,7 +178,7 @@ describe('[minLength] validation rule tests =>', () => {
       // Act
       // TODO: check how to acomplish this using jest toThrowError
       try {
-        minLength({
+        validator({
           value,
           values,
           customArgs: lengthArgs,

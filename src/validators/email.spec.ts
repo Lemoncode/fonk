@@ -1,5 +1,4 @@
-import { email, VALIDATOR_TYPE, setErrorMessage } from './email';
-import { FieldValidatorArgs } from '../model';
+import { validator, setErrorMessage } from './email';
 
 describe(`required validator`, () => {
   describe('When validating a non string value', () => {
@@ -9,7 +8,7 @@ describe(`required validator`, () => {
       const values = undefined;
 
       // Act
-      const validationResult = email({ value });
+      const validationResult = validator({ value });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy();
@@ -23,7 +22,7 @@ describe(`required validator`, () => {
       const values = undefined;
 
       // Act
-      const validationResult = email({ value });
+      const validationResult = validator({ value });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy();
@@ -39,7 +38,7 @@ describe(`required validator`, () => {
 
       // Act
       setErrorMessage('custom message');
-      const validationResult = email({ value });
+      const validationResult = validator({ value });
 
       // Assert
       expect(validationResult.succeeded).toBeFalsy;
@@ -57,7 +56,7 @@ describe(`required validator`, () => {
       const values = undefined;
 
       // Act
-      const validationResult = email({ value });
+      const validationResult = validator({ value });
 
       // Assert
       expect(validationResult.succeeded).toBeFalsy;
@@ -72,7 +71,7 @@ describe(`required validator`, () => {
       const values = undefined;
 
       // Act
-      const validationResult = email({ value });
+      const validationResult = validator({ value });
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy();

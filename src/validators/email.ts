@@ -1,7 +1,7 @@
 import { FieldValidationFunctionSync } from '../model';
 import { isValidPattern } from './pattern-helpers';
 
-export const VALIDATOR_TYPE = 'EMAIL';
+const VALIDATOR_TYPE = 'EMAIL';
 
 let defaultMessage = 'Please enter a valid email address.';
 export const setErrorMessage = message => (defaultMessage = message);
@@ -11,7 +11,7 @@ const EMAIL_PATTERN = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".
 
 const isValidField = (value): boolean => isValidPattern(value, EMAIL_PATTERN);
 
-export const email: FieldValidationFunctionSync = fieldValidatorArgs => {
+export const validator: FieldValidationFunctionSync = fieldValidatorArgs => {
   const { value, message = defaultMessage } = fieldValidatorArgs;
 
   const succeeded = isValidField(value);

@@ -1,4 +1,4 @@
-import { required, VALIDATOR_TYPE } from './required';
+import { validator } from './required';
 import { FieldValidatorArgs } from '../model';
 
 describe(`required validator`, () => {
@@ -13,11 +13,11 @@ describe(`required validator`, () => {
       };
 
       // Act
-      const validationResult = required(validationArgs);
+      const validationResult = validator(validationArgs);
 
       // Assert
       expect(validationResult.succeeded).toBeFalsy();
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('REQUIRED');
       expect(validationResult.message).toBe(
         'Please fill in this mandatory field.'
       );
@@ -31,10 +31,10 @@ describe(`required validator`, () => {
       };
 
       // Act
-      const validationResult = required(validationArgs);
+      const validationResult = validator(validationArgs);
       // Assert
       expect(validationResult.succeeded).toBeFalsy();
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('REQUIRED');
       expect(validationResult.message).toBe(validationArgs.message);
     });
     it('should return validation failed if value is undefined', () => {
@@ -44,11 +44,11 @@ describe(`required validator`, () => {
       };
 
       // Act
-      const validationResult = required(validationArgs);
+      const validationResult = validator(validationArgs);
 
       // Assert
       expect(validationResult.succeeded).toBeFalsy();
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('REQUIRED');
       expect(validationResult.message).toBe(
         'Please fill in this mandatory field.'
       );
@@ -61,11 +61,11 @@ describe(`required validator`, () => {
       };
 
       // Act
-      const validationResult = required(validationArgs);
+      const validationResult = validator(validationArgs);
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy();
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('REQUIRED');
       expect(validationResult.message).toBe('');
     });
 
@@ -76,11 +76,11 @@ describe(`required validator`, () => {
       };
 
       // Act
-      const validationResult = required(validationArgs);
+      const validationResult = validator(validationArgs);
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy();
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('REQUIRED');
       expect(validationResult.message).toBe('');
     });
 
@@ -91,11 +91,11 @@ describe(`required validator`, () => {
       };
 
       // Act
-      const validationResult = required(validationArgs);
+      const validationResult = validator(validationArgs);
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy();
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('REQUIRED');
       expect(validationResult.message).toBe('');
     });
   });
@@ -107,11 +107,11 @@ describe(`required validator`, () => {
       };
 
       // Act
-      const validationResult = required(validationArgs);
+      const validationResult = validator(validationArgs);
 
       // Assert
       expect(validationResult.succeeded).toBeFalsy();
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('REQUIRED');
       expect(validationResult.message).toBe(
         'Please fill in this mandatory field.'
       );
@@ -125,11 +125,11 @@ describe(`required validator`, () => {
       };
 
       // Act
-      const validationResult = required(validationArgs);
+      const validationResult = validator(validationArgs);
 
       // Assert
       expect(validationResult.succeeded).toBeFalsy();
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('REQUIRED');
       expect(validationResult.message).toBe(
         'Please fill in this mandatory field.'
       );
@@ -143,11 +143,11 @@ describe(`required validator`, () => {
       };
 
       // Act
-      const validationResult = required(validationArgs);
+      const validationResult = validator(validationArgs);
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy();
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('REQUIRED');
       expect(validationResult.message).toBe('');
     });
 
@@ -159,11 +159,11 @@ describe(`required validator`, () => {
       };
 
       // Act
-      const validationResult = required(validationArgs);
+      const validationResult = validator(validationArgs);
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy();
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('REQUIRED');
       expect(validationResult.message).toBe('');
     });
 
@@ -175,11 +175,11 @@ describe(`required validator`, () => {
       };
 
       // Act
-      const validationResult = required(validationArgs);
+      const validationResult = validator(validationArgs);
 
       // Assert
       expect(validationResult.succeeded).toBeTruthy();
-      expect(validationResult.type).toBe(VALIDATOR_TYPE);
+      expect(validationResult.type).toBe('REQUIRED');
       expect(validationResult.message).toBe('');
     });
   });
