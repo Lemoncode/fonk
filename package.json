@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "npm run clean && rollup --config",
-    "clean": "rimraf dist .rpt2_cache",
+    "clean": "rimraf dist .rpt2_cache package-lock.json",
     "validate": "npm run lint && npm run build && npm run test && npm run test:size",
     "lint": "eslint src --ext .ts ",
     "lint:fix": "npm run lint -- --fix",
