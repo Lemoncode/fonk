@@ -1,6 +1,6 @@
 import { FieldValidationFunctionSync } from '../model';
 
-export const VALIDATOR_TYPE = 'REQUIRED';
+const VALIDATOR_TYPE = 'REQUIRED';
 
 let defaultMessage = 'Please fill in this mandatory field.';
 export const setErrorMessage = message => (defaultMessage = message);
@@ -21,7 +21,7 @@ const isValidField = (value: any, trim: boolean): boolean =>
     ? isStringValid(value, trim)
     : isNonStringValid(value);
 
-export const required: FieldValidationFunctionSync = fieldValidatorArgs => {
+export const validator: FieldValidationFunctionSync = fieldValidatorArgs => {
   const {
     value,
     customArgs = DEFAULT_PARAMS as RequiredArgs,

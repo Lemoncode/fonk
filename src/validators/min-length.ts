@@ -1,7 +1,7 @@
 import { LengthArgs, parseLengthParams, isLengthValid } from './length';
 import { FieldValidationFunctionSync } from '../model';
 
-export const VALIDATOR_TYPE = 'MIN_LENGTH';
+const VALIDATOR_TYPE = 'MIN_LENGTH';
 
 let defaultMessage = 'The value provided does not fulfill min length';
 export const setErrorMessage = message => (defaultMessage = message);
@@ -14,7 +14,7 @@ const DEFAULT_PARAMS: LengthArgs = null;
 const isStringLengthValid = (value: string, length: number): boolean =>
   value.length >= length;
 
-export const minLength: FieldValidationFunctionSync = fieldValidatorArgs => {
+export const validator: FieldValidationFunctionSync = fieldValidatorArgs => {
   if (!fieldValidatorArgs.customArgs) {
     throw new Error(BAD_PARAMETER);
   }

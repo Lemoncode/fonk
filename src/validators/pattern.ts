@@ -1,7 +1,7 @@
 import { FieldValidationFunctionSync } from '../model';
 import { isValidPattern } from './pattern-helpers';
 
-export const VALIDATOR_TYPE = 'PATTERN';
+const VALIDATOR_TYPE = 'PATTERN';
 
 let defaultMessage = 'Please provide a valid format.';
 export const setErrorMessage = message => (defaultMessage = message);
@@ -26,7 +26,7 @@ function parsePattern({ pattern }: PatternArgs): RegExp {
   return getRegExp(pattern);
 }
 
-export const pattern: FieldValidationFunctionSync = fieldValidatorArgs => {
+export const validator: FieldValidationFunctionSync = fieldValidatorArgs => {
   if (!fieldValidatorArgs.customArgs) {
     throw new Error(BAD_PARAMETER);
   }

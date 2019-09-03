@@ -1,4 +1,4 @@
-import { pattern, PatternArgs, setErrorMessage } from './pattern';
+import { validator, PatternArgs, setErrorMessage } from './pattern';
 import { ValidationResult } from '../model';
 
 describe(`pattern validator`, () => {
@@ -12,7 +12,7 @@ describe(`pattern validator`, () => {
       // Act
       // TODO: check how to acomplish this using jest toThrowError
       try {
-        pattern({
+        validator({
           value,
           values,
           customArgs: patternArgs,
@@ -34,7 +34,7 @@ describe(`pattern validator`, () => {
       // Act
       // TODO: check how to acomplish this using jest toThrowError
       try {
-        pattern({
+        validator({
           value,
           values,
           customArgs: patternArgs,
@@ -56,7 +56,7 @@ describe(`pattern validator`, () => {
       // Act
       // TODO: check how to acomplish this using jest toThrowError
       try {
-        pattern({
+        validator({
           value,
           values,
           customArgs: patternArgs,
@@ -78,7 +78,7 @@ describe(`pattern validator`, () => {
       const patternArgs: PatternArgs = { pattern: '^tes.*$' };
 
       // Act
-      const validationResult: ValidationResult = pattern({
+      const validationResult: ValidationResult = validator({
         value,
         values,
         customArgs: patternArgs,
@@ -97,7 +97,7 @@ describe(`pattern validator`, () => {
       const patternArgs: PatternArgs = { pattern: '^abc.*$' };
 
       // Act
-      const validationResult: ValidationResult = pattern({
+      const validationResult: ValidationResult = validator({
         value,
         values,
         customArgs: patternArgs,
@@ -118,7 +118,7 @@ describe(`pattern validator`, () => {
       setErrorMessage('my custom message');
 
       // Act
-      const validationResult: ValidationResult = pattern({
+      const validationResult: ValidationResult = validator({
         value,
         values,
         customArgs: patternArgs,
