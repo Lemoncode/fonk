@@ -1,7 +1,7 @@
 {
-  "name": "form-validation-react-final-form-form-level-validation",
+  "name": "field-level-validation",
   "version": "1.0.0",
-  "description": "Example integrating form-validatio` with react-final-form at form level.",
+  "description": "Example integrating `form-validation` with `react-final-form` at field level.",
   "keywords": [
     "form-validation",
     "react-final-form integration",
