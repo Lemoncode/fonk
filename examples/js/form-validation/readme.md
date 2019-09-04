@@ -1,8 +1,8 @@
-# Field Level Validation Example
+# Form Level Validation Example
 
-Example integrating `form-validation` with `react-final-form` at field level.
+Example integrating `form-validation` with `react-final-form` at form level.
 
-[![See field-validation example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/form-validation/tree/master/examples/react-final-form/js/field-validation?fontsize=14)
+[![See form-validation example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/form-validation/tree/master/examples/js/form-validation?fontsize=14)
 
 
 # About Basefactor + Lemoncode

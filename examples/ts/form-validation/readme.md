@@ -2,7 +2,7 @@
 
 Example integrating `form-validation` with `react-final-form` at form level.
 
-[![See form-validation example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/form-validation/tree/master/examples/react-final-form/ts/form-validation?fontsize=14)
+[![See form-validation example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/form-validation/tree/master/examples/ts/form-validation?fontsize=14)
 
 # About Basefactor + Lemoncode
 
