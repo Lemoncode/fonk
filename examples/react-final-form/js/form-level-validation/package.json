@@ -1,0 +1,23 @@
+{
+  "name": "Form Validation with React Final Form - Form Level Validation Example",
+  "version": "1.0.0",
+  "description": "Example integrating `form-validation` with `react-final-form` at form level.",
+  "keywords": [
+    "form-validation",
+    "react-final-form integration",
+    "state management",
+    "react-final-form",
+    "form",
+    "final-form",
+    "react"
+  ],
+  "main": "index.js",
+  "dependencies": {
+    "@lemoncode/form-validation": "latest",
+    "final-form": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-final-form": "latest",
+    "styled-components": "latest"
+  }
+}
