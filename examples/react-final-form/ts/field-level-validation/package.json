@@ -11,13 +11,31 @@
     "final-form",
     "react"
   ],
-  "main": "index.js",
+  "main": "src/index.tsx",
   "dependencies": {
     "@lemoncode/form-validation": "latest",
     "final-form": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-final-form": "latest",
+    "react-scripts": "latest",
     "styled-components": "latest"
-  }
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

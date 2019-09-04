@@ -1,7 +1,7 @@
-import { createFormValidation, Validators } from '@lemoncode/form-validation';
+import { createFormValidation, Validators, ValidationSchema } from '@lemoncode/form-validation';
 import { matchFieldValidator } from './custom-validators';
 
-const validationSchema = {
+const validationSchema: ValidationSchema = {
   field: {
     username: [
       {
