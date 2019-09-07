@@ -1,10 +1,10 @@
 import { FieldValidationFunctionSync } from '@lemoncode/form-validation';
 
-interface CustomArgs {
+interface MinNumberArgs {
   min: number;
 }
 
-export const minNumberValidator: FieldValidationFunctionSync<CustomArgs> = ({
+export const minNumberValidator: FieldValidationFunctionSync<MinNumberArgs> = ({
   value,
   customArgs,
 }) => {
