@@ -1,5 +1,5 @@
 import { createFormValidation, Validators } from '@lemoncode/form-validation';
-import { mustBeNumberValidator } from './custom-validators';
+import { isNumberValidator, minNumberValidator } from './custom-validators';
 
 const validationSchema = {
   field: {
@@ -20,11 +20,10 @@ const validationSchema = {
         validator: Validators.required.validator,
         message: 'Required',
       },
-      mustBeNumberValidator,
+      isNumberValidator,
       {
-        validator: Validators.minLength.validator,
-        customArgs: { length: 18 },
-        message: 'Should be greater than 18',
+        validator: minNumberValidator,
+        customArgs: { min: 18 },
       },
     ],
   },

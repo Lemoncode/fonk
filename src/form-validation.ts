@@ -54,7 +54,7 @@ export class FormValidation {
     );
   }
 
-  public validateRecord(values?: any): Promise<RecordValidationResult> {
+  public validateRecord(values: any): Promise<RecordValidationResult> {
     return validateRecord(values, this.recordSchema);
   }
 

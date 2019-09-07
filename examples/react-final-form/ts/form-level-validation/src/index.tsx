@@ -8,7 +8,7 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const onSubmit = async values => {
   await sleep(300);
-  window.alert(JSON.stringify(values, 0, 2));
+  window.alert(JSON.stringify(values, null, 2));
 };
 
 const App = () => (
@@ -69,7 +69,7 @@ const App = () => (
               Reset
             </button>
           </div>
-          <pre>{JSON.stringify(values, 0, 2)}</pre>
+          <pre>{JSON.stringify(values, null, 2)}</pre>
         </form>
       )}
     />

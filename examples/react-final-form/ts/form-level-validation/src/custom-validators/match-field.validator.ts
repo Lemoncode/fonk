@@ -1,4 +1,12 @@
-export const matchFieldValidator = ({ value, values, customArgs }) => {
+import { FieldValidationFunctionSync } from '@lemoncode/form-validation';
+
+interface MatchFieldArgs {
+  fieldId: string;
+}
+
+export const matchFieldValidator: FieldValidationFunctionSync<
+  MatchFieldArgs
+> = ({ value, values, customArgs }) => {
   const succeeded = value === values[customArgs.fieldId];
   return {
     succeeded,
