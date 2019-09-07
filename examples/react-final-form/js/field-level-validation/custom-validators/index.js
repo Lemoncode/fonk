@@ -1,1 +1,2 @@
-export * from './must-be-number.validator';
+export * from './is-number.validator';
+export * from './min-number.validator';

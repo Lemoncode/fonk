@@ -13,7 +13,7 @@
   ],
   "main": "src/index.tsx",
   "dependencies": {
-    "@lemoncode/form-validation": "latest",
+    "@lemoncode/form-validation": "file:../../../../",
     "final-form": "latest",
     "react": "latest",
     "react-dom": "latest",
@@ -24,7 +24,7 @@
   "devDependencies": {
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "typescript": "latest"
+    "typescript": "3.5.3"
   },
   "scripts": {
     "start": "react-scripts start",

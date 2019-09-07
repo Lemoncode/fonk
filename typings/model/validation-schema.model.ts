@@ -22,7 +22,13 @@ interface RecordValidationSchema {
 }
 
 /**
- * Comments
+ * In this structure we can define all the validations associated to a given form (field and record validations).
+ * This allow us to define all validation associated to a given form in a declarative way.
+ * Properties:
+ *
+ * - **field**: optional entry, here we can define all field validations associated to a given form
+ *
+ * - **record**: optional entry, here we can define all record validations associated to a given form
  */
 export interface ValidationSchema {
   field?: FieldValidationSchema;

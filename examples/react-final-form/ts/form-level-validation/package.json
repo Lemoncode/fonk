@@ -13,7 +13,7 @@
   ],
   "main": "src/index.tsx",
   "dependencies": {
-    "@lemoncode/form-validation": "file:../../../../",
+    "@lemoncode/form-validation": "latest",
     "final-form": "latest",
     "react": "latest",
     "react-dom": "latest",
