@@ -1,9 +1,9 @@
 import { ValidationResult } from './result.model';
 
-interface FieldValidatorArgs {
+interface FieldValidatorArgs<CustomArgs> {
   value: any;
   values?: any;
-  customArgs?: any;
+  customArgs?: CustomArgs;
   message?: string | string[];
 }
 
@@ -14,8 +14,8 @@ interface FieldValidatorArgs {
  * **Returns**
  * - **ValidationResult**: Whether if field validations applied to the selected field succeeded or not (in casenot additional information to be provided like id of the validator that failed plus error message).
  */
-export type FieldValidationFunctionSync = (
-  fieldValidatorArgs: FieldValidatorArgs
+export type FieldValidationFunctionSync<CustomArgs = {}> = (
+  fieldValidatorArgs: FieldValidatorArgs<CustomArgs>
 ) => ValidationResult;
 
 /**
@@ -25,8 +25,8 @@ export type FieldValidationFunctionSync = (
  * **Returns**
  * - **Promise<ValidationResult>**: Async promise, once promise is resolved returns wether if field validations applied to the selected field succeeded or not (in casenot additional information to be provided like id of the validator that failed plus error message).
  */
-export type FieldValidationFunctionAsync = (
-  fieldValidatorArgs: FieldValidatorArgs
+export type FieldValidationFunctionAsync<CustomArgs = {}> = (
+  fieldValidatorArgs: FieldValidatorArgs<CustomArgs>
 ) => Promise<ValidationResult>;
 
 export type FieldValidationFunctionSyncAsync =

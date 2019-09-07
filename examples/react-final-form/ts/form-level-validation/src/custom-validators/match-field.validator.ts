@@ -1,6 +1,10 @@
 import { FieldValidationFunctionSync } from '@lemoncode/form-validation';
 
-export const matchFieldValidator: FieldValidationFunctionSync = ({
+interface CustomArgs {
+  fieldId: string;
+}
+
+export const matchFieldValidator: FieldValidationFunctionSync<CustomArgs> = ({
   value,
   values,
   customArgs,
