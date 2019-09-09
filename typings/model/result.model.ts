@@ -1,24 +1,10 @@
 export interface ValidationResult {
   type: string;
   succeeded: boolean;
-  message: string;
+  message: string | string[];
 }
 
 export const createDefaultValidationResult = (): ValidationResult => ({
-  type: '',
-  succeeded: true,
-  message: '',
-});
-
-export interface InternalValidationResult {
-  key: string;
-  type: string;
-  succeeded: boolean;
-  message: string;
-}
-
-export const createDefaultInternalValidationResult = (): InternalValidationResult => ({
-  key: '',
   type: '',
   succeeded: true,
   message: '',

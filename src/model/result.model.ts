@@ -1,7 +1,7 @@
 export interface ValidationResult {
   type: string;
   succeeded: boolean;
-  message: string;
+  message: string | string[];
 }
 
 export const createDefaultValidationResult = (): ValidationResult => ({
@@ -14,7 +14,7 @@ export interface InternalValidationResult {
   key: string;
   type: string;
   succeeded: boolean;
-  message: string;
+  message: string | string[];
 }
 
 export const createDefaultInternalValidationResult = (): InternalValidationResult => ({
