@@ -1,9 +1,9 @@
 {
-  "name": "@lemoncode/form-validation",
+  "name": "@lemoncode/fonk",
   "version": "0.1.1",
   "description": "Form schema validator library",
-  "main": "dist/@lemoncode/form-validation.cjs.js",
-  "module": "dist/@lemoncode/form-validation.esm.js",
+  "main": "dist/@lemoncode/fonk.cjs.js",
+  "module": "dist/@lemoncode/fonk.esm.js",
   "typings": "typings/index.d.ts",
   "files": [
     "dist",
@@ -29,7 +29,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Lemoncode/form-validation.git"
+    "url": "git+https://github.com/Lemoncode/fonk.git"
   },
   "keywords": [
     "validation",
@@ -42,9 +42,9 @@
   "author": "Lemoncode",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Lemoncode/form-validation/issues"
+    "url": "https://github.com/Lemoncode/fonk/issues"
   },
-  "homepage": "https://github.com/Lemoncode/form-validation#readme",
+  "homepage": "https://github.com/Lemoncode/fonk#readme",
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
