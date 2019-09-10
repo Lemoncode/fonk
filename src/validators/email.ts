@@ -18,7 +18,7 @@ export const validator: FieldValidationFunctionSync = fieldValidatorArgs => {
 
   return {
     succeeded,
-    message: succeeded ? '' : message,
+    message: (succeeded ? '' : message) as string,
     type: VALIDATOR_TYPE,
   };
 };

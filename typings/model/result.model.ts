@@ -1,7 +1,7 @@
 export interface ValidationResult {
   type: string;
   succeeded: boolean;
-  message: string | string[];
+  message: string;
 }
 
 export const createDefaultValidationResult = (): ValidationResult => ({
