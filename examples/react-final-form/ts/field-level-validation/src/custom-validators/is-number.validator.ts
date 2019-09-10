@@ -1,4 +1,4 @@
-import { FieldValidationFunctionSync } from '@lemoncode/form-validation';
+import { FieldValidationFunctionSync } from '@lemoncode/fonk';
 
 export const isNumberValidator: FieldValidationFunctionSync = ({ value }) => {
   const succeeded = !isNaN(value);
