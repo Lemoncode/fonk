@@ -10,20 +10,6 @@ export const createDefaultValidationResult = (): ValidationResult => ({
   message: '',
 });
 
-export interface InternalValidationResult {
-  key: string;
-  type: string;
-  succeeded: boolean;
-  message: string;
-}
-
-export const createDefaultInternalValidationResult = (): InternalValidationResult => ({
-  key: '',
-  type: '',
-  succeeded: true,
-  message: '',
-});
-
 export interface RecordValidationResult {
   succeeded: boolean;
   recordErrors: { [recordId: string]: ValidationResult };
