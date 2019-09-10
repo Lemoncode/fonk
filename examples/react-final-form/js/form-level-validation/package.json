@@ -1,8 +1,9 @@
 {
   "name": "form-level-validation",
   "version": "1.0.0",
-  "description": "Example integrating form-validatio` with react-final-form at form level.",
+  "description": "Example integrating fonk with react-final-form at form level.",
   "keywords": [
+    "fonk",
     "form-validation",
     "react-final-form integration",
     "state management",
@@ -13,7 +14,7 @@
   ],
   "main": "index.js",
   "dependencies": {
-    "@lemoncode/form-validation": "latest",
+    "@lemoncode/fonk": "latest",
     "final-form": "latest",
     "react": "latest",
     "react-dom": "latest",

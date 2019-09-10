@@ -2,7 +2,7 @@ import {
   createFormValidation,
   Validators,
   ValidationSchema,
-} from '@lemoncode/form-validation';
+} from '@lemoncode/fonk';
 import { matchFieldValidator } from './custom-validators';
 
 const validationSchema: ValidationSchema = {
