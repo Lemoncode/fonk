@@ -1,4 +1,4 @@
-# fonk
+# Fonk
 
 [![CircleCI](https://badgen.net/github/status/Lemoncode/fonk/master/ci?icon=circleci&label=circleci)](https://circleci.com/gh/Lemoncode/fonk/tree/master)
 [![NPM Version](https://badgen.net/npm/v/@lemoncode/fonk?icon=npm&label=npm)](https://www.npmjs.com/package/@lemoncode/fonk)
