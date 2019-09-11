@@ -8,7 +8,7 @@ Form schema validator library.
 
 ![let's get fonky](./content/fonky.jpg)
 
-Form Validation is a pure javascript form validation library.
+Fonk is a pure javascript, framework agnostic, form validation library.
 
 It allows you to:
 
