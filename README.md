@@ -17,9 +17,8 @@ It allows you to:
 - Unit test your form validation without having to mount the ui.
 - Create reusable validation rules that can be easily unit tested.
 
-Live Demo (Fonky + React Final Form)
+[Live Demo (Fonky + React Final Form)](https://codesandbox.io/s/github/lemoncode/form-validation/tree/master/examples/react-final-form/js/field-level-validation)
 
-<div style="display:flex;justify-content:center; margin:32px"><iframe src="https://codesandbox.io/s/github/lemoncode/form-validation/tree/master/examples/react-final-form/js/field-level-validation?autoresize=1&fontsize=14&hidenavigation=1&view=preview" title="Fonky + React Final forms" allow="geolocation; microphone; camera; midi; vr; accelerometer; gyroscope; payment; ambient-light-sensor; encrypted-media; usb" style="width:80%; height:750px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></div>
 
 Fonk can be easily plugged into many libraries / frameworks,
 coming soon integration examples:
