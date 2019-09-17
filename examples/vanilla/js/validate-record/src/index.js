@@ -36,7 +36,6 @@ const formValues = {
   discount: 5,
   price: 20,
   isPrime: false,
-  freeShipping: true,
 };
 
 // Execute form validation
@@ -84,7 +83,6 @@ const formValues = {
   discount: 5,
   price: 20,
   isPrime: true,
-  freeShipping: true,
 };
 
 // Execute form validation

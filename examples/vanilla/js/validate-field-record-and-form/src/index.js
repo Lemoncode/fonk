@@ -40,7 +40,6 @@ const formValues = {
   discount: 5,
   price: 20,
   isPrime: false,
-  freeShipping: true,
 };
 </code></pre>
 </div>

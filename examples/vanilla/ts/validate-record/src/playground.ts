@@ -33,14 +33,12 @@ export const getResults = () => {
     discount: 5,
     price: 20,
     isPrime: false,
-    freeShipping: true,
   };
   const succeededFormValues = {
     product: 'shoes',
     discount: 5,
     price: 20,
     isPrime: true,
-    freeShipping: true,
   };
 
   return Promise.all([

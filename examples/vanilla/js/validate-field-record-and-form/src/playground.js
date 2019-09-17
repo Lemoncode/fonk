@@ -32,7 +32,6 @@ export const getResults = () => {
     discount: 5,
     price: 20,
     isPrime: false,
-    freeShipping: true,
   };
 
   return Promise.all([
