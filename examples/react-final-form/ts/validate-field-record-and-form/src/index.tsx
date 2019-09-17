@@ -1,8 +1,8 @@
-import React from 'react';
-import { render } from 'react-dom';
-import Styles from './styles';
-import { Form, Field } from 'react-final-form';
-import { formValidation } from './form-validation';
+import React from "react";
+import { render } from "react-dom";
+import Styles from "./styles";
+import { Form, Field } from "react-final-form";
+import { formValidation } from "./form-validation";
 
 const onSubmit = async values => {
   console.log({ values });
@@ -25,7 +25,7 @@ const App = () => (
         submitting,
         pristine,
         values,
-        errors,
+        errors
       }) => (
         <form onSubmit={handleSubmit}>
           <Field
@@ -112,7 +112,7 @@ const App = () => (
           .validateForm(values)
           .then(({ fieldErrors, recordErrors }) => ({
             ...fieldErrors,
-            ...recordErrors,
+            ...recordErrors
           }))
       }
       render={({
@@ -121,7 +121,7 @@ const App = () => (
         submitting,
         pristine,
         values,
-        errors,
+        errors
       }) => (
         <form onSubmit={handleSubmit}>
           <Field name="product" type="text">
@@ -185,4 +185,4 @@ const App = () => (
   </Styles>
 );
 
-render(<App />, document.getElementById('root'));
+render(<App />, document.getElementById("root"));
