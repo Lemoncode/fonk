@@ -1,4 +1,6 @@
-import './styles.css';
+import Prism from 'prismjs';
+import 'prismjs/themes/prism-tomorrow.css';
+Prism.highlightAll();
 import { getResults } from './playground';
 
 getResults().then(([failedResult, succeededResult]) => {
@@ -6,7 +8,7 @@ getResults().then(([failedResult, succeededResult]) => {
     <div style="flex-grow: 1;margin-left:2rem;">
       <h2>Example with failed result:</h2>
 
-<pre>
+<pre><code class="language-js">
 import {
   Validators,
   createFormValidation,
@@ -33,18 +35,18 @@ formValidation
   .then(validationResult => {
     console.log(validationResult);
   });
-</pre>
+</code></pre>
 
 <h3>Result: </h3>
-<pre>
+<pre><code class="language-js">
 ${JSON.stringify(failedResult, null, 2)}
-</pre>
+</code></pre>
 </div>
 
 <div style="flex-grow: 1;margin-left:2rem;">
 <h2>Example with succeeded result:</h2>
 
-<pre>
+<pre><code class="language-js">
 import {
   Validators,
   createFormValidation,
@@ -71,12 +73,12 @@ formValidation
   .then(validationResult => {
     console.log(validationResult);
   });
-</pre>
+</code></pre>
 
 <h3>Result: </h3>
-<pre>
+<pre><code class="language-js">
 ${JSON.stringify(succeededResult, null, 2)}
-</pre>
+</code></pre>
 </div>
     `;
 });
