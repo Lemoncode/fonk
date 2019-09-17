@@ -22,12 +22,12 @@ const validationSchema: ValidationSchema = {
   },
 };
 
+const formValidation = createFormValidation(validationSchema);
+
 const loginRecord = {
   user: '',
   password: '',
 };
-
-const formValidation = createFormValidation(validationSchema);
 
 // Execute form validation
 formValidation
@@ -60,12 +60,12 @@ const validationSchema: ValidationSchema = {
   },
 };
 
+const formValidation = createFormValidation(validationSchema);
+
 const loginRecord = {
   user: 'John',
   password: '',
 };
-
-const formValidation = createFormValidation(validationSchema);
 
 // Execute form validation
 formValidation
