@@ -1,6 +1,10 @@
-import { createFormValidation, Validators } from '@lemoncode/fonk';
+import {
+  createFormValidation,
+  Validators,
+  ValidationSchema,
+} from '@lemoncode/fonk';
 
-const validationSchema = {
+const validationSchema: ValidationSchema = {
   field: {
     'product.name': [Validators.required.validator],
   },
