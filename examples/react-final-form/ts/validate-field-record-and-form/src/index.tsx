@@ -10,7 +10,7 @@ const onSubmit = values => {
 
 const App = () => (
   <Styles>
-    <h1>Validate field, record and form with React Final Form Example</h1>
+    <h1>Validate field, record and form with Fonk and React Final Form Example</h1>
     <h2>validateField + validateRecord approach:</h2>
     <Form
       onSubmit={onSubmit}

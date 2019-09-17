@@ -1,7 +1,7 @@
 {
   "name": "custom-error-message",
   "version": "1.0.0",
-  "description": "Example integrating fonk with react-final-form  using validateField, validateRecord and validateForm.",
+  "description": "Example integrating fonk with react-final-form using custom error message.",
   "keywords": [
     "fonk",
     "react-final-form integration",

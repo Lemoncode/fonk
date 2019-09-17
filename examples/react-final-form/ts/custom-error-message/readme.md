@@ -1,6 +1,6 @@
-# Validate field, record and form example
+# Custom error message example
 
-Example integrating `fonk` with `react-final-form` using `validateField`, `validateRecord` and `validateForm`.
+Example integrating `fonk` with `react-final-form` using `custom error message`.
 
 [![See custom-error-message example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/react-final-form/ts/custom-error-message)
 

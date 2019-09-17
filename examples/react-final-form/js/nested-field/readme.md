@@ -1,8 +1,8 @@
-# Custom error message example
+# Nested field example
 
-Example integrating `fonk` with `react-final-form` using `custom error message`.
+Example integrating `fonk` with `react-final-form` using `nested field`.
 
-[![See fonk example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/react-final-form/js/custom-error-message)
+[![See fonk example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/react-final-form/js/nested-field)
 
 
 # About Basefactor + Lemoncode

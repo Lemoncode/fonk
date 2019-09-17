@@ -13,7 +13,7 @@ const onSubmit = async values => {
 
 const App = () => (
   <Styles>
-    <h1>Form Validation with React Final Form Example</h1>
+    <h1>Form Validation with Fonk and React Final Form Example</h1>
     <h2>Password / Confirm Validation</h2>
     <Form
       onSubmit={onSubmit}

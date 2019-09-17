@@ -10,7 +10,7 @@ const onSubmit = values => {
 
 const App = () => (
   <Styles>
-    <h1>Custom error message with React Final Form Example</h1>
+    <h1>Custom error message with Fonk and React Final Form Example</h1>
     <Form
       onSubmit={onSubmit}
       render={({ handleSubmit, form, submitting, pristine, values }) => (

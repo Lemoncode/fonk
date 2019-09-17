@@ -10,21 +10,21 @@ const onSubmit = values => {
 
 const App = () => (
   <Styles>
-    <h1>Custom error message with Fonk and React Final Form Example</h1>
+    <h1>Nested field with Fonk and React Final Form Example</h1>
     <Form
       onSubmit={onSubmit}
       render={({ handleSubmit, form, submitting, pristine, values }) => (
         <form onSubmit={handleSubmit}>
           <Field
-            name="product"
+            name="product.name"
             validate={(value, _, meta) =>
               formValidation.validateField(meta.name, value)
             }
           >
             {({ input, meta }) => (
               <div>
-                <label>Product</label>
-                <input {...input} type="text" placeholder="Product" />
+                <label>Product Name</label>
+                <input {...input} type="text" placeholder="Product Name" />
                 {meta.error && meta.touched && (
                   <span>{meta.error.message}</span>
                 )}

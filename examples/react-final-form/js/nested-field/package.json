@@ -1,7 +1,7 @@
 {
-  "name": "custom-error-message",
+  "name": "nested-field",
   "version": "1.0.0",
-  "description": "Example integrating fonk with react-final-form using custom error message.",
+  "description": "Example integrating fonk with react-final-form using nested field.",
   "keywords": [
     "fonk",
     "form-validation",
