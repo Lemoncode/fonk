@@ -4,7 +4,7 @@ import Styles from "./styles";
 import { Form, Field } from "react-final-form";
 import { formValidation } from "./form-validation";
 
-const onSubmit = async values => {
+const onSubmit = values => {
   console.log({ values });
 };
 
