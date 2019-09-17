@@ -1,6 +1,10 @@
-import { Validators, createFormValidation } from '@lemoncode/fonk';
+import {
+  Validators,
+  createFormValidation,
+  ValidationSchema,
+} from '@lemoncode/fonk';
 
-const validationSchema = {
+const validationSchema: ValidationSchema = {
   field: {
     user: [Validators.required.validator],
     password: [Validators.required.validator],
@@ -24,13 +28,17 @@ formValidation
       <h2>Validate field example</h2>
 
 <pre>
-import { Validators, createFormValidation } from "@lemoncode/fonk";
+import {
+  Validators,
+  createFormValidation,
+  ValidationSchema,
+} from '@lemoncode/fonk';
 
-const validationSchema = {
+const validationSchema: ValidationSchema = {
   field: {
     user: [Validators.required.validator],
-    password: [Validators.required.validator]
-  }
+    password: [Validators.required.validator],
+  },
 };
 
 const loginRecord = {
