@@ -5,8 +5,6 @@ import {
 } from "@lemoncode/fonk";
 import { freeShippingRecordValidator } from "./custom-validators";
 
-Validators.required.setErrorMessage("Required");
-
 const validationSchema: ValidationSchema = {
   field: {
     product: [Validators.required.validator],
