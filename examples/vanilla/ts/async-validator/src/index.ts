@@ -9,9 +9,16 @@ getResults().then(validationResult => {
       <h2>Async validator example</h2>
 
 <pre><code class="language-js">
-import { Validators, createFormValidation } from '@lemoncode/fonk';
+import {
+  Validators,
+  createFormValidation,
+  ValidationSchema,
+  FieldValidationFunctionAsync,
+} from '@lemoncode/fonk';
 
-const userExistsOnGithubValidator = ({ value }) => {
+const userExistsOnGithubValidator: FieldValidationFunctionAsync = ({
+  value,
+}) => {
   const validationResult = {
     type: 'GITHUB_USER_EXISTS',
     succeeded: false,
@@ -31,7 +38,7 @@ const userExistsOnGithubValidator = ({ value }) => {
   });
 };
 
-const validationSchema = {
+const validationSchema: ValidationSchema = {
   field: {
     user: [Validators.required.validator, userExistsOnGithubValidator],
   },
