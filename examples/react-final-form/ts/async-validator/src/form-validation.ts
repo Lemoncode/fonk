@@ -1,7 +1,11 @@
-import { createFormValidation, Validators } from "@lemoncode/fonk";
+import {
+  createFormValidation,
+  Validators,
+  ValidationSchema
+} from "@lemoncode/fonk";
 import { userExistsOnGithubValidator } from "./custom-validators";
 
-const validationSchema = {
+const validationSchema: ValidationSchema = {
   field: {
     user: [Validators.required.validator, userExistsOnGithubValidator]
   }
