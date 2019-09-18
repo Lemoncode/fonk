@@ -6,7 +6,7 @@ import { getResults, formValues } from './playground';
 getResults().then(validationResult => {
   document.getElementById('app').innerHTML = `
     <div style="flex-grow: 1;margin-left:2rem;">
-      <h2>Email example</h2>
+      <h2>Max length example</h2>
 
 <pre><code class="language-js">
 import {
@@ -17,7 +17,12 @@ import {
 
 const validationSchema: ValidationSchema = {
   field: {
-    email: [Validators.email.validator],
+    description: [
+      {
+        validator: Validators.maxLength.validator,
+        customArgs: { length: 20 }, // Valid description for length lower than 20 chars
+      },
+    ],
   },
 };
 

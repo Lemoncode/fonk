@@ -29,7 +29,7 @@ const ValidationSchema: ValidationSchema = {
 
 const formValidation = createFormValidation(ValidationSchema);
 
-// Update values in ./playground.js
+// Update values in ./playground.ts
 const loginModel = ${JSON.stringify({ ...loginModel }, null, 2)};
 
 // Execute form validation
