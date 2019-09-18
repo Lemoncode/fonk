@@ -1,0 +1,22 @@
+{
+  "name": "validate-field-record-and-form-js-example",
+  "version": "1.0.0",
+  "description": "validate-field-record-and-form, javascript example",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html --open"
+  },
+  "keywords": [
+    "fonk",
+    "form-validation",
+    "vanilla javascript"
+  ],
+  "dependencies": {
+    "@lemoncode/fonk": "latest"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "parcel-bundler": "^1.6.1",
+    "prismjs": "^1.17.1"
+  }
+}
