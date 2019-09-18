@@ -1,9 +1,10 @@
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
-import { getResults } from './playground';
-setTimeout(() => Prism.highlightAll(), 300);
+import { getResults, formValues } from './playground';
 
 getResults().then(validationResult => {
+  setTimeout(() => Prism.highlightAll(), 0);
+
   document.getElementById('app').innerHTML = `
     <div style="flex-grow: 1;margin-left:2rem;">
       <h2>Async validator example</h2>
@@ -46,10 +47,8 @@ const validationSchema: ValidationSchema = {
 
 const formValidation = createFormValidation(validationSchema);
 
-const formValues = {
-  user: 'mojombo',
-  password: '',
-};
+// Update values in ./playground.ts
+const formValues = ${JSON.stringify({ ...formValues }, null, 2)};
 
 // Execute form validation
 formValidation

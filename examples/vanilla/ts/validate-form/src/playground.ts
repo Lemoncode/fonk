@@ -13,16 +13,17 @@ const validationSchema: ValidationSchema = {
 
 const formValidation = createFormValidation(validationSchema);
 
-export const getResults = () => {
-  const failedLoginRecord = {
-    user: '',
-    password: '',
-  };
+export const failedLoginRecord = {
+  user: '',
+  password: '',
+};
 
-  const succeededLoginRecord = {
-    user: 'John',
-    password: '1234',
-  };
+export const succeededLoginRecord = {
+  user: 'John',
+  password: '1234',
+};
+
+export const getResults = () => {
 
   return Promise.all([
     formValidation.validateForm(failedLoginRecord),

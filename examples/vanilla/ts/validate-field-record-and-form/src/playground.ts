@@ -33,14 +33,14 @@ const validationSchema: ValidationSchema = {
 
 export const formValidation = createFormValidation(validationSchema);
 
-export const getResults = () => {
-  const formValues = {
-    product: '',
-    discount: 5,
-    price: 20,
-    isPrime: false,
-  };
+export const formValues = {
+  product: '',
+  discount: 5,
+  price: 20,
+  isPrime: false,
+};
 
+export const getResults = () => {
   return Promise.all([
     formValidation.validateField('product', formValues.product),
     formValidation.validateRecord(formValues),

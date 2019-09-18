@@ -1,7 +1,7 @@
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
 Prism.highlightAll();
-import { getResults } from './playground';
+import { getResults, formValues } from './playground';
 
 getResults().then(([fieldResult, recordResult, formResult]) => {
   document.getElementById('app').innerHTML = `
@@ -42,12 +42,8 @@ const validationSchema: ValidationSchema = {
 
 export const formValidation = createFormValidation(validationSchema);
 
-const formValues = {
-  product: '',
-  discount: 5,
-  price: 20,
-  isPrime: false,
-};
+// Update values in ./playground.ts
+const formValues = ${JSON.stringify({ ...formValues }, null, 2)};
 </code></pre>
 </div>
 

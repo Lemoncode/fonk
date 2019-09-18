@@ -27,20 +27,21 @@ const validationSchema: ValidationSchema = {
 
 export const formValidation = createFormValidation(validationSchema);
 
-export const getResults = () => {
-  const failedFormValues = {
-    product: 'shoes',
-    discount: 5,
-    price: 20,
-    isPrime: false,
-  };
-  const succeededFormValues = {
-    product: 'shoes',
-    discount: 5,
-    price: 20,
-    isPrime: true,
-  };
+export const failedFormValues = {
+  product: 'shoes',
+  discount: 5,
+  price: 20,
+  isPrime: false,
+};
 
+export const succeededFormValues = {
+  product: 'shoes',
+  discount: 5,
+  price: 20,
+  isPrime: true,
+};
+
+export const getResults = () => {
   return Promise.all([
     formValidation.validateRecord(failedFormValues),
     formValidation.validateRecord(succeededFormValues),

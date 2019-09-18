@@ -1,34 +1,37 @@
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
 Prism.highlightAll();
-import { getResults, formValues } from './playground';
+import { getResults, loginModel } from './playground';
 
 getResults().then(validationResult => {
   document.getElementById('app').innerHTML = `
     <div style="flex-grow: 1;margin-left:2rem;">
-      <h2>Custom error message example</h2>
+      <h2>Field validator example</h2>
 
 <pre><code class="language-js">
-import {
-  Validators,
-  createFormValidation,
-  ValidationSchema,
-} from '@lemoncode/fonk';
+import { Validators, createFormValidation } from '@lemoncode/fonk';
 
-const validationSchema: ValidationSchema = {
+const validationSchema = {
   field: {
-    'product.name': [Validators.required.validator],
+    user: [Validators.required.validator, Validators.email.validator],
+    password: [
+      Validators.required.validator,
+      {
+        validator: Validators.minLength.validator,
+        customArgs: { length: 3 },
+      },
+    ],
   },
 };
 
 const formValidation = createFormValidation(validationSchema);
 
-// Update values in ./playground.ts
-const formValues = ${JSON.stringify({ ...formValues }, null, 2)};
+// Update values in ./playground.js
+const loginModel = ${JSON.stringify({ ...loginModel }, null, 2)};
 
 // Execute form validation
 formValidation
-  .validateField('product.name', formValues.product.name)
+  .validateForm(loginModel)
   .then(validationResult => {
     console.log(validationResult);
   });

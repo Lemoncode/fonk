@@ -17,10 +17,10 @@ const validationSchema: ValidationSchema = {
 
 const formValidation = createFormValidation(validationSchema);
 
-export const getResults = () => {
-  const formValues = {
-    product: '',
-  };
+export const formValues = {
+  product: '',
+};
 
+export const getResults = () => {
   return formValidation.validateField('product', formValues.product);
 };

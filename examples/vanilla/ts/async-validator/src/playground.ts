@@ -35,11 +35,11 @@ const validationSchema: ValidationSchema = {
 
 const formValidation = createFormValidation(validationSchema);
 
-export const getResults = () => {
-  const formValues = {
-    user: 'mojombo',
-    password: '',
-  };
+export const formValues = {
+  user: 'mojombo',
+  password: '',
+};
 
+export const getResults = () => {
   return formValidation.validateField('user', formValues.user);
 };

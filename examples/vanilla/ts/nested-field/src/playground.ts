@@ -12,13 +12,13 @@ const validationSchema: ValidationSchema = {
 
 const formValidation = createFormValidation(validationSchema);
 
-export const getResults = () => {
-  const formValues = {
-    product: {
-      id: 0,
-      name: '',
-    },
-  };
+export const formValues = {
+  product: {
+    id: 0,
+    name: '',
+  },
+};
 
+export const getResults = () => {
   return formValidation.validateField('product.name', formValues.product.name);
 };
