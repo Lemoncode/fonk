@@ -15,9 +15,9 @@ import {
   ValidationSchema,
 } from '@lemoncode/fonk';
 
-const ValidationSchema: ValidationSchema = {
+const validationSchema: ValidationSchema = {
   field: {
-    login: [Validators.required.validator],
+    user: [Validators.required.validator],
     password: [
       {
         validator: Validators.required.validator,
@@ -27,7 +27,7 @@ const ValidationSchema: ValidationSchema = {
   },
 };
 
-const formValidation = createFormValidation(ValidationSchema);
+const formValidation = createFormValidation(validationSchema);
 
 // Update values in ./playground.ts
 const loginModel = ${JSON.stringify({ ...loginModel }, null, 2)};

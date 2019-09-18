@@ -2,7 +2,7 @@ import { Validators, createFormValidation } from '@lemoncode/fonk';
 
 const validationSchema = {
   field: {
-    login: [Validators.required.validator],
+    user: [Validators.required.validator],
     password: [
       {
         validator: Validators.required.validator,

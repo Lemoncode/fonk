@@ -12,7 +12,7 @@ getResults().then(validationResult => {
 import { Validators, createFormValidation } from '@lemoncode/fonk';
 
 const validationSchema = {
-  field: {
+  user: {
     login: [Validators.required.validator],
     password: [
       {
