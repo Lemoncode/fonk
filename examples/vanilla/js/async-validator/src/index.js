@@ -1,12 +1,12 @@
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
-Prism.highlightAll();
 import { getResults } from './playground';
+setTimeout(() => Prism.highlightAll(), 100);
 
 getResults().then(validationResult => {
   document.getElementById('app').innerHTML = `
     <div style="flex-grow: 1;margin-left:2rem;">
-      <h2>Nested field example</h2>
+      <h2>Async validator example</h2>
 
 <pre><code class="language-js">
 import { Validators, createFormValidation } from '@lemoncode/fonk';
@@ -15,27 +15,20 @@ const userExistsOnGithubValidator = ({ value }) => {
   const validationResult = {
     type: 'GITHUB_USER_EXISTS',
     succeeded: false,
-    message: '',
+    message: 'The username exists on Github',
   };
 
-  return fetch(\`https://api.github.com/users/\${value}\`)
-    .then(() => {
-      // Status 200, meaning user exists, so the given user is valid
-      validationResult.succeeded = true;
-      validationResult.message = '';
-      return validationResult;
-    })
-    .catch(error => {
-      if (error.status === 404) {
-        // User does not exists, so the given user is not valid
-        validationResult.succeeded = false;
-        validationResult.message = 'The username does not exists Github';
-        return validationResult;
-      } else {
-        // Unexpected error
-        throw error;
-      }
-    });
+  return fetch(\`https://api.github.com/users/\${value}\`).then(response => {
+    // Status 404, User does not exists, so the given user is valid
+    // Status 200, meaning user exists, so the given user is not valid
+    return response.status === 404
+      ? {
+          ...validationResult,
+          succeeded: true,
+          message: '',
+        }
+      : validationResult;
+  });
 };
 
 const validationSchema = {
