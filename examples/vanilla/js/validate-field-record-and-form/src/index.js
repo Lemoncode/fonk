@@ -1,9 +1,9 @@
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
-Prism.highlightAll();
 import { getResults, formValues } from './playground';
 
 getResults().then(([fieldResult, recordResult, formResult]) => {
+  setTimeout(() => Prism.highlightAll(), 0);
   document.getElementById('app').innerHTML = `
   <div style="flex-grow: 1;margin-left:2rem;">
   <h2>Example using validate field, form and record:</h2>

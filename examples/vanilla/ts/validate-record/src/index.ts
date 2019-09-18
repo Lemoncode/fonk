@@ -1,6 +1,5 @@
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
-Prism.highlightAll();
 import {
   getResults,
   failedFormValues,
@@ -8,6 +7,7 @@ import {
 } from './playground';
 
 getResults().then(([failedResult, succeededResult]) => {
+  setTimeout(() => Prism.highlightAll(), 0);
   document.getElementById('app').innerHTML = `
     <div style="flex-grow: 1;margin-left:2rem;">
       <h2>Example with failed result:</h2>
