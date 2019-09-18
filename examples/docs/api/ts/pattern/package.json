@@ -1,0 +1,23 @@
+{
+  "name": "pattern-ts-example",
+  "version": "1.0.0",
+  "description": "pattern, typescript example",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html --open"
+  },
+  "keywords": [
+    "fonk",
+    "form-validation",
+    "vanilla typescript"
+  ],
+  "dependencies": {
+    "@lemoncode/fonk": "latest"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@types/prismjs": "^1.16.0",
+    "parcel-bundler": "^1.6.1",
+    "prismjs": "^1.17.1"
+  }
+}
