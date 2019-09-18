@@ -12,12 +12,12 @@
     "vanilla typescript"
   ],
   "dependencies": {
-    "@lemoncode/fonk": "latest"
+    "@lemoncode/fonk": "latest",
+    "prismjs": "^1.17.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
     "@types/prismjs": "^1.16.0",
-    "parcel-bundler": "^1.6.1",
-    "prismjs": "^1.17.1"
+    "parcel-bundler": "^1.6.1"
   }
 }
