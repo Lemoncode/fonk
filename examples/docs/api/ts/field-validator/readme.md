@@ -2,7 +2,7 @@
 
 Example using `field validator` in vanilla Typescript.
 
-[![See field-validator example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/vanilla/ts/field-validator)
+[![See field-validator example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/docs/api/ts/field-validator)
 
 # About Basefactor + Lemoncode
 

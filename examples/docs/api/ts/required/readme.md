@@ -2,7 +2,7 @@
 
 Example using `required` in vanilla Typescript.
 
-[![See required example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/vanilla/ts/required)
+[![See required example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/docs/api/ts/required)
 
 # About Basefactor + Lemoncode
 

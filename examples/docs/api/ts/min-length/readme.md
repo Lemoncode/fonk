@@ -2,7 +2,7 @@
 
 Example using `min-length` in vanilla Typescript.
 
-[![See min-length example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/vanilla/ts/min-length)
+[![See min-length example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/docs/api/ts/min-length)
 
 # About Basefactor + Lemoncode
 

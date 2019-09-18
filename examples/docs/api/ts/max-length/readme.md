@@ -2,7 +2,7 @@
 
 Example using `max-length` in vanilla Typescript.
 
-[![See max-length example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/vanilla/ts/max-length)
+[![See max-length example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/docs/api/ts/max-length)
 
 # About Basefactor + Lemoncode
 

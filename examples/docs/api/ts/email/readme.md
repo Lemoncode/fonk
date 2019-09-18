@@ -2,7 +2,7 @@
 
 Example using `email` in vanilla Typescript.
 
-[![See email example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/vanilla/ts/email)
+[![See email example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/docs/api/ts/email)
 
 # About Basefactor + Lemoncode
 

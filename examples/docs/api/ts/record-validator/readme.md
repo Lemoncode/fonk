@@ -2,7 +2,7 @@
 
 Example using `record validator` in vanilla Typescript.
 
-[![See record-validator example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/vanilla/ts/record-validator)
+[![See record-validator example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/docs/api/ts/record-validator)
 
 # About Basefactor + Lemoncode
 

@@ -2,7 +2,7 @@
 
 Example using `pattern` in vanilla Typescript.
 
-[![See pattern example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/vanilla/ts/pattern)
+[![See pattern example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/docs/api/ts/pattern)
 
 # About Basefactor + Lemoncode
 
