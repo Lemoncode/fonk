@@ -9,9 +9,13 @@ getResults().then(validationResult => {
       <h2>Required example</h2>
 
 <pre><code class="language-js">
-import { Validators, createFormValidation } from '@lemoncode/fonk';
+import {
+  Validators,
+  createFormValidation,
+  ValidationSchema,
+} from '@lemoncode/fonk';
 
-const validationSchema = {
+const ValidationSchema: ValidationSchema = {
   field: {
     login: [Validators.required.validator],
     password: [
@@ -23,7 +27,7 @@ const validationSchema = {
   },
 };
 
-const formValidation = createFormValidation(validationSchema);
+const formValidation = createFormValidation(ValidationSchema);
 
 // Update values in ./playground.js
 const loginModel = ${JSON.stringify({ ...loginModel }, null, 2)};
