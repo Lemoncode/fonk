@@ -1,5 +1,5 @@
 {
-  "name": "field-level-validation",
+  "name": "validate-field",
   "version": "1.0.0",
   "description": "Example integrating fonk with react-final-form at field level.",
   "keywords": [
@@ -15,6 +15,7 @@
   "main": "src/index.tsx",
   "dependencies": {
     "@lemoncode/fonk": "latest",
+    "@lemoncode/fonk-is-number-validator": "latest",
     "final-form": "latest",
     "react": "latest",
     "react-dom": "latest",
@@ -33,10 +34,5 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
 }

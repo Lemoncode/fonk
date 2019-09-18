@@ -1,5 +1,5 @@
 {
-  "name": "form-level-validation",
+  "name": "validate-form",
   "version": "1.0.0",
   "description": "Example integrating fonk with react-final-form at form level.",
   "keywords": [

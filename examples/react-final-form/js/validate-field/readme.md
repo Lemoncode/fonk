@@ -1,8 +1,8 @@
-# Field Level Validation Example
+# Validate field Example
 
 Example integrating `fonk` with `react-final-form` at field level.
 
-[![See field-validation example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/react-final-form/ts/field-level-validation)
+[![See validate-field example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/react-final-form/js/validate-field)
 
 
 # About Basefactor + Lemoncode

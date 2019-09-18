@@ -1,7 +1,7 @@
 {
-  "name": "field-level-validation",
+  "name": "custom-validators",
   "version": "1.0.0",
-  "description": "Example integrating fonk with react-final-form at field level.",
+  "description": "Example integrating fonk with react-final-form using custom validators.",
   "keywords": [
     "fonk",
     "form-validation",
