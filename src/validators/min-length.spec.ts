@@ -1,5 +1,6 @@
 import { validator, setErrorMessage } from './min-length';
 import { LengthArgs } from './length';
+import { FieldValidatorArgs } from '../model';
 
 describe('[minLength] validation rule tests =>', () => {
   describe('When validating a non string value', () => {
@@ -145,6 +146,25 @@ describe('[minLength] validation rule tests =>', () => {
       // Assert
       expect(validationResult.succeeded).toBeTruthy;
       expect(validationResult.type).toBe('MIN_LENGTH');
+    });
+
+    it('should return failed with custom message when it feeds empty value and custom message with customArgs', () => {
+      // Arrange
+      const validationArgs: FieldValidatorArgs = {
+        value: 'Test',
+        message: 'Field must has a {{length}} minimum length',
+        customArgs: { length: '10' },
+      };
+
+      // Act
+      const validationResult = validator(validationArgs);
+
+      // Assert
+      expect(validationResult.succeeded).toBeFalsy();
+      expect(validationResult.type).toBe('MIN_LENGTH');
+      expect(validationResult.message).toBe(
+        'Field must has a 10 minimum length'
+      );
     });
   });
 

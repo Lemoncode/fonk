@@ -1,5 +1,6 @@
 import { FieldValidationFunctionSync } from '../model';
 import { isValidPattern } from './pattern-helpers';
+import { parseMessageWithCustomArgs } from './validators.helpers';
 
 const VALIDATOR_TYPE = 'PATTERN';
 
@@ -41,7 +42,9 @@ export const validator: FieldValidationFunctionSync = fieldValidatorArgs => {
 
   return {
     succeeded,
-    message: (succeeded ? '' : message) as string,
+    message: succeeded
+      ? ''
+      : parseMessageWithCustomArgs(message as string, customArgs),
     type: VALIDATOR_TYPE,
   };
 };

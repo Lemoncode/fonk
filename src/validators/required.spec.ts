@@ -182,5 +182,24 @@ describe(`required validator`, () => {
       expect(validationResult.type).toBe('REQUIRED');
       expect(validationResult.message).toBe('');
     });
+
+    it('should return failed with custom message when it feeds empty value and custom message with customArgs', () => {
+      // Arrange
+      const validationArgs: FieldValidatorArgs = {
+        value: '',
+        message: 'Required value, with trim flag equals {{trim}}',
+        customArgs: { trim: true },
+      };
+
+      // Act
+      const validationResult = validator(validationArgs);
+
+      // Assert
+      expect(validationResult.succeeded).toBeFalsy();
+      expect(validationResult.type).toBe('REQUIRED');
+      expect(validationResult.message).toBe(
+        'Required value, with trim flag equals true'
+      );
+    });
   });
 });

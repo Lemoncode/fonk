@@ -1,5 +1,6 @@
 import { validator, setErrorMessage } from './max-length';
 import { LengthArgs } from './length';
+import { FieldValidatorArgs } from '../model';
 
 describe('[maxLength] validation rule tests =>', () => {
   describe('When validating a non string value', () => {
@@ -145,6 +146,23 @@ describe('[maxLength] validation rule tests =>', () => {
       // Assert
       expect(validationResult.succeeded).toBeFalsy();
       expect(validationResult.type).toBe('MAX_LENGTH');
+    });
+
+    it('should return failed with custom message when it feeds empty value and custom message with customArgs', () => {
+      // Arrange
+      const validationArgs: FieldValidatorArgs = {
+        value: 'Test',
+        message: 'Field must has a {{length}} max length',
+        customArgs: { length: '2' },
+      };
+
+      // Act
+      const validationResult = validator(validationArgs);
+
+      // Assert
+      expect(validationResult.succeeded).toBeFalsy();
+      expect(validationResult.type).toBe('MAX_LENGTH');
+      expect(validationResult.message).toBe('Field must has a 2 max length');
     });
   });
 

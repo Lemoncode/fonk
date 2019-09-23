@@ -1,4 +1,5 @@
 import { FieldValidationFunctionSync } from '../model';
+import { parseMessageWithCustomArgs } from './validators.helpers';
 
 const VALIDATOR_TYPE = 'REQUIRED';
 
@@ -32,7 +33,9 @@ export const validator: FieldValidationFunctionSync = fieldValidatorArgs => {
 
   return {
     succeeded,
-    message: (succeeded ? '' : message) as string,
+    message: succeeded
+      ? ''
+      : parseMessageWithCustomArgs(message as string, customArgs),
     type: VALIDATOR_TYPE,
   };
 };
