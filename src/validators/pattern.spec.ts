@@ -1,5 +1,5 @@
 import { validator, PatternArgs, setErrorMessage } from './pattern';
-import { ValidationResult } from '../model';
+import { ValidationResult, FieldValidatorArgs } from '../model';
 
 describe(`pattern validator`, () => {
   describe('Pattern option boundaries =>', () => {
@@ -108,6 +108,7 @@ describe(`pattern validator`, () => {
       expect(validationResult.type).toBe('PATTERN');
       expect(validationResult.message).toBe('Please provide a valid format.');
     });
+
     it(`should return validation failed + custom message when field does not match
     the pattern and custom message is set`, () => {
       // Arrange
@@ -130,6 +131,23 @@ describe(`pattern validator`, () => {
       expect(validationResult.message).toBe('my custom message');
 
       setErrorMessage('Please provide a valid format.');
+    });
+
+    it('should return failed with custom message when it feeds empty value and custom message with customArgs', () => {
+      // Arrange
+      const validationArgs: FieldValidatorArgs = {
+        value: 'Test',
+        message: 'Field must match with pattern {{pattern}}',
+        customArgs: { pattern: 'd' },
+      };
+
+      // Act
+      const validationResult = validator(validationArgs);
+
+      // Assert
+      expect(validationResult.succeeded).toBeFalsy();
+      expect(validationResult.type).toBe('PATTERN');
+      expect(validationResult.message).toBe('Field must match with pattern d');
     });
   });
 });

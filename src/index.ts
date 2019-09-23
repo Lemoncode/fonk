@@ -1,5 +1,5 @@
 import { createFormValidation } from './form-validation';
-import * as Validators from './validators';
+import Validators, { parseMessageWithCustomArgs } from './validators';
 import {
   createDefaultValidationResult,
   createDefaultRecordValidationResult,
@@ -9,6 +9,7 @@ import {
 export {
   createFormValidation,
   Validators,
+  parseMessageWithCustomArgs,
   createDefaultValidationResult,
   createDefaultRecordValidationResult,
   createDefaultFormValidationResult,

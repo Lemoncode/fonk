@@ -78,3 +78,11 @@ interface FieldValidator {
   validator: FieldValidationFunctionSyncAsync;
   setErrorMessage: (message: string | string[]) => void;
 }
+
+/**
+ * Function that returns the parsed message when it needs to interpolate customArgs in the custom error message.
+ */
+export function parseMessageWithCustomArgs(
+  message: string,
+  customArgs: any
+): string;
