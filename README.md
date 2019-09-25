@@ -6,8 +6,11 @@
 
 
 ✅ Plani vanilla js
+
 ✅ Framework Agnostic
+
 ✅ Seamless integration with [React Final Form](https://github.com/final-form/react-final-form#readme)
+
 ✅ 💥 [**4.3k gzipped**](https://bundlephobia.com/result?p=@lemoncode/fonk) 💥
 
 
