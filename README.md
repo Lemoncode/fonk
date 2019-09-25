@@ -5,7 +5,7 @@
 [![bundle-size](https://badgen.net/bundlephobia/min/@lemoncode/fonk)](https://bundlephobia.com/result?p=@lemoncode/fonk)
 
 
-✅ Plani vanilla js
+✅ Plain vanilla js
 
 ✅ Framework Agnostic
 
