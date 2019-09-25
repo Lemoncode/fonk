@@ -4,7 +4,7 @@
 [![NPM Version](https://badgen.net/npm/v/@lemoncode/fonk?icon=npm&label=npm)](https://www.npmjs.com/package/@lemoncode/fonk)
 [![bundle-size](https://badgen.net/bundlephobia/min/@lemoncode/fonk)](https://bundlephobia.com/result?p=@lemoncode/fonk)
 
-Form schema validator library.
+Form schema validation library.
 
 ![let's get fonky](./content/fonky.jpg)
 
