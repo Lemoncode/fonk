@@ -34,7 +34,9 @@ Coming soon integration examples:
   - Formik.
 - Vuejs.
 
-If you want to navigate to the [Fonk Documentation site](https://lemoncode.github.io/fonk-doc/), some parts still under constructions :).
+How to [get started](https://lemoncode.github.io/fonk-doc/getting-started)
+
+Check our [Fonk Documentation site](https://lemoncode.github.io/fonk-doc/), some parts still under constructions :).
 
 # About Basefactor + Lemoncode
 
