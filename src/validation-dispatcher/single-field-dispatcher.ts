@@ -58,7 +58,10 @@ const filterFieldValidations = (
   internalFieldValidations: InternalFieldValidation[]
 ) =>
   internalFieldValidations.filter(
-    v => !arrayContainsEntries(v.events) || v.events.includes(eventType)
+    v =>
+      !arrayContainsEntries(v.events) ||
+      isUndefinedOrNull(eventType) ||
+      v.events.includes(eventType)
   );
 
 // TODO: Add unit tests
@@ -67,11 +70,17 @@ export const fireSingleFieldValidations = (
   values: any,
   eventType: NativeEventType,
   internalFieldValidations: InternalFieldValidation[]
-): Promise<InternalValidationResult> =>
-  arrayContainsEntries(internalFieldValidations)
+): Promise<InternalValidationResult> => {
+  const filteredValidations = filterFieldValidations(
+    eventType,
+    internalFieldValidations
+  );
+
+  return arrayContainsEntries(filteredValidations)
     ? iterateValidationsUntilFailOrAllSucceeded(
         value,
         values,
-        filterFieldValidations(eventType, internalFieldValidations)
+        filteredValidations
       )
     : Promise.resolve(createDefaultInternalValidationResult());
+};

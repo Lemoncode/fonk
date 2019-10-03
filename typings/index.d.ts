@@ -8,7 +8,6 @@ import {
   RecordValidationResult,
   FormValidationResult,
   FieldValidationFunctionSyncAsync,
-  NativeEventType,
 } from './model';
 
 export {
@@ -40,7 +39,7 @@ interface FormValidation {
     fieldId: string,
     value: any,
     values?: any,
-    eventType?: NativeEventType
+    eventType?: string
   ) => Promise<ValidationResult>;
   validateRecord: (values: any) => Promise<RecordValidationResult>;
   validateForm: (values: any) => Promise<FormValidationResult>;

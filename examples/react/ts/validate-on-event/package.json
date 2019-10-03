@@ -1,0 +1,37 @@
+{
+  "name": "validate-on-event",
+  "version": "1.0.0",
+  "description": "Example integrating fonk with react using filter validation on event.",
+  "keywords": [
+    "fonk",
+    "react integration",
+    "form-validation",
+    "form",
+    "react"
+  ],
+  "main": "src/index.tsx",
+  "dependencies": {
+    "@lemoncode/fonk": "file:../../../../",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-scripts": "latest",
+    "styled-components": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "3.5.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

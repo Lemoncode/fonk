@@ -33,7 +33,7 @@ export type FieldValidationFunctionSyncAsync =
   | FieldValidationFunctionAsync
   | FieldValidationFunctionSync;
 
-export type NativeEventType = keyof GlobalEventHandlersEventMap;
+type NativeEventType = keyof GlobalEventHandlersEventMap;
 
 export interface FullFieldValidation {
   validator: FieldValidationFunctionSyncAsync;
