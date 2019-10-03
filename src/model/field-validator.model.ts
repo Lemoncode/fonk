@@ -19,16 +19,20 @@ export type FieldValidationFunctionSyncAsync =
   | FieldValidationFunctionAsync
   | FieldValidationFunctionSync;
 
+export type NativeEventType = keyof GlobalEventHandlersEventMap;
+
 export interface FullFieldValidation {
   validator: FieldValidationFunctionSyncAsync;
   customArgs?: any;
   message?: string | string[];
+  events?: NativeEventType[];
 }
 
 export interface InternalFieldValidation {
   validator: FieldValidationFunctionAsync;
   customArgs?: any;
   message?: string | string[];
+  events?: NativeEventType[];
 }
 
 export interface InternalFieldValidationSchema {

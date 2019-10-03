@@ -4,7 +4,7 @@ import {
   FieldValidation,
   InternalFieldValidation,
 } from '../model';
-import { isFunction } from '../helper';
+import { isFunction, arrayContainsEntries } from '../helper';
 import { convertFieldValidationToAsyncIfNeeded } from './mapper-helpers';
 
 type FieldIdInternalValidation = [string, InternalFieldValidation[]];
@@ -17,6 +17,8 @@ const mapToInternalFieldValidation = (
         validator: convertFieldValidationToAsyncIfNeeded(fieldValidation),
         message: void 0,
         customArgs: void 0,
+        // TODO: Add unit tests
+        events: [],
       }
     : {
         validator: convertFieldValidationToAsyncIfNeeded(
@@ -24,6 +26,9 @@ const mapToInternalFieldValidation = (
         ),
         customArgs: fieldValidation.customArgs,
         message: fieldValidation.message,
+        events: arrayContainsEntries(fieldValidation.events)
+          ? fieldValidation.events
+          : [],
       };
 
 const mapToInternalValidationCollection = (

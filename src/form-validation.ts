@@ -5,6 +5,7 @@ import {
   InternalFieldValidationSchema,
   InternalRecordValidationSchema,
   RecordValidationResult,
+  NativeEventType,
 } from './model';
 import {
   mapToInternalFieldValidationSchema,
@@ -44,14 +45,20 @@ export class FormValidation {
     }
   }
 
+  // TODO: Add unit tests
   public validateField(
     fieldId: string,
     value: any,
-    values?: any
+    values?: any,
+    eventType?: NativeEventType
   ): Promise<ValidationResult> {
-    return validateField(fieldId, value, values, this.fieldSchema).then(
-      ({ key, ...validationResult }) => ({ ...validationResult })
-    );
+    return validateField(
+      fieldId,
+      value,
+      values,
+      eventType,
+      this.fieldSchema
+    ).then(({ key, ...validationResult }) => ({ ...validationResult }));
   }
 
   public validateRecord(values: any): Promise<RecordValidationResult> {

@@ -3,8 +3,10 @@ import {
   InternalValidationResult,
   InternalFieldValidationSchema,
   InternalRecordValidationSchema,
+  NativeEventType,
 } from '../model';
 
+// TODO: Add unit tests
 export const fireAllFieldsValidations = (
   fieldIds: string[],
   values: any,
@@ -13,11 +15,18 @@ export const fireAllFieldsValidations = (
     fieldId: string,
     value: any,
     values: any,
+    eventType: NativeEventType,
     schema: InternalFieldValidationSchema
   ) => Promise<InternalValidationResult>
 ): Promise<InternalValidationResult>[] =>
   fieldIds.map(fieldId =>
-    validateField(fieldId, get(values, fieldId, undefined), values, schema)
+    validateField(
+      fieldId,
+      get(values, fieldId, undefined),
+      values,
+      null,
+      schema
+    )
   );
 
 export const fireAllRecordsValidations = (

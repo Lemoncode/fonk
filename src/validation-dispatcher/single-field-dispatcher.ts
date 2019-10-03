@@ -2,6 +2,7 @@ import {
   InternalValidationResult,
   createDefaultInternalValidationResult,
   InternalFieldValidation,
+  NativeEventType,
 } from '../model';
 import { arrayContainsEntries, isUndefinedOrNull } from '../helper';
 
@@ -52,15 +53,25 @@ const iterateValidationsUntilFailOrAllSucceeded = (
     fireValidation(value, values, internalFieldValidations[0]) // Initial reduce value
   );
 
+const filterFieldValidations = (
+  eventType: NativeEventType,
+  internalFieldValidations: InternalFieldValidation[]
+) =>
+  internalFieldValidations.filter(
+    v => !arrayContainsEntries(v.events) || v.events.includes(eventType)
+  );
+
+// TODO: Add unit tests
 export const fireSingleFieldValidations = (
   value: any,
   values: any,
+  eventType: NativeEventType,
   internalFieldValidations: InternalFieldValidation[]
 ): Promise<InternalValidationResult> =>
   arrayContainsEntries(internalFieldValidations)
     ? iterateValidationsUntilFailOrAllSucceeded(
         value,
         values,
-        internalFieldValidations
+        filterFieldValidations(eventType, internalFieldValidations)
       )
     : Promise.resolve(createDefaultInternalValidationResult());

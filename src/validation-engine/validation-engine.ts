@@ -5,6 +5,7 @@ import {
   createDefaultInternalValidationResult,
   RecordValidationResult,
   FormValidationResult,
+  NativeEventType,
 } from '../model';
 import {
   fireSingleFieldValidations,
@@ -21,15 +22,17 @@ import { isUndefinedOrNull, safeObjectKeys } from '../helper';
 const isIdInSchema = (fieldId: string, schema): boolean =>
   !isUndefinedOrNull(schema) && !isUndefinedOrNull(schema[fieldId]);
 
+// TODO: Add unit tests
 export const validateField = (
   fieldId: string,
   value: any,
   values: any,
+  eventType: NativeEventType,
   schema: InternalFieldValidationSchema
 ): Promise<InternalValidationResult> =>
   !isIdInSchema(fieldId, schema)
     ? Promise.resolve(createDefaultInternalValidationResult())
-    : fireSingleFieldValidations(value, values, schema[fieldId])
+    : fireSingleFieldValidations(value, values, eventType, schema[fieldId])
         .then(validationResult => {
           validationResult.key = fieldId;
           return validationResult;
