@@ -4,7 +4,6 @@ Example integrating `fonk` with `react` using filter validation on event.
 
 [![See validate-on-event example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/react/ts/validate-on-event)
 
-
 # About Basefactor + Lemoncode
 
 We are an innovating team of Javascript experts, passionate about turning your ideas into robust products.
