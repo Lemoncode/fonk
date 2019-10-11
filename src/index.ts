@@ -24,7 +24,7 @@ export {
   createDefaultFormValidationResult,
 };
 
-export const FormValidationExtensions = {
+export const FormValidationExtended = {
   validateField,
   validateRecord,
   validateForm,

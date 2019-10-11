@@ -31,3 +31,10 @@ export const createDefaultFormValidationResult = (): FormValidationResult => ({
   fieldErrors: {},
   recordErrors: {},
 });
+
+export interface InternalValidationResult {
+  key: string;
+  type: string;
+  succeeded: boolean;
+  message: string;
+}
