@@ -8,6 +8,11 @@ import {
   RecordValidationResult,
   FormValidationResult,
   FieldValidationFunctionSyncAsync,
+  FieldValidationSchema,
+  InternalFieldValidationSchema,
+  RecordValidationSchema,
+  InternalRecordValidationSchema,
+  InternalValidationResult,
 } from './model';
 
 export {
@@ -86,3 +91,35 @@ export function parseMessageWithCustomArgs(
   message: string,
   customArgs: any
 ): string;
+
+/**
+ * Expose all necessary methods to create a new form-validation
+ * (the createFormValidation method)
+ */
+export namespace FormValidationExtended {
+  export function validateField(
+    fieldId: string,
+    value: any,
+    values: any,
+    schema: InternalFieldValidationSchema
+  ): Promise<InternalValidationResult>;
+
+  export function validateRecord(
+    values: any,
+    schema: InternalRecordValidationSchema
+  ): Promise<RecordValidationResult>;
+
+  export function validateForm(
+    values: any,
+    fieldSchema: InternalFieldValidationSchema,
+    recordSchema: InternalRecordValidationSchema
+  ): Promise<FormValidationResult>;
+
+  export function mapToInternalFieldValidationSchema(
+    fieldValidationSchema: FieldValidationSchema
+  ): InternalFieldValidationSchema;
+
+  export function mapToInternalRecordValidationSchema(
+    recordValidationSchema: RecordValidationSchema
+  ): InternalRecordValidationSchema;
+}

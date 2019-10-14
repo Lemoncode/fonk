@@ -5,6 +5,15 @@ import {
   createDefaultRecordValidationResult,
   createDefaultFormValidationResult,
 } from './model';
+import {
+  validateField,
+  validateRecord,
+  validateForm,
+} from './validation-engine';
+import {
+  mapToInternalFieldValidationSchema,
+  mapToInternalRecordValidationSchema,
+} from './mappers';
 
 export {
   createFormValidation,
@@ -13,4 +22,12 @@ export {
   createDefaultValidationResult,
   createDefaultRecordValidationResult,
   createDefaultFormValidationResult,
+};
+
+export const FormValidationExtended = {
+  validateField,
+  validateRecord,
+  validateForm,
+  mapToInternalFieldValidationSchema,
+  mapToInternalRecordValidationSchema,
 };
