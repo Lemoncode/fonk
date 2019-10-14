@@ -1,6 +1,6 @@
 # Fonk
 
-[![CircleCI](https://badgen.net/github/status/Lemoncode/fonk/master/ci?icon=circleci&label=circleci)](https://circleci.com/gh/Lemoncode/fonk/tree/master)
+[![CircleCI](https://badgen.net/github/status/Lemoncode/fonk/master?icon=circleci&label=circleci)](https://circleci.com/gh/Lemoncode/fonk/tree/master)
 [![NPM Version](https://badgen.net/npm/v/@lemoncode/fonk?icon=npm&label=npm)](https://www.npmjs.com/package/@lemoncode/fonk)
 [![bundle-size](https://badgen.net/bundlephobia/min/@lemoncode/fonk)](https://bundlephobia.com/result?p=@lemoncode/fonk)
 
@@ -37,7 +37,7 @@ Available integration examples:
   - Plain vanilla ES6.
   - React
   - React Final form.
-  
+
 Coming soon integration examples:
 
 - React
