@@ -37,17 +37,7 @@ export {
  */
 export function createFormValidation(
   validationSchema: ValidationSchema
-): FormValidation;
-
-interface FormValidation {
-  validateField: (
-    fieldId: string,
-    value: any,
-    values?: any
-  ) => Promise<ValidationResult>;
-  validateRecord: (values: any) => Promise<RecordValidationResult>;
-  validateForm: (values: any) => Promise<FormValidationResult>;
-}
+): FormValidationExtended.FormValidation;
 
 /**
  * Function that returns a ValidationResult object with default values
@@ -122,4 +112,18 @@ export namespace FormValidationExtended {
   export function mapToInternalRecordValidationSchema(
     recordValidationSchema: RecordValidationSchema
   ): InternalRecordValidationSchema;
+
+  export class FormValidation {
+    constructor(validationSchema: ValidationSchema);
+
+    validateField: (
+      fieldId: string,
+      value: any,
+      values?: any
+    ) => Promise<ValidationResult>;
+
+    validateRecord: (values: any) => Promise<RecordValidationResult>;
+
+    validateForm: (values: any) => Promise<FormValidationResult>;
+  }
 }
