@@ -3,7 +3,9 @@
 [![CircleCI](https://badgen.net/github/status/Lemoncode/fonk/master?icon=circleci&label=circleci)](https://circleci.com/gh/Lemoncode/fonk/tree/master)
 [![NPM Version](https://badgen.net/npm/v/@lemoncode/fonk?icon=npm&label=npm)](https://www.npmjs.com/package/@lemoncode/fonk)
 [![bundle-size](https://badgen.net/bundlephobia/min/@lemoncode/fonk)](https://bundlephobia.com/result?p=@lemoncode/fonk)
+[![bundle-size](https://badgen.net/bundlephobia/minzip/@lemoncode/fonk)](https://bundlephobia.com/result?p=@lemoncode/fonk)
 
+✅ Zero dependencies
 
 ✅ Plain vanilla js
 
@@ -11,7 +13,7 @@
 
 ✅ Seamless integration with [React Final Form](https://github.com/final-form/react-final-form#readme)
 
-✅ 💥 [**4.3k gzipped**](https://bundlephobia.com/result?p=@lemoncode/fonk) 💥
+✅ 💥 [**<4.5k gzipped**](https://bundlephobia.com/result?p=@lemoncode/fonk) 💥
 
 
 
