@@ -1,4 +1,5 @@
-import { createFormValidation, Validators } from '@lemoncode/fonk';
+import { Validators } from '@lemoncode/fonk';
+import { createFinalFormValidation } from '@lemoncode/fonk-final-form';
 import { matchFieldValidator } from './custom-validators';
 
 const validationSchema = {
@@ -28,4 +29,4 @@ const validationSchema = {
   },
 };
 
-export const formValidation = createFormValidation(validationSchema);
+export const formValidation = createFinalFormValidation(validationSchema);
