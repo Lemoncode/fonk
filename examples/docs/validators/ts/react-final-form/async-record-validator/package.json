@@ -4,15 +4,15 @@
   "description": "Example integrating fonk with react-final-form using async record validator.",
   "keywords": [
     "fonk",
-    "form-validation",
     "react-final-form integration",
+    "form-validation",
     "state management",
     "react-final-form",
     "form",
     "final-form",
     "react"
   ],
-  "main": "index.js",
+  "main": "src/index.tsx",
   "dependencies": {
     "@lemoncode/fonk": "latest",
     "final-form": "latest",
@@ -21,6 +21,24 @@
     "react-dom": "latest",
     "react-final-form": "latest",
     "react-final-form-arrays": "latest",
+    "react-scripts": "latest",
     "styled-components": "latest"
-  }
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "3.5.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

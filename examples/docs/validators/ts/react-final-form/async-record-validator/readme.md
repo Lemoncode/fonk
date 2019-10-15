@@ -1,8 +1,9 @@
 # Async record validator example
 
-Example creating `async record validator` in vanilla Typescript.
+Example integrating `fonk` with `react-final-form` using `async record validator`.
 
-[![See async-record-validator example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/docs/validators/ts/vanilla/async-record-validator)
+[![See async-record-validator example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/docs/validators/ts/react-final-form/async-record-validator)
+
 
 # About Basefactor + Lemoncode
 
