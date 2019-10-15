@@ -1,4 +1,4 @@
-import { createFormValidation } from './form-validation';
+import { createFormValidation, FormValidation } from './form-validation';
 import Validators, { parseMessageWithCustomArgs } from './validators';
 import {
   createDefaultValidationResult,
@@ -30,4 +30,5 @@ export const FormValidationExtended = {
   validateForm,
   mapToInternalFieldValidationSchema,
   mapToInternalRecordValidationSchema,
+  FormValidation,
 };

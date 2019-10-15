@@ -122,4 +122,18 @@ export namespace FormValidationExtended {
   export function mapToInternalRecordValidationSchema(
     recordValidationSchema: RecordValidationSchema
   ): InternalRecordValidationSchema;
+
+  export class FormValidation {
+    constructor(validationSchema: ValidationSchema);
+
+    validateField: (
+      fieldId: string,
+      value: any,
+      values?: any
+    ) => Promise<ValidationResult>;
+
+    validateRecord: (values: any) => Promise<RecordValidationResult>;
+
+    validateForm: (values: any) => Promise<FormValidationResult>;
+  }
 }
