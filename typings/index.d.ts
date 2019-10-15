@@ -37,7 +37,17 @@ export {
  */
 export function createFormValidation(
   validationSchema: ValidationSchema
-): FormValidationExtended.FormValidation;
+): FormValidation;
+
+interface FormValidation {
+  validateField: (
+    fieldId: string,
+    value: any,
+    values?: any
+  ) => Promise<ValidationResult>;
+  validateRecord: (values: any) => Promise<RecordValidationResult>;
+  validateForm: (values: any) => Promise<FormValidationResult>;
+}
 
 /**
  * Function that returns a ValidationResult object with default values
