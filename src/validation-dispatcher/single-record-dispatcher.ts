@@ -3,7 +3,7 @@ import {
   createDefaultInternalValidationResult,
   InternalRecordValidation,
 } from '../model';
-import { arrayContainsEntries, isUndefinedOrNull } from '../helper';
+import { arrayContainsEntries, isUndefinedOrNull } from '../helpers';
 
 const checkValidationResult = (
   validationResult: InternalValidationResult

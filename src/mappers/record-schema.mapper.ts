@@ -4,7 +4,7 @@ import {
   RecordValidation,
   InternalRecordValidation,
 } from '../model';
-import { isFunction } from '../helper';
+import { isFunction } from '../helpers';
 import { convertRecordValidationToAsyncIfNeeded } from './mapper-helpers';
 
 type RecordIdInternalValidation = [string, InternalRecordValidation[]];

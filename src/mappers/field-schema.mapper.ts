@@ -4,7 +4,7 @@ import {
   FieldValidation,
   InternalFieldValidation,
 } from '../model';
-import { isFunction } from '../helper';
+import { isFunction } from '../helpers';
 import { convertFieldValidationToAsyncIfNeeded } from './mapper-helpers';
 
 type FieldIdInternalValidation = [string, InternalFieldValidation[]];

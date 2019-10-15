@@ -7,7 +7,7 @@ import {
   isLastIndexInArray,
   isPromise,
   safeObjectKeys,
-} from './helper';
+} from './helpers';
 
 describe('safeArrayLength', () => {
   it('Should return 0 when feeding collection equals undefined', () => {
