@@ -16,7 +16,7 @@ import {
   buildFormValidationResult,
   buildRecordValidationResult,
 } from '../form-validation-summary-builder';
-import { isUndefinedOrNull, safeObjectKeys } from '../helper';
+import { isUndefinedOrNull, safeObjectKeys } from '../helpers';
 
 const isIdInSchema = (fieldId: string, schema): boolean =>
   !isUndefinedOrNull(schema) && !isUndefinedOrNull(schema[fieldId]);

@@ -1,4 +1,4 @@
-import get from 'lodash.get';
+import { get } from '../helpers';
 
 const getArgsToParse = (message: string): string[] =>
   message.match(/{{[^{}][\w\.]*}}/g);

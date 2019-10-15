@@ -6,7 +6,7 @@ import {
   createDefaultRecordValidationResult,
   RecordValidationResult,
 } from './model';
-import { arrayContainsEntries } from './helper';
+import { arrayContainsEntries } from './helpers';
 
 const didAllValidationsSucceeded = (
   validationResults: InternalValidationResult[]
