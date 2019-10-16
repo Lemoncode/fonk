@@ -1,0 +1,23 @@
+{
+  "name": "local-error-message-ts-example",
+  "version": "1.0.0",
+  "description": "local-error-message, typescript example",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html --open"
+  },
+  "keywords": [
+    "fonk",
+    "form-validation",
+    "vanilla typescript"
+  ],
+  "dependencies": {
+    "@lemoncode/fonk": "latest",
+    "prismjs": "^1.17.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@types/prismjs": "^1.16.0",
+    "parcel-bundler": "^1.6.1"
+  }
+}
