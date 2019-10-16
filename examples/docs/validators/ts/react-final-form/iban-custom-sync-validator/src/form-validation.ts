@@ -1,4 +1,5 @@
-import { createFormValidation, ValidationSchema } from '@lemoncode/fonk';
+import { ValidationSchema } from '@lemoncode/fonk';
+import { createFinalFormValidation } from '@lemoncode/fonk-final-form';
 import { ibanValidator } from './custom-validators';
 
 const validationSchema: ValidationSchema = {
@@ -14,4 +15,4 @@ const validationSchema: ValidationSchema = {
   },
 };
 
-export const formValidation = createFormValidation(validationSchema);
+export const formValidation = createFinalFormValidation(validationSchema);
