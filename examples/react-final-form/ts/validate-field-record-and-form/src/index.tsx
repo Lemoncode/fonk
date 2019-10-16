@@ -1,8 +1,8 @@
-import React from "react";
-import { render } from "react-dom";
-import Styles from "./styles";
-import { Form, Field } from "react-final-form";
-import { formValidation } from "./form-validation";
+import React from 'react';
+import { render } from 'react-dom';
+import Styles from './styles';
+import { Form, Field } from 'react-final-form';
+import { formValidation } from './form-validation';
 
 const onSubmit = values => {
   console.log({ values });
@@ -10,14 +10,18 @@ const onSubmit = values => {
 
 const App = () => (
   <Styles>
-    <h1>Validate field, record and form with Fonk and React Final Form Example</h1>
+    <h1>
+      Validate field, record and form with Fonk and React Final Form Example
+    </h1>
     <h2>validateField + validateRecord approach:</h2>
     <Form
       onSubmit={onSubmit}
       validate={values =>
         formValidation
           .validateRecord(values)
-          .then(({ recordErrors }) => recordErrors)
+          .then(validationResult =>
+            validationResult ? validationResult.recordErrors : null
+          )
       }
       render={({
         handleSubmit,
@@ -25,7 +29,7 @@ const App = () => (
         submitting,
         pristine,
         values,
-        errors
+        errors,
       }) => (
         <form onSubmit={handleSubmit}>
           <Field
@@ -108,12 +112,14 @@ const App = () => (
     <Form
       onSubmit={onSubmit}
       validate={values =>
-        formValidation
-          .validateForm(values)
-          .then(({ fieldErrors, recordErrors }) => ({
-            ...fieldErrors,
-            ...recordErrors
-          }))
+        formValidation.validateForm(values).then(validationResult =>
+          validationResult
+            ? {
+                ...validationResult.fieldErrors,
+                ...validationResult.recordErrors,
+              }
+            : null
+        )
       }
       render={({
         handleSubmit,
@@ -121,7 +127,7 @@ const App = () => (
         submitting,
         pristine,
         values,
-        errors
+        errors,
       }) => (
         <form onSubmit={handleSubmit}>
           <Field name="product" type="text">
@@ -185,4 +191,4 @@ const App = () => (
   </Styles>
 );
 
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById('root'));

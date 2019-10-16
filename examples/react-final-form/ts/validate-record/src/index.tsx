@@ -16,7 +16,9 @@ const App = () => (
       validate={values =>
         formValidation
           .validateRecord(values)
-          .then(({ recordErrors }) => recordErrors)
+          .then(validationResult =>
+            validationResult ? validationResult.recordErrors : null
+          )
       }
       render={({
         handleSubmit,

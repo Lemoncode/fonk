@@ -1,8 +1,8 @@
 import {
-  createFormValidation,
   Validators,
   ValidationSchema,
 } from '@lemoncode/fonk';
+import { createFinalFormValidation } from '@lemoncode/fonk-final-form';
 import { isNumberValidator, minNumberValidator } from './custom-validators';
 
 const validationSchema: ValidationSchema = {
@@ -33,4 +33,4 @@ const validationSchema: ValidationSchema = {
   },
 };
 
-export const formValidation = createFormValidation(validationSchema);
+export const formValidation = createFinalFormValidation(validationSchema);
