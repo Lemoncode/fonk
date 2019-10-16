@@ -1,8 +1,8 @@
-import React from "react";
-import { render } from "react-dom";
-import Styles from "./styles";
-import { Form, Field } from "react-final-form";
-import { formValidation } from "./form-validation";
+import React from 'react';
+import { render } from 'react-dom';
+import Styles from './styles';
+import { Form, Field } from 'react-final-form';
+import { formValidation } from './form-validation';
 
 const onSubmit = values => {
   console.log({ values });
@@ -51,4 +51,4 @@ const App = () => (
   </Styles>
 );
 
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById('root'));
