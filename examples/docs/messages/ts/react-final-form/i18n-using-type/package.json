@@ -1,0 +1,46 @@
+{
+  "name": "i18n-using-type",
+  "version": "1.0.0",
+  "description": "Example integrating fonk with react-final-form and i18n using type.",
+  "keywords": [
+    "fonk",
+    "react-final-form integration",
+    "form-validation",
+    "state management",
+    "react-final-form",
+    "form",
+    "final-form",
+    "react"
+  ],
+  "main": "src/index.tsx",
+  "dependencies": {
+    "@lemoncode/fonk": "latest",
+    "@lemoncode/fonk-final-form": "latest",
+    "final-form": "latest",
+    "i18next": "17.2.0",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-final-form": "latest",
+    "react-i18next": "10.13.1",
+    "react-scripts": "latest",
+    "styled-components": "latest"
+  },
+  "devDependencies": {
+    "@types/i18next": "13.0.0",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "3.5.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
