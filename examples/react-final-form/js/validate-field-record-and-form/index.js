@@ -10,14 +10,18 @@ const onSubmit = values => {
 
 const App = () => (
   <Styles>
-    <h1>Validate field, record and form with Fonk and React Final Form Example</h1>
+    <h1>
+      Validate field, record and form with Fonk and React Final Form Example
+    </h1>
     <h2>validateField + validateRecord approach:</h2>
     <Form
       onSubmit={onSubmit}
       validate={values =>
         formValidation
           .validateRecord(values)
-          .then(({ recordErrors }) => recordErrors)
+          .then(validationResult =>
+            validationResult ? validationResult.recordErrors : null
+          )
       }
       render={({
         handleSubmit,
@@ -108,12 +112,14 @@ const App = () => (
     <Form
       onSubmit={onSubmit}
       validate={values =>
-        formValidation
-          .validateForm(values)
-          .then(({ fieldErrors, recordErrors }) => ({
-            ...fieldErrors,
-            ...recordErrors,
-          }))
+        formValidation.validateForm(values).then(validationResult =>
+          validationResult
+            ? {
+                ...validationResult.fieldErrors,
+                ...validationResult.recordErrors,
+              }
+            : null
+        )
       }
       render={({
         handleSubmit,

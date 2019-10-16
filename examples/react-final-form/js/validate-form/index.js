@@ -20,7 +20,9 @@ const App = () => (
       validate={values =>
         formValidation
           .validateForm(values)
-          .then(({ fieldErrors }) => fieldErrors)
+          .then(validationResult =>
+            validationResult ? validationResult.fieldErrors : null
+          )
       }
       render={({ handleSubmit, form, submitting, pristine, values }) => (
         <form onSubmit={handleSubmit}>
