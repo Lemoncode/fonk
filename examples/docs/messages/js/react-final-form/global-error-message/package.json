@@ -1,0 +1,25 @@
+{
+  "name": "global-error-message",
+  "version": "1.0.0",
+  "description": "Example integrating fonk with react-final-form using global error message.",
+  "keywords": [
+    "fonk",
+    "form-validation",
+    "react-final-form integration",
+    "state management",
+    "react-final-form",
+    "form",
+    "final-form",
+    "react"
+  ],
+  "main": "index.js",
+  "dependencies": {
+    "@lemoncode/fonk": "latest",
+    "@lemoncode/fonk-final-form": "latest",
+    "final-form": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-final-form": "latest",
+    "styled-components": "latest"
+  }
+}
