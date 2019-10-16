@@ -49,7 +49,7 @@ Coming soon integration examples:
 
 How to [get started](https://lemoncode.github.io/fonk-doc/getting-started)
 
-Check our [Fonk Documentation site](https://lemoncode.github.io/fonk-doc/), some parts still under constructions :).
+Check our [Fonk Documentation site](https://lemoncode.github.io/fonk-doc/).
 
 # About Basefactor + Lemoncode
 
