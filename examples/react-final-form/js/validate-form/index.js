@@ -17,13 +17,7 @@ const App = () => (
     <h2>Password / Confirm Validation</h2>
     <Form
       onSubmit={onSubmit}
-      validate={values =>
-        formValidation
-          .validateForm(values)
-          .then(validationResult =>
-            validationResult ? validationResult.fieldErrors : null
-          )
-      }
+      validate={values => formValidation.validateForm(values)}
       render={({ handleSubmit, form, submitting, pristine, values }) => (
         <form onSubmit={handleSubmit}>
           <Field name="username">
