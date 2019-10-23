@@ -13,13 +13,7 @@ const App = () => (
     <h1>Validate record with Fonk and React Final Form Example</h1>
     <Form
       onSubmit={onSubmit}
-      validate={values =>
-        formValidation
-          .validateRecord(values)
-          .then(validationResult =>
-            validationResult ? validationResult.recordErrors : null
-          )
-      }
+      validate={values => formValidation.validateRecord(values)}
       render={({
         handleSubmit,
         form,
@@ -61,7 +55,7 @@ const App = () => (
               </div>
             )}
           </Field>
-          {errors.freeShipping && <span>{errors.freeShipping.message}</span>}
+          {errors.freeShipping && <span>{errors.freeShipping}</span>}
           <div className="buttons">
             <button type="submit" disabled={submitting}>
               Submit

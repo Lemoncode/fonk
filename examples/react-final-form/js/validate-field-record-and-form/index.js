@@ -16,13 +16,7 @@ const App = () => (
     <h2>validateField + validateRecord approach:</h2>
     <Form
       onSubmit={onSubmit}
-      validate={values =>
-        formValidation
-          .validateRecord(values)
-          .then(validationResult =>
-            validationResult ? validationResult.recordErrors : null
-          )
-      }
+      validate={values => formValidation.validateRecord(values)}
       render={({
         handleSubmit,
         form,
@@ -43,9 +37,7 @@ const App = () => (
               <div>
                 <label>Product</label>
                 <input {...input} placeholder="Product" />
-                {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
-                )}
+                {meta.error && meta.touched && <span>{meta.error}</span>}
               </div>
             )}
           </Field>
@@ -60,9 +52,7 @@ const App = () => (
               <div>
                 <label>Discount</label>
                 <input {...input} placeholder="Discount" />
-                {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
-                )}
+                {meta.error && meta.touched && <span>{meta.error}</span>}
               </div>
             )}
           </Field>
@@ -77,9 +67,7 @@ const App = () => (
               <div>
                 <label>Price</label>
                 <input {...input} placeholder="Price" />
-                {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
-                )}
+                {meta.error && meta.touched && <span>{meta.error}</span>}
               </div>
             )}
           </Field>
@@ -91,7 +79,7 @@ const App = () => (
               </div>
             )}
           </Field>
-          {errors.freeShipping && <span>{errors.freeShipping.message}</span>}
+          {errors && <span>{errors.freeShipping}</span>}
           <div className="buttons">
             <button type="submit" disabled={submitting}>
               Submit
@@ -111,16 +99,7 @@ const App = () => (
     <h2>validateForm approach:</h2>
     <Form
       onSubmit={onSubmit}
-      validate={values =>
-        formValidation.validateForm(values).then(validationResult =>
-          validationResult
-            ? {
-                ...validationResult.fieldErrors,
-                ...validationResult.recordErrors,
-              }
-            : null
-        )
-      }
+      validate={values => formValidation.validateForm(values)}
       render={({
         handleSubmit,
         form,
@@ -135,9 +114,7 @@ const App = () => (
               <div>
                 <label>Product</label>
                 <input {...input} placeholder="Product" />
-                {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
-                )}
+                {meta.error && meta.touched && <span>{meta.error}</span>}
               </div>
             )}
           </Field>
@@ -146,9 +123,7 @@ const App = () => (
               <div>
                 <label>Discount</label>
                 <input {...input} placeholder="Discount" />
-                {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
-                )}
+                {meta.error && meta.touched && <span>{meta.error}</span>}
               </div>
             )}
           </Field>
@@ -157,9 +132,7 @@ const App = () => (
               <div>
                 <label>Price</label>
                 <input {...input} placeholder="Price" />
-                {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
-                )}
+                {meta.error && meta.touched && <span>{meta.error}</span>}
               </div>
             )}
           </Field>
@@ -171,7 +144,9 @@ const App = () => (
               </div>
             )}
           </Field>
-          {errors.freeShipping && <span>{errors.freeShipping.message}</span>}
+          {errors && errors.recordErrors && (
+            <span>{errors.recordErrors.freeShipping}</span>
+          )}
           <div className="buttons">
             <button type="submit" disabled={submitting}>
               Submit
