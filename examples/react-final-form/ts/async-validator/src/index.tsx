@@ -27,7 +27,7 @@ const App = () => (
                 <label>User</label>
                 <input {...input} type="text" placeholder="User" />
                 {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
+                  <span>{meta.error}</span>
                 )}
               </div>
             )}

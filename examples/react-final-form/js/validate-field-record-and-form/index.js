@@ -79,7 +79,9 @@ const App = () => (
               </div>
             )}
           </Field>
-          {errors && <span>{errors.freeShipping}</span>}
+          {errors && errors.recordErrors && (
+            <span>{errors.recordErrors.freeShipping}</span>
+          )}
           <div className="buttons">
             <button type="submit" disabled={submitting}>
               Submit

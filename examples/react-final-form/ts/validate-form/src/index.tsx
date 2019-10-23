@@ -26,7 +26,7 @@ const App = () => (
                 <label>Username</label>
                 <input {...input} type="text" placeholder="Username" />
                 {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
+                  <span>{meta.error}</span>
                 )}
               </div>
             )}
@@ -37,7 +37,7 @@ const App = () => (
                 <label>Password</label>
                 <input {...input} type="password" placeholder="Password" />
                 {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
+                  <span>{meta.error}</span>
                 )}
               </div>
             )}
@@ -48,7 +48,7 @@ const App = () => (
                 <label>Confirm</label>
                 <input {...input} type="password" placeholder="Confirm" />
                 {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
+                  <span>{meta.error}</span>
                 )}
               </div>
             )}

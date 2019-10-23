@@ -55,7 +55,9 @@ const App = () => (
               </div>
             )}
           </Field>
-          {errors.freeShipping && <span>{errors.freeShipping}</span>}
+          {errors && errors.recordErrors && (
+            <span>{errors.recordErrors.freeShipping}</span>
+          )}
           <div className="buttons">
             <button type="submit" disabled={submitting}>
               Submit
