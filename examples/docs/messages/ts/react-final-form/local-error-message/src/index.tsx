@@ -30,7 +30,7 @@ const App = () => (
                 <label>IBAN Account</label>
                 <input {...input} type="text" placeholder="IBAN Account" />
                 {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
+                  <span>{meta.error}</span>
                 )}
               </div>
             )}
@@ -46,7 +46,7 @@ const App = () => (
                 <label>BIC Account</label>
                 <input {...input} type="text" placeholder="BIC Account" />
                 {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
+                  <span>{meta.error}</span>
                 )}
               </div>
             )}

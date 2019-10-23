@@ -30,7 +30,7 @@ const App = () => (
                 <label>Account</label>
                 <input {...input} type="text" placeholder="Account" />
                 {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
+                  <span>{meta.error}</span>
                 )}
               </div>
             )}
