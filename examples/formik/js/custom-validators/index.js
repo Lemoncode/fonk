@@ -7,9 +7,6 @@ import { render } from 'react-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { formValidation } from './validate';
 
-// Watch out !! Issue Here ErrorMessage expects
-// field name, not valid to pass _password.message_
-// and error field if not plain text bad crash
 const App = () => (
   <div>
     <h1>Any place in your app!</h1>
