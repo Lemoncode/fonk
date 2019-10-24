@@ -1,9 +1,10 @@
-# Validate field Example
+# Globally Customize validator error message
 
-Example integrating `fonk` with `react-final-form` at field level.
+Example integrating `fonk` with `formik`.
 
-[![See validate-field example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/react-final-form/js/validate-field)
+Hoto customize a validator error message globally.
 
+[![Customize validator error messge globally](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/custom-error-message-global)
 
 # About Basefactor + Lemoncode
 

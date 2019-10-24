@@ -1,9 +1,10 @@
-# Validate field Example
+# Asynchronous validations
 
-Example integrating `fonk` with `react-final-form` at field level.
+Example integrating `fonk` with `formik`.
 
-[![See validate-field example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/react-final-form/js/validate-field)
+How to handle asynchronous validations: enter user name, validation will fail if user already exists on Github (hits Github rest api).
 
+[![Live Demo asynchronous validations](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/async-validator)
 
 # About Basefactor + Lemoncode
 

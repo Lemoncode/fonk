@@ -1,9 +1,10 @@
-# Validate field Example
+# Creating custom validators
 
-Example integrating `fonk` with `react-final-form` at field level.
+Example integrating `fonk` with `formik`.
 
-[![See validate-field example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/react-final-form/js/validate-field)
+How to create your own custom validators.
 
+[![Creating your own custom validators](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/custom-validators)
 
 # About Basefactor + Lemoncode
 
