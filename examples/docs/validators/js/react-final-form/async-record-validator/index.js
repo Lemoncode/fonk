@@ -16,7 +16,7 @@ const Label = props => {
   const [error, setError] = React.useState('');
 
   React.useEffect(() => {
-    errorPromise.then(error => setError(error.message));
+    errorPromise.then(error => setError(error));
   }, []);
 
   return (

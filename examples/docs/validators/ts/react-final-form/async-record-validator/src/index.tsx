@@ -1,11 +1,11 @@
-import React from "react";
-import { render } from "react-dom";
-import Styles from "./styles";
-import { Form } from "react-final-form";
-import arrayMutators from "final-form-arrays";
-import { FieldArray } from "react-final-form-arrays";
-import { formValidation } from "./form-validation";
-import { resolveProcessFromCache } from "./api";
+import React from 'react';
+import { render } from 'react-dom';
+import Styles from './styles';
+import { Form } from 'react-final-form';
+import arrayMutators from 'final-form-arrays';
+import { FieldArray } from 'react-final-form-arrays';
+import { formValidation } from './form-validation';
+import { resolveProcessFromCache } from './api';
 
 const onSubmit = values => {
   window.alert(JSON.stringify(values, null, 2));
@@ -13,16 +13,14 @@ const onSubmit = values => {
 
 const Label = props => {
   const { process, errorPromise } = props;
-  const [error, setError] = React.useState("");
+  const [error, setError] = React.useState('');
 
   React.useEffect(() => {
-    errorPromise.then(error => setError(error.message));
+    errorPromise.then(error => setError(error));
   }, []);
 
   return (
-    <label>{`${process.name}: -> Result from cache: ${
-      process.cachedResult
-    } ${error}`}</label>
+    <label>{`${process.name}: -> Result from cache: ${process.cachedResult} ${error}`}</label>
   );
 };
 
@@ -33,14 +31,14 @@ const App = () => (
     <Form
       onSubmit={onSubmit}
       mutators={{
-        ...arrayMutators
+        ...arrayMutators,
       }}
       render={({ handleSubmit, form, values }) => {
         const createNextProcess = index => {
           const cachedResult = resolveProcessFromCache();
           const process = {
             name: `Process ${index}`,
-            cachedResult
+            cachedResult,
           };
 
           return process;
@@ -51,7 +49,7 @@ const App = () => (
             ? values.processList.length
             : 0;
           const process = createNextProcess(nextIndex);
-          form.mutators.push("processList", process);
+          form.mutators.push('processList', process);
         };
 
         const handleValidate = processList => {
@@ -94,4 +92,4 @@ const App = () => (
   </Styles>
 );
 
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById('root'));

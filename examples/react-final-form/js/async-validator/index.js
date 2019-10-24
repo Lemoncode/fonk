@@ -1,8 +1,8 @@
-import React from "react";
-import { render } from "react-dom";
-import Styles from "./styles";
-import { Form, Field } from "react-final-form";
-import { formValidation } from "./form-validation";
+import React from 'react';
+import { render } from 'react-dom';
+import Styles from './styles';
+import { Form, Field } from 'react-final-form';
+import { formValidation } from './form-validation';
 
 const onSubmit = values => {
   console.log({ values });
@@ -26,9 +26,7 @@ const App = () => (
               <div>
                 <label>User</label>
                 <input {...input} type="text" placeholder="User" />
-                {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
-                )}
+                {meta.error && meta.touched && <span>{meta.error}</span>}
               </div>
             )}
           </Field>
@@ -51,4 +49,4 @@ const App = () => (
   </Styles>
 );
 
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById('root'));

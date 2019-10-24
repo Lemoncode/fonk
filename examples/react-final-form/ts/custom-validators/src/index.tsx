@@ -30,7 +30,7 @@ const App = () => (
                 <label>First Name</label>
                 <input {...input} type="text" placeholder="First Name" />
                 {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
+                  <span>{meta.error}</span>
                 )}
               </div>
             )}
@@ -46,7 +46,7 @@ const App = () => (
                 <label>Last Name</label>
                 <input {...input} type="text" placeholder="Last Name" />
                 {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
+                  <span>{meta.error}</span>
                 )}
               </div>
             )}
@@ -62,7 +62,7 @@ const App = () => (
                 <label>Age</label>
                 <input {...input} type="text" placeholder="Age" />
                 {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
+                  <span>{meta.error}</span>
                 )}
               </div>
             )}

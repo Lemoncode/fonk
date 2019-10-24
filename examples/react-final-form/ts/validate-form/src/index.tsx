@@ -17,13 +17,7 @@ const App = () => (
     <h2>Password / Confirm Validation</h2>
     <Form
       onSubmit={onSubmit}
-      validate={values =>
-        formValidation
-          .validateForm(values)
-          .then(validationResult =>
-            validationResult ? validationResult.fieldErrors : null
-          )
-      }
+      validate={values => formValidation.validateForm(values)}
       render={({ handleSubmit, form, submitting, pristine, values }) => (
         <form onSubmit={handleSubmit}>
           <Field name="username">
@@ -32,7 +26,7 @@ const App = () => (
                 <label>Username</label>
                 <input {...input} type="text" placeholder="Username" />
                 {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
+                  <span>{meta.error}</span>
                 )}
               </div>
             )}
@@ -43,7 +37,7 @@ const App = () => (
                 <label>Password</label>
                 <input {...input} type="password" placeholder="Password" />
                 {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
+                  <span>{meta.error}</span>
                 )}
               </div>
             )}
@@ -54,7 +48,7 @@ const App = () => (
                 <label>Confirm</label>
                 <input {...input} type="password" placeholder="Confirm" />
                 {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
+                  <span>{meta.error}</span>
                 )}
               </div>
             )}

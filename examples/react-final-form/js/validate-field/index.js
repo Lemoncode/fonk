@@ -29,9 +29,7 @@ const App = () => (
               <div>
                 <label>First Name</label>
                 <input {...input} type="text" placeholder="First Name" />
-                {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
-                )}
+                {meta.error && meta.touched && <span>{meta.error}</span>}
               </div>
             )}
           </Field>
@@ -45,9 +43,7 @@ const App = () => (
               <div>
                 <label>Last Name</label>
                 <input {...input} type="text" placeholder="Last Name" />
-                {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
-                )}
+                {meta.error && meta.touched && <span>{meta.error}</span>}
               </div>
             )}
           </Field>
@@ -61,9 +57,7 @@ const App = () => (
               <div>
                 <label>Age</label>
                 <input {...input} type="text" placeholder="Age" />
-                {meta.error && meta.touched && (
-                  <span>{meta.error.message}</span>
-                )}
+                {meta.error && meta.touched && <span>{meta.error}</span>}
               </div>
             )}
           </Field>
