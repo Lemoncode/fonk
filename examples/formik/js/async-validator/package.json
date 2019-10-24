@@ -1,0 +1,25 @@
+{
+  "name": "validate-field",
+  "version": "1.0.0",
+  "description": "Example integrating fonk with formik at form level.",
+  "keywords": [
+    "fonk",
+    "form-validation",
+    "formik integration",
+    "state management",
+    "formik",
+    "form",
+    "fonk-formik",
+    "react"
+  ],
+  "main": "index.js",
+  "dependencies": {
+    "@lemoncode/fonk": "latest",
+    "@lemoncode/fonk-formik": "latest",
+    "formik": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-final-form": "latest",
+    "styled-components": "latest"
+  }
+}
