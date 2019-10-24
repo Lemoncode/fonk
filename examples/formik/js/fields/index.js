@@ -1,3 +1,6 @@
+// Helper styles for demo
+import './helper.css';
+
 // Render Prop
 import React from 'react';
 import { render } from 'react-dom';
@@ -23,7 +26,7 @@ const App = () => (
       {({ isSubmitting }) => (
         <Form>
           <Field type="email" name="email" />
-          <ErrorMessage name="email.message" component="div" />
+          <ErrorMessage name="email" component="div" />
           <Field type="password" name="password" />
           <ErrorMessage name="password" component="div" />
           <button type="submit" disabled={isSubmitting}>
