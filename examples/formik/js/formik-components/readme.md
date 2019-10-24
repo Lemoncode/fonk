@@ -1,8 +1,8 @@
-# Validate field Example
+# Formik Components
 
 Example integrating `fonk` with `formik`.
 
-How to trigger validations at field level.
+Using Field Formik component.
 
 [![See validate-field example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/react-final-form/js/formik-component)
 
