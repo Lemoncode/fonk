@@ -9,13 +9,13 @@ import { formValidation } from './validate';
 const App = () => (
   <div className="app">
     <h1>
-      Basic{' '}
+      Async Validator{' '}
       <a
         href="https://github.com/jaredpalmer/formik"
         target="_blank"
         rel="noopener"
       >
-        Formik
+        Fonk-Formik
       </a>{' '}
       Demo
       <Formik

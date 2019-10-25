@@ -16,7 +16,7 @@ const App = () => (
         target="_blank"
         rel="noopener"
       >
-        Formik
+        Fonk-Formik
       </a>{' '}
       Demo
       <Formik

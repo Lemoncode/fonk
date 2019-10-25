@@ -9,7 +9,7 @@ import { formValidation } from './validate';
 
 const App = () => (
   <div>
-    <h1>Any place in your app!</h1>
+    <h1>Creating custom validators</h1>
     <Formik
       initialValues={{ firstname: '', lastName: '', age: '' }}
       validate={values => formValidation.validateForm(values)}

@@ -10,7 +10,8 @@ import { formValidation } from './validate';
 const App = () => (
   <div>
     <h1>
-      Replacing a given validator error message with a custom one globally
+      Replacing a given validator error message with a custom locally (just for
+      a given form field)
     </h1>
     <Formik
       initialValues={{ product: '' }}

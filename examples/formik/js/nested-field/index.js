@@ -12,7 +12,7 @@ import { formValidation } from './validate';
 // and error field if not plain text bad crash
 const App = () => (
   <div>
-    <h1>Any place in your app!</h1>
+    <h1>Validating nestes field (e.g. "client.product.name")</h1>
     <Formik
       initialValues={{ product: { name: '' } }}
       onSubmit={(values, { setSubmitting }) => {

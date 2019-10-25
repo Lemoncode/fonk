@@ -12,7 +12,7 @@ import { formValidation } from './validate';
 // and error field if not plain text bad crash
 const App = () => (
   <div>
-    <h1>Any place in your app!</h1>
+    <h1>Using formik components: Formik, Field, ErrorMessage</h1>
     <Formik
       initialValues={{ email: '', password: '' }}
       validate={values => formValidation.validateForm(values)}

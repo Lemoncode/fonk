@@ -1,18 +1,18 @@
 // Helper styles for demo
-import "./helper.css";
+import './helper.css';
 
 // Render Prop
-import React from "react";
-import { render } from "react-dom";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Checkbox } from "./checkbox";
-import { formValidation } from "./validate";
+import React from 'react';
+import { render } from 'react-dom';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Checkbox } from './checkbox';
+import { formValidation } from './validate';
 
 const App = () => (
   <div>
-    <h1>Example: Record Validations</h1>
+    <h1>Creating Record Validations</h1>
     <Formik
-      initialValues={{ product: "", discount: 0, price: 0, isPrime: false }}
+      initialValues={{ product: '', discount: 0, price: 0, isPrime: false }}
       validate={values => formValidation.validateForm(values)}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
@@ -46,4 +46,4 @@ const App = () => (
   </div>
 );
 
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById('root'));
