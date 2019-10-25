@@ -5,7 +5,7 @@ import './helper.css';
 import React from 'react';
 import { render } from 'react-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { formValidation } from './validate';
+import { formValidation } from './form-validation';
 
 // Watch out !! Issue Here ErrorMessage expects
 // field name, not valid to pass _password.message_

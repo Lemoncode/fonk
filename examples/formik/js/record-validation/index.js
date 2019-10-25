@@ -6,7 +6,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Checkbox } from './checkbox';
-import { formValidation } from './validate';
+import { formValidation } from './form-validation';
 
 const App = () => (
   <div>

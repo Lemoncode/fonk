@@ -1,11 +1,10 @@
 // Helper styles for demo
 import './helper.css';
-import { MoreResources, DisplayFormikState } from './helper.css';
 
 import React from 'react';
 import { render } from 'react-dom';
 import { Formik } from 'formik';
-import { formValidation } from './validate';
+import { formValidation } from './form-validation';
 
 const App = () => (
   <div className="app">

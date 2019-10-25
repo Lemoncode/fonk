@@ -5,7 +5,7 @@ import './helper.css';
 import React from 'react';
 import { render } from 'react-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { formValidation } from './validate';
+import { formValidation } from './form-validation';
 import { Validators } from '@lemoncode/fonk';
 
 Validators.required.setErrorMessage('My custom error message');

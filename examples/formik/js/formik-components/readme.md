@@ -4,7 +4,7 @@ Example integrating `fonk` with `formik`.
 
 Using Field Formik component.
 
-[![See validate-field example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/react-final-form/js/formik-component)
+[![Formik Components Demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/formik-components)
 
 # About Basefactor + Lemoncode
 
