@@ -10,6 +10,11 @@ import { formValidation } from './form-validation';
 const App = () => (
   <div>
     <h1>Creating custom validators</h1>
+    <span>
+      How to Create a custom validator (number must be greater than 18), this
+      validator is applied on the Age field (this validator is already available
+      fonk-min-number-validator)
+    </span>
     <Formik
       initialValues={{ firstname: '', lastName: '', age: '' }}
       validate={values => formValidation.validateForm(values)}
