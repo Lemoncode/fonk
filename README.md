@@ -38,14 +38,11 @@ Fonk can be easily plugged into many libraries / frameworks or just be used in p
 Available integration examples:
   - Plain vanilla ES6.
   - React
-  - React Final form.
+  - [React Final form](https://github.com/Lemoncode/fonk-final-form).
+  - [Formik](https://github.com/Lemoncode/fonk-formik).
 
 Coming soon integration examples:
-
-- React
-  - React Final Forms.
-  - Formik.
-- Vuejs.
+  - Vuejs.
 
 How to [get started](https://lemoncode.github.io/fonk-doc/getting-started)
 
