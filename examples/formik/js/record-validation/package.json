@@ -15,8 +15,7 @@
   "main": "index.js",
   "dependencies": {
     "@lemoncode/fonk": "latest",
-    "@lemoncode/fonk-final-form": "latest",
-    "@lemoncode/fonk-is-number-validator": "latest",
+    "@lemoncode/fonk-formik": "latest",
     "formik": "latest",
     "final-form": "latest",
     "react": "latest",
