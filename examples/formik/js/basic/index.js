@@ -19,6 +19,12 @@ const App = () => (
       </a>{' '}
       Demo
     </h1>
+    <span>
+      Validates that the value entered in the field is a valid email (initially
+      message is displayed once focus is lost on the input, once you get again
+      focus on the control again it's considered touched and validation will be
+      shown on every onChange).
+    </span>
     <Formik
       initialValues={{ email: '' }}
       onSubmit={(values, { setSubmitting }) => {
