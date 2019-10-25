@@ -12,9 +12,11 @@ Validators.required.setErrorMessage('My custom error message');
 
 const App = () => (
   <div>
-    <h1>
-      Replacing a given validator error message with a custom one globally
-    </h1>
+    <h1>Customize validator error message globally</h1>
+    <span>
+      Update the error message text for a given validator in all form validation
+      schemas.
+    </span>
     <Formik
       initialValues={{ product: '' }}
       onSubmit={(values, { setSubmitting }) => {
@@ -28,6 +30,7 @@ const App = () => (
         <Form>
           <Field
             name="product"
+            placeholder="name"
             validate={value =>
               formValidation.validateField('product', value, values)
             }
