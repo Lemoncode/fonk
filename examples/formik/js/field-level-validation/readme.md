@@ -4,7 +4,7 @@ Example integrating `fonk` with `formik`.
 
 How to trigger your validations at field level.
 
-[![Field level validations](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/field-level-validation)
+[![Example: field level validations](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/field-level-validation)
 
 # About Basefactor + Lemoncode
 

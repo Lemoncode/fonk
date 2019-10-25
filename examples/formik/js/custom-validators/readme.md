@@ -4,7 +4,7 @@ Example integrating `fonk` with `formik`.
 
 How to create your own custom validators.
 
-[![Creating your own custom validators](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/custom-validators)
+[![Live example: creating your own custom validator](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/custom-validators)
 
 # About Basefactor + Lemoncode
 

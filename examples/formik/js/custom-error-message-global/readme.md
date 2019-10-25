@@ -4,7 +4,7 @@ Example integrating `fonk` with `formik`.
 
 Hoto customize a validator error message globally.
 
-[![Customize validator error messge globally](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/custom-error-message-global)
+[![Example: customize validator error message globally](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/custom-error-message-global)
 
 # About Basefactor + Lemoncode
 

@@ -4,7 +4,7 @@ Example integrating `fonk` with `formik`.
 
 Using Field Formik component.
 
-[![Formik Components Demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/formik-components)
+[![Example: Formik components demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/formik-components)
 
 # About Basefactor + Lemoncode
 

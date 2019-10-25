@@ -4,7 +4,7 @@ Example integrating `fonk` with `react-final-form` at field level.
 
 How to validate nested fields (e.g.: "product.name")
 
-[![See validate-field example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/nested-field)
+[![Example: validate validate-field example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/nested-field)
 
 # About Basefactor + Lemoncode
 

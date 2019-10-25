@@ -4,7 +4,7 @@ Example integrating `fonk` with `formik`.
 
 How to define an trigger record validations.
 
-[![See validate-field example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/record-validation)
+[![Example: record validation](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/record-validation)
 
 # About Basefactor + Lemoncode
 
