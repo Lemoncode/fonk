@@ -28,6 +28,7 @@ const App = () => (
           <Field
             type="email"
             name="email"
+            placeholder="email"
             validate={value =>
               formValidation.validateField('email', value, values)
             }
@@ -36,6 +37,7 @@ const App = () => (
           <Field
             type="password"
             name="password"
+            placeholder="password"
             validate={value =>
               formValidation.validateField('password', value, values)
             }
