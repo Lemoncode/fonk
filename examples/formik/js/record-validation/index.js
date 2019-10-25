@@ -11,6 +11,10 @@ import { formValidation } from './form-validation';
 const App = () => (
   <div>
     <h1>Creating Record Validations</h1>
+    <h4>
+      If price - discount && !prime it will show an error: 'Subscribe to prime
+      service or total must be greater than 20USD'
+    </h4>
     <Formik
       initialValues={{ product: '', discount: 0, price: 0, isPrime: false }}
       validate={values => formValidation.validateForm(values)}
@@ -23,15 +27,16 @@ const App = () => (
     >
       {({ isSubmitting, errors }) => (
         <Form>
-          <Field name="product" />
-          <Field name="discount" />
-          <Field name="price" />
+          <Field name="product" placeholder="Product name" />
+          <Field name="discount" placeholder="Discounted amount" />
+          <Field name="price" placeholder="Price" />
           <Field
             component={Checkbox}
             id="isPrime"
             name="isPrime"
             label="Prime"
           />
+          <h6>Total: {values.price - values.discount}</h6>
           {errors && errors.recordErrors && (
             <div className="input-feedback">
               {errors.recordErrors.freeShipping}
