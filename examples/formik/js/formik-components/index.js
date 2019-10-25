@@ -13,6 +13,10 @@ import { formValidation } from './form-validation';
 const App = () => (
   <div>
     <h1>Using formik components: Formik, Field, ErrorMessage</h1>
+    <span>
+      Example using Formik's Field and Error components. Validates that a given
+      field is required and must be an email, the second field is required
+    </span>
     <Formik
       initialValues={{ email: '', password: '' }}
       validate={values => formValidation.validateForm(values)}
@@ -25,9 +29,9 @@ const App = () => (
     >
       {({ isSubmitting }) => (
         <Form>
-          <Field type="email" name="email" />
+          <Field type="email" name="email" placeholder="Email" />
           <ErrorMessage name="email" component="div" />
-          <Field type="password" name="password" />
+          <Field type="password" name="password" placeholder="Password" />
           <ErrorMessage name="password" component="div" />
           <button type="submit" disabled={isSubmitting}>
             Submit
