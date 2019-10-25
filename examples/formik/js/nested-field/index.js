@@ -12,7 +12,11 @@ import { formValidation } from './form-validation';
 // and error field if not plain text bad crash
 const App = () => (
   <div>
-    <h1>Validating nestes field (e.g. "client.product.name")</h1>
+    <h1>Validating nested field (e.g. "client.product.name")</h1>
+    <span>
+      A record can contain complex structures, we can use here the dot notation
+      (e.g. "client.product.name")
+    </span>
     <Formik
       initialValues={{ product: { name: '' } }}
       onSubmit={(values, { setSubmitting }) => {
