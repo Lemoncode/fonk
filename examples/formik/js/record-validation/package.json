@@ -17,6 +17,7 @@
     "@lemoncode/fonk": "latest",
     "@lemoncode/fonk-final-form": "latest",
     "@lemoncode/fonk-is-number-validator": "latest",
+    "formik": "latest",
     "final-form": "latest",
     "react": "latest",
     "react-dom": "latest"
