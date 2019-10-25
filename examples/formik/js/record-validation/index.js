@@ -12,8 +12,8 @@ const App = () => (
   <div>
     <h1>Creating Record Validations</h1>
     <h4>
-      If price - discount && !prime it will show an error: 'Subscribe to prime
-      service or total must be greater than 20USD'
+      If price minus discount and is not prime it will show an error: 'Subscribe
+      to prime service or total must be greater than 20USD'
     </h4>
     <Formik
       initialValues={{ product: '', discount: 0, price: 0, isPrime: false }}
@@ -36,7 +36,6 @@ const App = () => (
             name="isPrime"
             label="Prime"
           />
-          <h6>Total: {values.price - values.discount}</h6>
           {errors && errors.recordErrors && (
             <div className="input-feedback">
               {errors.recordErrors.freeShipping}
