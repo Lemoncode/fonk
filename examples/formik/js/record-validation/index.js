@@ -13,8 +13,8 @@ const App = () => (
     <h1>Creating Record Validations</h1>
     <span>
       Display record validation error message if user has not prime services
-      contracted or total is lower than 20USD: 'Subscribe to prime service or
-      total must be greater than 20USD'
+      contracted or total is lower than 20USD, message to display: 'Subscribe to
+      prime service or total must be greater than 20USD'
     </span>
     <span>Code: Check form-validate.js</span>
 
