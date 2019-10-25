@@ -9,10 +9,11 @@ import { formValidation } from './form-validation';
 
 const App = () => (
   <div>
-    <h1>
-      Replacing a given validator error message with a custom locally (just for
-      a given form field)
-    </h1>
+    <h1>Customize validator error message locally</h1>
+    <span>
+      Update the error message text for a given validator just for an specific
+      Field in a given validation form schema.
+    </span>
     <Formik
       initialValues={{ product: '' }}
       onSubmit={(values, { setSubmitting }) => {
