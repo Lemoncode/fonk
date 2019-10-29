@@ -2,8 +2,6 @@ import React from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { createI18n } from './i18n';
 import { languages } from './languages';
-import { keys } from '../translations';
-import { Validators } from '@lemoncode/fonk';
 
 interface Context {
   language: string;
@@ -20,9 +18,6 @@ export const LanguageProvider: React.FunctionComponent = props => {
 
   const handleSetLanguage = newLanguage => {
     i18n.changeLanguage(newLanguage);
-
-    Validators.required.setErrorMessage(i18n.t(keys.required));
-
     setLanguage(newLanguage);
   };
 
