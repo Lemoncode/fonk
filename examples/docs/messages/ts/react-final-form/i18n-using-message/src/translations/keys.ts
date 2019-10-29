@@ -4,4 +4,5 @@ export const keys = {
   language: 'language',
   submit: 'submit',
   reset: 'reset',
+  required: 'required',
 };

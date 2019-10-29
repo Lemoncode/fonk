@@ -3,9 +3,8 @@ import { render } from 'react-dom';
 import { Form, Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 import Styles from './styles';
-import { LanguageProvider, LanguageContext } from './i18n';
+import { LanguageProvider, LanguageContext, languageList } from './i18n';
 import { useValidation } from './validation';
-import { languageList } from './i18n/languages';
 import { keys } from './translations';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -64,7 +63,7 @@ const App = () => {
               )}
             </Field>
             <Field name="language">
-              {({ input, meta }) => (
+              {({ input }) => (
                 <div>
                   <label>{t(keys.language)}</label>
                   <select

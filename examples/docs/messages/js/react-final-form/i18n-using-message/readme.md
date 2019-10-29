@@ -1,4 +1,4 @@
-# I18n using type example
+# I18n using message example
 
 Example integrating `fonk` with `react-final-form` and `i18n using message`.
 

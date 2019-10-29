@@ -4,5 +4,5 @@ export const en = {
   language: 'Language',
   submit: 'Submit',
   reset: 'Reset',
-  REQUIRED: 'This field is required',
+  required: 'Required field',
 };

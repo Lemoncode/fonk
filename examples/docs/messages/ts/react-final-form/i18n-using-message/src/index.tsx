@@ -3,9 +3,8 @@ import { render } from 'react-dom';
 import { Form, Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 import Styles from './styles';
-import { LanguageProvider, TranslationProvider, LanguageContext } from './i18n';
-import { formValidation } from './form-validation';
-import { languageList } from './i18n/languages';
+import { LanguageProvider, LanguageContext, languageList } from './i18n';
+import { useValidation } from './validation';
 import { keys } from './translations';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -18,6 +17,7 @@ const onSubmit = async values => {
 const App = () => {
   const { language, setLanguage } = React.useContext(LanguageContext);
   const { t } = useTranslation();
+  const { formValidation } = useValidation();
   return (
     <Styles>
       <h1>Form Validation with Fonk and React Final Form Example</h1>
@@ -39,9 +39,7 @@ const App = () => {
                 <div>
                   <label>{t(keys.user)}</label>
                   <input {...input} type="text" placeholder={t(keys.user)} />
-                  {meta.error && meta.touched && (
-                    <span>{t(meta.error.type)}</span>
-                  )}
+                  {meta.error && meta.touched && <span>{meta.error}</span>}
                 </div>
               )}
             </Field>
@@ -59,14 +57,12 @@ const App = () => {
                     type="text"
                     placeholder={t(keys.password)}
                   />
-                  {meta.error && meta.touched && (
-                    <span>{t(meta.error.type)}</span>
-                  )}
+                  {meta.error && meta.touched && <span>{meta.error}</span>}
                 </div>
               )}
             </Field>
             <Field name="language">
-              {({ input, meta }) => (
+              {({ input }) => (
                 <div>
                   <label>{t(keys.language)}</label>
                   <select
@@ -76,9 +72,9 @@ const App = () => {
                       input.onChange(e);
                     }}
                   >
-                    {languageList.map(l => (
-                      <option key={l} value={l}>
-                        {l}
+                    {languageList.map(language => (
+                      <option key={language} value={language}>
+                        {language}
                       </option>
                     ))}
                   </select>
@@ -107,9 +103,7 @@ const App = () => {
 
 render(
   <LanguageProvider>
-    <TranslationProvider>
-      <App />
-    </TranslationProvider>
+    <App />
   </LanguageProvider>,
   document.getElementById('root')
 );

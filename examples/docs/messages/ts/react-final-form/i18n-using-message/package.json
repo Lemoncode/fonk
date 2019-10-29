@@ -1,7 +1,7 @@
 {
-  "name": "i18n-using-type",
+  "name": "i18n-using-message",
   "version": "1.0.0",
-  "description": "Example integrating fonk with react-final-form and i18n using type.",
+  "description": "Example integrating fonk with react-final-form and i18n using message.",
   "keywords": [
     "fonk",
     "react-final-form integration",

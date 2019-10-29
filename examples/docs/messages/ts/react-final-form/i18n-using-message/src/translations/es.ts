@@ -4,5 +4,5 @@ export const es = {
   language: 'Idioma',
   submit: 'Enviar',
   reset: 'Reiniciar',
-  REQUIRED: 'Debe informar el campo',
+  required: 'Debe informar el campo',
 };
