@@ -1,8 +1,8 @@
 # I18n using type example
 
-Example integrating `fonk` with `react-final-form` and `i18n using type`.
+Example integrating `fonk` with `react-final-form` and `i18n using message`.
 
-[![See i18n-using-type example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/docs/messages/js/react-final-form/i18n-using-type)
+[![See i18n-using-message example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/docs/messages/js/react-final-form/i18n-using-message)
 
 
 # About Basefactor + Lemoncode
