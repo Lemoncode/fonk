@@ -60,7 +60,7 @@ const App = () => {
                   <input
                     {...input}
                     autoComplete="off"
-                    type="text"
+                    type="password"
                     placeholder={t(keys.password)}
                   />
                   {meta.error && meta.touched && <span>{meta.error}</span>}

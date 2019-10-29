@@ -44,7 +44,7 @@ const App = () => (
             {({ input, meta }) => (
               <div>
                 <label>Password</label>
-                <input {...input} type="text" placeholder="Password" />
+                <input {...input} type="password" placeholder="Password" />
                 {meta.error && meta.touched && (
                   <span>{meta.error}</span>
                 )}

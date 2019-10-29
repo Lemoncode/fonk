@@ -22,46 +22,65 @@ const App = () => {
   return (
     <Styles>
       <h1>Form Validation with Fonk and React Final Form Example</h1>
-      <h2>i18n local error message</h2>
+      <h2>i18n full example</h2>
       <Form
         initialValues={{ language }}
         onSubmit={onSubmit}
+        validate={values => formValidation.validateForm(values)}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
             <FlagContainer />
-            <Field
-              name="user"
-              validate={(value, _, meta) =>
-                formValidation.validateField(meta.name, value)
-              }
-            >
+            <Field name="name">
               {({ input, meta }) => (
                 <div>
-                  <label>{t(keys.user)}</label>
+                  <label>{t(keys.name)}</label>
                   <input
                     {...input}
                     autoComplete="off"
                     type="text"
-                    placeholder={t(keys.user)}
+                    placeholder={t(keys.name)}
                   />
                   {meta.error && meta.touched && <span>{meta.error}</span>}
                 </div>
               )}
             </Field>
-            <Field
-              name="password"
-              validate={(value, _, meta) =>
-                formValidation.validateField(meta.name, value)
-              }
-            >
+            <Field name="email">
               {({ input, meta }) => (
                 <div>
-                  <label>{t(keys.password)}</label>
+                  <label>{t(keys.email)}</label>
                   <input
                     {...input}
                     autoComplete="off"
-                    type="password"
-                    placeholder={t(keys.password)}
+                    type="text"
+                    placeholder={t(keys.email)}
+                  />
+                  {meta.error && meta.touched && <span>{meta.error}</span>}
+                </div>
+              )}
+            </Field>
+            <Field name="landline">
+              {({ input, meta }) => (
+                <div>
+                  <label>{t(keys.landline)}</label>
+                  <input
+                    {...input}
+                    autoComplete="off"
+                    type="text"
+                    placeholder={t(keys.landline)}
+                  />
+                  {meta.error && meta.touched && <span>{meta.error}</span>}
+                </div>
+              )}
+            </Field>
+            <Field name="mobile">
+              {({ input, meta }) => (
+                <div>
+                  <label>{t(keys.mobile)}</label>
+                  <input
+                    {...input}
+                    autoComplete="off"
+                    type="text"
+                    placeholder={t(keys.mobile)}
                   />
                   {meta.error && meta.touched && <span>{meta.error}</span>}
                 </div>
