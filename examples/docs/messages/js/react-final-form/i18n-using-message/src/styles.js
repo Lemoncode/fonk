@@ -57,7 +57,7 @@ export default styled.div`
   }
 
   form {
-    max-width: 500px;
+    max-width: 700px;
     margin: 10px auto;
     border: 1px solid #ccc;
     padding: 20px;

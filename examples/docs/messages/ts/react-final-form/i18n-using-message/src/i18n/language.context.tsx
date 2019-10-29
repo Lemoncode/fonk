@@ -3,7 +3,12 @@ import { I18nextProvider } from 'react-i18next';
 import { createI18n } from './i18n';
 import { languages } from './languages';
 
-export const LanguageContext = React.createContext(null);
+interface Context {
+  language: string;
+  setLanguage: (language: string) => void;
+}
+
+export const LanguageContext = React.createContext<Context>(null);
 
 export const LanguageProvider: React.FunctionComponent = props => {
   const { children } = props;
@@ -21,7 +26,7 @@ export const LanguageProvider: React.FunctionComponent = props => {
       <LanguageContext.Provider
         value={{
           language,
-          setLanguage: handleSetLanguage
+          setLanguage: handleSetLanguage,
         }}
       >
         {children}

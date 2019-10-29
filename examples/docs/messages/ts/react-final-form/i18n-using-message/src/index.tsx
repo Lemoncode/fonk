@@ -3,9 +3,10 @@ import { render } from 'react-dom';
 import { Form, Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 import Styles from './styles';
-import { LanguageProvider, LanguageContext, languageList } from './i18n';
+import { LanguageProvider } from './i18n';
 import { useValidation } from './validation';
 import { keys } from './translations';
+import { FlagContainer } from './components';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -15,7 +16,6 @@ const onSubmit = async values => {
 };
 
 const App = () => {
-  const { language, setLanguage } = React.useContext(LanguageContext);
   const { t } = useTranslation();
   const { formValidation } = useValidation();
   return (
@@ -24,11 +24,9 @@ const App = () => {
       <h2>i18n error message</h2>
       <Form
         onSubmit={onSubmit}
-        initialValues={{
-          language,
-        }}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
+            <FlagContainer />
             <Field
               name="user"
               validate={(value, _, meta) =>
@@ -38,7 +36,12 @@ const App = () => {
               {({ input, meta }) => (
                 <div>
                   <label>{t(keys.user)}</label>
-                  <input {...input} type="text" placeholder={t(keys.user)} />
+                  <input
+                    {...input}
+                    autoComplete="off"
+                    type="text"
+                    placeholder={t(keys.user)}
+                  />
                   {meta.error && meta.touched && <span>{meta.error}</span>}
                 </div>
               )}
@@ -54,30 +57,11 @@ const App = () => {
                   <label>{t(keys.password)}</label>
                   <input
                     {...input}
+                    autoComplete="off"
                     type="text"
                     placeholder={t(keys.password)}
                   />
                   {meta.error && meta.touched && <span>{meta.error}</span>}
-                </div>
-              )}
-            </Field>
-            <Field name="language">
-              {({ input }) => (
-                <div>
-                  <label>{t(keys.language)}</label>
-                  <select
-                    {...input}
-                    onChange={e => {
-                      setLanguage(e.target.value);
-                      input.onChange(e);
-                    }}
-                  >
-                    {languageList.map(language => (
-                      <option key={language} value={language}>
-                        {language}
-                      </option>
-                    ))}
-                  </select>
                 </div>
               )}
             </Field>
