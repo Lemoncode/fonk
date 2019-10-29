@@ -2,12 +2,12 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Form, Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
+import { Validators } from '@lemoncode/fonk';
 import Styles from './styles';
 import { LanguageProvider, LanguageContext } from './i18n';
 import { formValidation } from './form-validation';
 import { keys } from './translations';
 import { FlagContainer } from './components';
-import { Validators } from '@lemoncode/fonk';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
