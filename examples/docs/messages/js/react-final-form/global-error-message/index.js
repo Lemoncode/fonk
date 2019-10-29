@@ -29,9 +29,7 @@ const App = () => (
               <div>
                 <label>User</label>
                 <input {...input} type="text" placeholder="User" />
-                {meta.error && meta.touched && (
-                  <span>{meta.error}</span>
-                )}
+                {meta.error && meta.touched && <span>{meta.error}</span>}
               </div>
             )}
           </Field>
@@ -44,10 +42,8 @@ const App = () => (
             {({ input, meta }) => (
               <div>
                 <label>Password</label>
-                <input {...input} type="text" placeholder="Password" />
-                {meta.error && meta.touched && (
-                  <span>{meta.error}</span>
-                )}
+                <input {...input} type="password" placeholder="Password" />
+                {meta.error && meta.touched && <span>{meta.error}</span>}
               </div>
             )}
           </Field>
