@@ -1,7 +1,7 @@
 {
-  "name": "i18n-local-message",
+  "name": "i18n-global-message",
   "version": "1.0.0",
-  "description": "Example integrating fonk with react-final-form and i18n local message.",
+  "description": "Example integrating fonk with react-final-form and i18n global message.",
   "keywords": [
     "fonk",
     "form-validation",

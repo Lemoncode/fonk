@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Form, Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 import Styles from './styles';
-import { LanguageProvider } from './i18n';
+import { LanguageProvider, LanguageContext } from './i18n';
 import { useValidation } from './validation';
 import { keys } from './translations';
 import { FlagContainer } from './components';
@@ -16,6 +16,7 @@ const onSubmit = async values => {
 };
 
 const App = () => {
+  const { language } = React.useContext(LanguageContext);
   const { t } = useTranslation();
   const { formValidation } = useValidation();
   return (
@@ -23,6 +24,7 @@ const App = () => {
       <h1>Form Validation with Fonk and React Final Form Example</h1>
       <h2>i18n local error message</h2>
       <Form
+        initialValues={{ language }}
         onSubmit={onSubmit}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
