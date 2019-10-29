@@ -21,7 +21,7 @@ const App = () => {
   return (
     <Styles>
       <h1>Form Validation with Fonk and React Final Form Example</h1>
-      <h2>i18n error message</h2>
+      <h2>i18n local error message</h2>
       <Form
         onSubmit={onSubmit}
         render={({ handleSubmit, form, submitting, pristine, values }) => (

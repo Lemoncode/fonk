@@ -1,8 +1,8 @@
-# I18n using message example
+# I18n local message example
 
-Example integrating `fonk` with `react-final-form` and `i18n using message`.
+Example integrating `fonk` with `react-final-form` and `i18n local message`.
 
-[![See i18n-using-message example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/docs/messages/ts/react-final-form/i18n-using-message)
+[![See i18n-local-message example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/docs/messages/ts/react-final-form/i18n-local-message)
 
 
 # About Basefactor + Lemoncode

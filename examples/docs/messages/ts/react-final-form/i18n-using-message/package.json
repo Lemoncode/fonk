@@ -1,7 +1,7 @@
 {
-  "name": "i18n-using-message",
+  "name": "i18n-local-message",
   "version": "1.0.0",
-  "description": "Example integrating fonk with react-final-form and i18n using message.",
+  "description": "Example integrating fonk with react-final-form and i18n local message.",
   "keywords": [
     "fonk",
     "react-final-form integration",
