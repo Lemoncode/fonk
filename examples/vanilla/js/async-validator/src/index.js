@@ -1,60 +1,24 @@
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-tomorrow.css';
-import { getResults, formValues } from './playground';
+import { Input, Form, Button } from './components';
 
-getResults().then(validationResult => {
-  setTimeout(() => Prism.highlightAll(), 0);
-
-  document.getElementById('app').innerHTML = `
-    <div style="flex-grow: 1;margin-left:2rem;">
-      <h2>Async validator example</h2>
-
-<pre><code class="language-js">
-import { Validators, createFormValidation } from '@lemoncode/fonk';
-
-const userExistsOnGithubValidator = ({ value }) => {
-  const validationResult = {
-    type: 'GITHUB_USER_EXISTS',
-    succeeded: false,
-    message: 'The username exists on Github',
-  };
-
-  return fetch(\`https://api.github.com/users/\${value}\`).then(response => {
-    // Status 404, User does not exists, so the given user is valid
-    // Status 200, meaning user exists, so the given user is not valid
-    return response.status === 404
-      ? {
-          ...validationResult,
-          succeeded: true,
-          message: '',
-        }
-      : validationResult;
-  });
+let state = {
+  value: '',
 };
 
-const validationSchema = {
-  field: {
-    user: [Validators.required.validator, userExistsOnGithubValidator],
-  },
-};
-
-const formValidation = createFormValidation(validationSchema);
-
-// Update values in ./playground.js
-const formValues = ${JSON.stringify({ ...formValues }, null, 2)};
-
-// Execute form validation
-formValidation
-  .validateField('user', formValues.user)
-  .then(validationResult => {
-    console.log(validationResult);
-  });
-</code></pre>
-
-<h3>Result: </h3>
-<pre><code class="language-js">
-${JSON.stringify(validationResult, null, 2)}
-</code></pre>
-</div>
-    `;
+const userInput = Input({
+  value: state.value,
+  onChange: e => (state = { ...state, value: e.target.value }),
+  label: 'User',
 });
+
+const button = Button({
+  label: 'Submit',
+  type: 'submit',
+});
+
+const form = Form({
+  onSubmit: () => console.log({ state }),
+  children: [userInput, button],
+});
+
+const app = document.getElementById('app');
+app.appendChild(form);
