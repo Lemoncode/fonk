@@ -1,5 +1,4 @@
-import { Validators } from '@lemoncode/fonk';
-import { createFinalFormValidation } from '@lemoncode/fonk-final-form';
+import { Validators, createFormValidation } from '@lemoncode/fonk';
 import { userExistsOnGithubValidator } from './custom-validators';
 
 const validationSchema = {
@@ -8,4 +7,4 @@ const validationSchema = {
   },
 };
 
-export const formValidation = createFinalFormValidation(validationSchema);
+export const formValidation = createFormValidation(validationSchema);
