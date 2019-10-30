@@ -6,7 +6,14 @@ import englishFlag from './images/english-flag.png';
 import * as s from './flag-container.styles';
 
 export const FlagContainer = props => {
+  const { onSelectLanguage } = props;
   const { language, setLanguage } = React.useContext(LanguageContext);
+
+  const handleClick = language => () => {
+    setLanguage(language);
+    onSelectLanguage(language);
+  };
+
   return (
     <s.Container
       style={{
@@ -18,12 +25,12 @@ export const FlagContainer = props => {
       <Flag
         icon={englishFlag}
         selected={languages.en === language}
-        onClick={() => setLanguage(languages.en)}
+        onClick={handleClick(languages.en)}
       />
       <Flag
         icon={spainFlag}
         selected={languages.es === language}
-        onClick={() => setLanguage(languages.es)}
+        onClick={handleClick(languages.es)}
       />
     </s.Container>
   );

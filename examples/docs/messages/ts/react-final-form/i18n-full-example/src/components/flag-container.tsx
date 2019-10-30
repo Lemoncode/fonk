@@ -1,12 +1,23 @@
 import React from 'react';
-import { LanguageContext, languages } from '../i18n';
+import { LanguageContext, languages, languageList } from '../i18n';
 import { Flag } from './flag';
 import spainFlag from './images/spain-flag.png';
 import englishFlag from './images/english-flag.png';
 import * as s from './flag-container.styles';
 
-export const FlagContainer: React.FunctionComponent = props => {
+interface Props {
+  onSelectLanguage: (language: string) => void;
+}
+
+export const FlagContainer: React.FunctionComponent<Props> = props => {
+  const { onSelectLanguage } = props;
   const { language, setLanguage } = React.useContext(LanguageContext);
+
+  const handleClick = (language: string) => () => {
+    setLanguage(language);
+    onSelectLanguage(language);
+  };
+
   return (
     <s.Container
       style={{
@@ -18,12 +29,12 @@ export const FlagContainer: React.FunctionComponent = props => {
       <Flag
         icon={englishFlag}
         selected={languages.en === language}
-        onClick={() => setLanguage(languages.en)}
+        onClick={handleClick(languages.en)}
       />
       <Flag
         icon={spainFlag}
         selected={languages.es === language}
-        onClick={() => setLanguage(languages.es)}
+        onClick={handleClick(languages.es)}
       />
     </s.Container>
   );

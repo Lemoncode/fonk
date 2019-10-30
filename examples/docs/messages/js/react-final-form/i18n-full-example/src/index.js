@@ -19,17 +19,25 @@ const App = () => {
   const { language } = React.useContext(LanguageContext);
   const { t } = useTranslation();
   const { formValidation } = useValidation();
+  const [initialValues, setInitialValues] = React.useState({
+    language,
+  });
+
   return (
     <Styles>
       <h1>Form Validation with Fonk and React Final Form Example</h1>
       <h2>i18n full example</h2>
       <Form
-        initialValues={{ language }}
+        initialValues={initialValues}
         onSubmit={onSubmit}
         validate={values => formValidation.validateForm(values)}
-        render={({ handleSubmit, form, submitting, pristine, values }) => (
+        render={({ handleSubmit, form, submitting, values }) => (
           <form onSubmit={handleSubmit}>
-            <FlagContainer />
+            <FlagContainer
+              onSelectLanguage={language =>
+                setInitialValues({ ...values, language })
+              }
+            />
             <Field name="name">
               {({ input, meta }) => (
                 <div>
@@ -90,11 +98,7 @@ const App = () => {
               <button type="submit" disabled={submitting}>
                 {t(keys.submit)}
               </button>
-              <button
-                type="button"
-                onClick={form.reset}
-                disabled={submitting || pristine}
-              >
+              <button type="button" onClick={() => form.reset({ language })}>
                 {t(keys.reset)}
               </button>
             </div>
