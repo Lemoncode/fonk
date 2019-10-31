@@ -12,11 +12,12 @@
     "vanilla javascript"
   ],
   "dependencies": {
-    "@lemoncode/fonk": "latest",
-    "prismjs": "^1.17.1"
+    "@lemoncode/fonk": "^1.0.0",
+    "@lemoncode/fonk-is-number-validator": "^1.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
-    "parcel-bundler": "^1.6.1"
+    "parcel-bundler": "^1.6.1",
+    "sass": "^1.23.2"
   }
 }
