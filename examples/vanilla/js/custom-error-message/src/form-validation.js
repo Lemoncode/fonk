@@ -11,12 +11,4 @@ const validationSchema = {
   },
 };
 
-const formValidation = createFormValidation(validationSchema);
-
-export const formValues = {
-  product: '',
-};
-
-export const getResults = () => {
-  return formValidation.validateField('product', formValues.product);
-};
+export const formValidation = createFormValidation(validationSchema);

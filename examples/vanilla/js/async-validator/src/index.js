@@ -2,9 +2,7 @@ import './styles.scss';
 import { createDefaultValidationResult } from '@lemoncode/fonk';
 import { formValidation } from './form-validation';
 import {
-  getErrors,
   setErrorsByIds,
-  getValues,
   setValuesByIds,
   onValidateField,
   onValidateForm,
@@ -14,16 +12,24 @@ const createEmptyValues = () => ({
   user: '',
 });
 
-let values = getValues(createEmptyValues());
+let values = createEmptyValues();
 
-const setValues = setValuesByIds(['user']);
+const setValues = newValues => {
+  values = { ...newValues };
+  const set = setValuesByIds(['user']);
+  set(values);
+};
 
 const createEmptyErrors = () => ({
   user: createDefaultValidationResult(),
 });
 
-let errors = getErrors(createEmptyErrors());
-const setErrors = setErrorsByIds(['user']);
+let errors = createEmptyErrors();
+const setErrors = newErrors => {
+  errors = { ...newErrors };
+  const set = setErrorsByIds(['user']);
+  set(errors);
+};
 
 onValidateForm('form', () => {
   formValidation.validateForm(values).then(validationResult => {
