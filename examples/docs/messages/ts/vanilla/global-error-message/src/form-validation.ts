@@ -19,13 +19,4 @@ const validationSchema: ValidationSchema = {
   },
 };
 
-const formValidation = createFormValidation(validationSchema);
-
-export const loginModel = {
-  user: '    ',
-  password: '    ',
-};
-
-export const getResults = () => {
-  return formValidation.validateForm(loginModel);
-};
+export const formValidation = createFormValidation(validationSchema);
