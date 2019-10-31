@@ -1,46 +1,68 @@
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-tomorrow.css';
-import { getResults, loginModel } from './playground';
+import './styles.scss';
+import { createDefaultValidationResult } from '@lemoncode/fonk';
+import { formValidation } from './form-validation';
+import {
+  setErrorsByIds,
+  setValuesByIds,
+  onValidateField,
+  onValidateForm,
+} from './helpers';
 
-getResults().then(validationResult => {
-  setTimeout(() => Prism.highlightAll(), 0);
-  document.getElementById('app').innerHTML = `
-    <div style="flex-grow: 1;margin-left:2rem;">
-      <h2>Field validator example</h2>
+const fieldIds = ['user', 'password'];
+const createEmptyValues = () => ({
+  user: '',
+  password: '',
+});
 
-<pre><code class="language-js">
-import { Validators, createFormValidation } from '@lemoncode/fonk';
+let values = createEmptyValues();
 
-const validationSchema = {
-  field: {
-    user: [Validators.required.validator, Validators.email.validator],
-    password: [
-      Validators.required.validator,
-      {
-        validator: Validators.minLength.validator,
-        customArgs: { length: 3 },
-      },
-    ],
-  },
+const setValues = newValues => {
+  values = { ...newValues };
+  const set = setValuesByIds(fieldIds);
+  set(values);
 };
 
-const formValidation = createFormValidation(validationSchema);
-
-// Update values in ./playground.js
-const loginModel = ${JSON.stringify({ ...loginModel }, null, 2)};
-
-// Execute form validation
-formValidation
-  .validateForm(loginModel)
-  .then(validationResult => {
-    console.log(validationResult);
-  });
-</code></pre>
-
-<h3>Result: </h3>
-<pre><code class="language-js">
-${JSON.stringify(validationResult, null, 2)}
-</code></pre>
-</div>
-    `;
+const createEmptyErrors = () => ({
+  user: createDefaultValidationResult(),
+  password: createDefaultValidationResult(),
 });
+
+let errors = createEmptyErrors();
+const setErrors = newErrors => {
+  errors = { ...newErrors };
+  const set = setErrorsByIds(fieldIds);
+  set(errors);
+};
+
+onValidateForm('form', () => {
+  formValidation.validateForm(values).then(validationResult => {
+    setErrors(validationResult.fieldErrors);
+    if (validationResult.succeeded) {
+      window.alert(JSON.stringify(values, null, 2));
+    }
+  });
+});
+
+onValidateField('user', event => {
+  const value = event.target.value;
+  setValues({ ...values, user: value });
+
+  formValidation.validateField('user', value).then(validationResult => {
+    setErrors({ ...errors, user: validationResult });
+  });
+});
+
+onValidateField('password', event => {
+  const value = event.target.value;
+  setValues({ ...values, password: value });
+
+  formValidation.validateField('password', value).then(validationResult => {
+    setErrors({ ...errors, password: validationResult });
+  });
+});
+
+const resetButton = document.getElementById('reset-button');
+resetButton.onclick = () => {
+  setValues(createEmptyValues());
+  setErrors(createEmptyErrors());
+};
