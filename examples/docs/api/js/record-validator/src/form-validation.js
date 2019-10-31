@@ -1,4 +1,4 @@
-import { createFormValidation } from '@lemoncode/fonk';
+import { Validators, createFormValidation } from '@lemoncode/fonk';
 
 const freeShippingAllowed = ({ values }) => {
   const succeeded = values.subtotal - values.discount >= 30;
@@ -17,13 +17,4 @@ const validationSchema = {
   },
 };
 
-const formValidation = createFormValidation(validationSchema);
-
-export const checkoutForm = {
-  subtotal: 0,
-  discount: 0,
-};
-
-export const getResults = () => {
-  return formValidation.validateRecord(checkoutForm);
-};
+export const formValidation = createFormValidation(validationSchema);
