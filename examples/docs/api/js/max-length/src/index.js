@@ -1,44 +1,57 @@
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-tomorrow.css';
-import { getResults, formValues } from './playground';
+import './styles.scss';
+import { createDefaultValidationResult } from '@lemoncode/fonk';
+import { formValidation } from './form-validation';
+import {
+  setErrorsByIds,
+  setValuesByIds,
+  onValidateField,
+  onValidateForm,
+} from './helpers';
 
-getResults().then(validationResult => {
-  setTimeout(() => Prism.highlightAll(), 0);
-  document.getElementById('app').innerHTML = `
-    <div style="flex-grow: 1;margin-left:2rem;">
-      <h2>Max length example</h2>
+const fieldIds = ['description'];
+const createEmptyValues = () => ({
+  description: '',
+});
 
-<pre><code class="language-js">
-import { Validators, createFormValidation } from '@lemoncode/fonk';
+let values = createEmptyValues();
 
-const validationSchema = {
-  field: {
-    description: [
-      {
-        validator: Validators.maxLength.validator,
-        customArgs: { length: 20 }, // Valid description for length lower than 20 chars
-      },
-    ],
-  },
+const setValues = newValues => {
+  values = { ...newValues };
+  const set = setValuesByIds(fieldIds);
+  set(values);
 };
 
-const formValidation = createFormValidation(validationSchema);
-
-// Update values in ./playground.js
-const formValues = ${JSON.stringify({ ...formValues }, null, 2)};
-
-// Execute form validation
-formValidation
-  .validateForm(formValues)
-  .then(validationResult => {
-    console.log(validationResult);
-  });
-</code></pre>
-
-<h3>Result: </h3>
-<pre><code class="language-js">
-${JSON.stringify(validationResult, null, 2)}
-</code></pre>
-</div>
-    `;
+const createEmptyErrors = () => ({
+  description: createDefaultValidationResult(),
 });
+
+let errors = createEmptyErrors();
+const setErrors = newErrors => {
+  errors = { ...newErrors };
+  const set = setErrorsByIds(fieldIds);
+  set(errors);
+};
+
+onValidateForm('form', () => {
+  formValidation.validateForm(values).then(validationResult => {
+    setErrors(validationResult.fieldErrors);
+    if (validationResult.succeeded) {
+      window.alert(JSON.stringify(values, null, 2));
+    }
+  });
+});
+
+onValidateField('description', event => {
+  const value = event.target.value;
+  setValues({ ...values, description: value });
+
+  formValidation.validateField('description', value).then(validationResult => {
+    setErrors({ ...errors, description: validationResult });
+  });
+});
+
+const resetButton = document.getElementById('reset-button');
+resetButton.onclick = () => {
+  setValues(createEmptyValues());
+  setErrors(createEmptyErrors());
+};
