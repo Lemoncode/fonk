@@ -1,17 +1,21 @@
-export const setErrorsByIds = ids => newErrors => {
-  ids.forEach(id => {
-    const element = document.getElementById(`${id}-error`);
-    element.textContent = newErrors[id].message;
-  });
-};
-
 export const setValuesByIds = ids => newValues => {
   ids.forEach(id => {
     const element = document.getElementById(id);
-    element.value = newValues[id];
+    if (element) {
+      element.value = newValues[id];
+    }
   });
   const result = document.getElementById('result');
   result.textContent = JSON.stringify(newValues, null, 2);
+};
+
+export const setErrorsByIds = ids => newErrors => {
+  ids.forEach(id => {
+    const element = document.getElementById(`${id}-error`);
+    if (element) {
+      element.textContent = newErrors[id] ? newErrors[id].message : '';
+    }
+  });
 };
 
 export const onValidateForm = (id, callback) => {

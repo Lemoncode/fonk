@@ -37,12 +37,7 @@ const setErrors = newErrors => {
 };
 
 onValidateForm('form', () => {
-  formValidation.validateForm(values).then(validationResult => {
-    setErrors(validationResult.fieldErrors);
-    if (validationResult.succeeded) {
-      window.alert(JSON.stringify(values, null, 2));
-    }
-  });
+  window.alert(JSON.stringify(values, null, 2));
 });
 
 onValidateField('firstName', event => {

@@ -18,6 +18,15 @@ export const setErrorsByIds = ids => newErrors => {
   });
 };
 
+export const setRecordErrorsByIds = ids => newErrors => {
+  ids.forEach(id => {
+    const element = document.getElementById(`${id}-record-error`);
+    if (element) {
+      element.textContent = newErrors[id] ? newErrors[id].message : '';
+    }
+  });
+};
+
 export const onValidateForm = (id, callback) => {
   const element = document.getElementById(id);
   element.onsubmit = e => {
