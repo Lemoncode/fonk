@@ -3,6 +3,7 @@ export const setValuesByIds = ids => newValues => {
     const element = document.getElementById(id);
     if (element) {
       element.value = newValues[id];
+      element.checked = newValues[id];
     }
   });
   const result = document.getElementById('result');

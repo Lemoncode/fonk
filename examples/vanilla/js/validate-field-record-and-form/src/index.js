@@ -39,9 +39,10 @@ const setErrors = newErrors => {
   set(errors);
 };
 
-let recordErrors = {
+const createEmptyRecordErrors = () => ({
   freeShipping: createDefaultValidationResult(),
-};
+});
+let recordErrors = createEmptyRecordErrors();
 
 const setRecordErrors = newErrors => {
   recordErrors = { ...newErrors };
@@ -50,7 +51,13 @@ const setRecordErrors = newErrors => {
 };
 
 onValidateForm('form', () => {
-  window.alert(JSON.stringify(values, null, 2));
+  formValidation.validateForm(values).then(validationResult => {
+    setErrors(validationResult.fieldErrors);
+    setRecordErrors(validationResult.recordErrors);
+    if (validationResult.succeeded) {
+      window.alert(JSON.stringify(values, null, 2));
+    }
+  });
 });
 
 onValidateField('product', event => {
@@ -98,4 +105,5 @@ const resetButton = document.getElementById('reset-button');
 resetButton.onclick = () => {
   setValues(createEmptyValues());
   setErrors(createEmptyErrors());
+  setRecordErrors(createEmptyRecordErrors());
 };
