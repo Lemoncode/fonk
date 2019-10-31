@@ -5,7 +5,36 @@
   </head>
 
   <body>
-    <div id="app" style="display: flex;justify-content: center;"></div>
+    <div class="app">
+      <h1>Form Validation with Fonk and Plain Vanilla Javascript</h1>
+      <h2>Password / Confirm Validation</h2>
+      <form id="form">
+        <div>
+          <label>Username</label>
+          <input id="username" type="text" placeholder="Username" />
+          <span id="username-error"></span>
+        </div>
+        <div>
+          <label>Password</label>
+          <input id="password" type="password" placeholder="Password" />
+          <span id="password-error"></span>
+        </div>
+        <div>
+          <label>Confirm</label>
+          <input id="confirm" type="password" placeholder="Confirm" />
+          <span id="confirm-error"></span>
+        </div>
+        <div class="buttons">
+          <button type="submit">
+            Submit
+          </button>
+          <button id="reset-button" type="button">
+            Reset
+          </button>
+        </div>
+        <pre id="result"></pre>
+      </form>
+    </div>
 
     <script src="./src/index.ts"></script>
   </body>
