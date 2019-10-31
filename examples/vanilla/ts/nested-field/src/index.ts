@@ -1,43 +1,62 @@
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-tomorrow.css';
-import { getResults, formValues } from './playground';
+import './styles.scss';
+import { createDefaultValidationResult } from '@lemoncode/fonk';
+import { formValidation } from './form-validation';
+import { setErrorsByIds, onValidateField, onValidateForm } from './helpers';
 
-getResults().then(validationResult => {
-  setTimeout(() => Prism.highlightAll(), 0);
-  document.getElementById('app').innerHTML = `
-    <div style="flex-grow: 1;margin-left:2rem;">
-      <h2>Custom error message example</h2>
-
-<pre><code class="language-js">
-import {
-  Validators,
-  createFormValidation,
-  ValidationSchema,
-} from '@lemoncode/fonk';
-
-const validationSchema: ValidationSchema = {
-  field: {
-    'product.name': [Validators.required.validator],
+const fieldIds = ['product.name'];
+const createEmptyValues = () => ({
+  product: {
+    name: '',
   },
+});
+
+let values = createEmptyValues();
+
+const setValues = newValues => {
+  values = { ...newValues };
+  const element: any = document.getElementById('product.name');
+  element.value = values.product.name;
+  const result = document.getElementById('result');
+  result.textContent = JSON.stringify(newValues, null, 2);
 };
 
-const formValidation = createFormValidation(validationSchema);
-
-// Update values in ./playground.ts
-const formValues = ${JSON.stringify({ ...formValues }, null, 2)};
-
-// Execute form validation
-formValidation
-  .validateField('product.name', formValues.product.name)
-  .then(validationResult => {
-    console.log(validationResult);
-  });
-</code></pre>
-
-<h3>Result: </h3>
-<pre><code class="language-js">
-${JSON.stringify(validationResult, null, 2)}
-</code></pre>
-</div>
-    `;
+const createEmptyErrors = () => ({
+  'product.name': createDefaultValidationResult(),
 });
+
+let errors = createEmptyErrors();
+const setErrors = newErrors => {
+  errors = { ...newErrors };
+  const set = setErrorsByIds(fieldIds);
+  set(errors);
+};
+
+onValidateForm('form', () => {
+  formValidation.validateForm(values).then(validationResult => {
+    setErrors(validationResult.fieldErrors);
+    if (validationResult.succeeded) {
+      window.alert(JSON.stringify(values, null, 2));
+    }
+  });
+});
+
+onValidateField('product.name', event => {
+  const value = event.target.value;
+  setValues({
+    ...values,
+    product: {
+      ...values.product,
+      name: value,
+    },
+  });
+
+  formValidation.validateField('product.name', value).then(validationResult => {
+    setErrors({ ...errors, 'product.name': validationResult });
+  });
+});
+
+const resetButton = document.getElementById('reset-button');
+resetButton.onclick = () => {
+  setValues(createEmptyValues());
+  setErrors(createEmptyErrors());
+};

@@ -5,7 +5,29 @@
   </head>
 
   <body>
-    <div id="app" style="display: flex;justify-content: center;"></div>
+    <div class="app">
+      <h1>Record Validator with Fonk and Plain Vanilla Typescript</h1>
+      <form id="form">
+        <div>
+          <label>Subtotal</label>
+          <input id="subtotal" type="number" placeholder="Subtotal" />
+        </div>
+        <div>
+          <label>Discount</label>
+          <input id="discount" type="number" placeholder="Discount" />
+        </div>
+        <span id="freeShippingValidation-record-error"></span>
+        <div class="buttons">
+          <button type="submit">
+            Submit
+          </button>
+          <button id="reset-button" type="button">
+            Reset
+          </button>
+        </div>
+        <pre id="result"></pre>
+      </form>
+    </div>
 
     <script src="./src/index.ts"></script>
   </body>

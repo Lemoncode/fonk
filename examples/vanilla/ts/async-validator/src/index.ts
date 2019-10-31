@@ -1,67 +1,57 @@
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-tomorrow.css';
-import { getResults, formValues } from './playground';
-
-getResults().then(validationResult => {
-  setTimeout(() => Prism.highlightAll(), 0);
-
-  document.getElementById('app').innerHTML = `
-    <div style="flex-grow: 1;margin-left:2rem;">
-      <h2>Async validator example</h2>
-
-<pre><code class="language-js">
+import './styles.scss';
+import { createDefaultValidationResult } from '@lemoncode/fonk';
+import { formValidation } from './form-validation';
 import {
-  Validators,
-  createFormValidation,
-  ValidationSchema,
-  FieldValidationFunctionAsync,
-} from '@lemoncode/fonk';
+  setErrorsByIds,
+  setValuesByIds,
+  onValidateField,
+  onValidateForm,
+} from './helpers';
 
-const userExistsOnGithubValidator: FieldValidationFunctionAsync = ({
-  value,
-}) => {
-  const validationResult = {
-    type: 'GITHUB_USER_EXISTS',
-    succeeded: false,
-    message: 'The username exists on Github',
-  };
-
-  return fetch(\`https://api.github.com/users/\${value}\`).then(response => {
-    // Status 404, User does not exists, so the given user is valid
-    // Status 200, meaning user exists, so the given user is not valid
-    return response.status === 404
-      ? {
-          ...validationResult,
-          succeeded: true,
-          message: '',
-        }
-      : validationResult;
-  });
-};
-
-const validationSchema: ValidationSchema = {
-  field: {
-    user: [Validators.required.validator, userExistsOnGithubValidator],
-  },
-};
-
-const formValidation = createFormValidation(validationSchema);
-
-// Update values in ./playground.ts
-const formValues = ${JSON.stringify({ ...formValues }, null, 2)};
-
-// Execute form validation
-formValidation
-  .validateField('user', formValues.user)
-  .then(validationResult => {
-    console.log(validationResult);
-  });
-</code></pre>
-
-<h3>Result: </h3>
-<pre><code class="language-js">
-${JSON.stringify(validationResult, null, 2)}
-</code></pre>
-</div>
-    `;
+const fieldIds = ['user'];
+const createEmptyValues = () => ({
+  user: '',
 });
+
+let values = createEmptyValues();
+
+const setValues = newValues => {
+  values = { ...newValues };
+  const set = setValuesByIds(fieldIds);
+  set(values);
+};
+
+const createEmptyErrors = () => ({
+  user: createDefaultValidationResult(),
+});
+
+let errors = createEmptyErrors();
+const setErrors = newErrors => {
+  errors = { ...newErrors };
+  const set = setErrorsByIds(fieldIds);
+  set(errors);
+};
+
+onValidateForm('form', () => {
+  formValidation.validateForm(values).then(validationResult => {
+    setErrors(validationResult.fieldErrors);
+    if (validationResult.succeeded) {
+      window.alert(JSON.stringify(values, null, 2));
+    }
+  });
+});
+
+onValidateField('user', event => {
+  const value = event.target.value;
+  setValues({ ...values, user: value });
+
+  formValidation.validateField('user', value).then(validationResult => {
+    setErrors({ ...errors, user: validationResult });
+  });
+});
+
+const resetButton = document.getElementById('reset-button');
+resetButton.onclick = () => {
+  setValues(createEmptyValues());
+  setErrors(createEmptyErrors());
+};

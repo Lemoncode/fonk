@@ -5,7 +5,35 @@
   </head>
 
   <body>
-    <div id="app" style="display: flex;justify-content: center;"></div>
+    <div class="app">
+      <h1>Pattern Validator with Fonk and Plain Vanilla Typescript</h1>
+      <form id="form">
+        <div>
+          <label>Phone 1</label>
+          <input id="phone1" type="text" placeholder="Phone 1" />
+          <span id="phone1-error"></span>
+        </div>
+        <div>
+          <label>Phone 2</label>
+          <input id="phone2" type="text" placeholder="Phone 2" />
+          <span id="phone2-error"></span>
+        </div>
+        <div>
+          <label>Phone 3</label>
+          <input id="phone3" type="text" placeholder="Phone 3" />
+          <span id="phone3-error"></span>
+        </div>
+        <div class="buttons">
+          <button type="submit">
+            Submit
+          </button>
+          <button id="reset-button" type="button">
+            Reset
+          </button>
+        </div>
+        <pre id="result"></pre>
+      </form>
+    </div>
 
     <script src="./src/index.ts"></script>
   </body>

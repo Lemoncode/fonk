@@ -5,7 +5,36 @@
   </head>
 
   <body>
-    <div id="app" style="display: flex;justify-content: center;"></div>
+    <div class="app">
+      <h1>Form Validation with Fonk and Plain Vanilla Typescript</h1>
+      <h2>Synchronous Field-Level Validation</h2>
+      <form id="form">
+        <div>
+          <label>First Name</label>
+          <input id="firstName" type="text" placeholder="First Name" />
+          <span id="firstName-error"></span>
+        </div>
+        <div>
+          <label>Last Name</label>
+          <input id="lastName" type="text" placeholder="Last Name" />
+          <span id="lastName-error"></span>
+        </div>
+        <div>
+          <label>Age</label>
+          <input id="age" type="text" placeholder="Age" />
+          <span id="age-error"></span>
+        </div>
+        <div class="buttons">
+          <button type="submit">
+            Submit
+          </button>
+          <button id="reset-button" type="button">
+            Reset
+          </button>
+        </div>
+        <pre id="result"></pre>
+      </form>
+    </div>
 
     <script src="./src/index.ts"></script>
   </body>

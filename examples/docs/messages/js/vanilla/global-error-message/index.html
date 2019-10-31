@@ -5,7 +5,30 @@
   </head>
 
   <body>
-    <div id="app" style="display: flex;justify-content: center;"></div>
+    <div class="app">
+      <h1>Global error message with Fonk and Plain Vanilla Javascript</h1>
+      <form id="form">
+        <div>
+          <label>User</label>
+          <input id="user" type="text" placeholder="User" />
+          <span id="user-error"></span>
+        </div>
+        <div>
+          <label>Password</label>
+          <input id="password" type="password" placeholder="Password" />
+          <span id="password-error"></span>
+        </div>
+        <div class="buttons">
+          <button type="submit">
+            Submit
+          </button>
+          <button id="reset-button" type="button">
+            Reset
+          </button>
+        </div>
+        <pre id="result"></pre>
+      </form>
+    </div>
 
     <script src="./src/index.js"></script>
   </body>

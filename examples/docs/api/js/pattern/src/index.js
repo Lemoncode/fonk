@@ -1,56 +1,79 @@
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-tomorrow.css';
-import { getResults, formValues } from './playground';
+import './styles.scss';
+import { createDefaultValidationResult } from '@lemoncode/fonk';
+import { formValidation } from './form-validation';
+import {
+  setErrorsByIds,
+  setValuesByIds,
+  onValidateField,
+  onValidateForm,
+} from './helpers';
 
-getResults().then(validationResult => {
-  setTimeout(() => Prism.highlightAll(), 0);
-  document.getElementById('app').innerHTML = `
-    <div style="flex-grow: 1;margin-left:2rem;">
-      <h2>Pattern example</h2>
+const fieldIds = ['phone1', 'phone2', 'phone3'];
+const createEmptyValues = () => ({
+  phone1: '',
+  phone2: '',
+  phone3: '',
+});
 
-<pre><code class="language-js">
-import { Validators, createFormValidation } from '@lemoncode/fonk';
+let values = createEmptyValues();
 
-const validationSchema = {
-  field: {
-    phone1: [
-      {
-        validator: Validators.pattern.validator,
-        customArgs: { pattern: '^(7|8|9)\\d{9}$' },
-      },
-    ],
-    phone2: [
-      {
-        validator: Validators.pattern.validator,
-        customArgs: { pattern: /^(7|8|9)\d{9}$/ },
-      },
-    ],
-    phone3: [
-      {
-        validator: Validators.pattern.validator,
-        customArgs: { pattern: new RegExp(/^(7|8|9)\d{9}$/) },
-      },
-    ],
-  },
+const setValues = newValues => {
+  values = { ...newValues };
+  const set = setValuesByIds(fieldIds);
+  set(values);
 };
 
-const formValidation = createFormValidation(validationSchema);
-
-// Update values in ./playground.js
-const formValues = ${JSON.stringify({ ...formValues }, null, 2)};
-
-// Execute form validation
-formValidation
-  .validateForm(formValues)
-  .then(validationResult => {
-    console.log(validationResult);
-  });
-</code></pre>
-
-<h3>Result: </h3>
-<pre><code class="language-js">
-${JSON.stringify(validationResult, null, 2)}
-</code></pre>
-</div>
-    `;
+const createEmptyErrors = () => ({
+  phone1: createDefaultValidationResult(),
+  phone2: createDefaultValidationResult(),
+  phone3: createDefaultValidationResult(),
 });
+
+let errors = createEmptyErrors();
+const setErrors = newErrors => {
+  errors = { ...newErrors };
+  const set = setErrorsByIds(fieldIds);
+  set(errors);
+};
+
+onValidateForm('form', () => {
+  formValidation.validateForm(values).then(validationResult => {
+    setErrors(validationResult.fieldErrors);
+    if (validationResult.succeeded) {
+      window.alert(JSON.stringify(values, null, 2));
+    }
+  });
+});
+
+onValidateField('phone1', event => {
+  const value = event.target.value;
+  setValues({ ...values, phone1: value });
+
+  formValidation.validateField('phone1', value).then(validationResult => {
+    setErrors({ ...errors, phone1: validationResult });
+  });
+});
+
+onValidateField('phone2', event => {
+  const value = event.target.value;
+  setValues({ ...values, phone2: value });
+
+  formValidation.validateField('phone2', value).then(validationResult => {
+    setErrors({ ...errors, phone2: validationResult });
+  });
+});
+
+onValidateField('phone3', event => {
+  const value = event.target.value;
+  setValues({ ...values, phone3: value });
+
+  formValidation.validateField('phone3', value).then(validationResult => {
+    setErrors({ ...errors, phone3: validationResult });
+  });
+});
+
+const resetButton = document.getElementById('reset-button');
+resetButton.onclick = () => {
+  setValues(createEmptyValues());
+  setErrors(createEmptyErrors());
+};

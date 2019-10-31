@@ -1,94 +1,109 @@
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-tomorrow.css';
-import { getResults, formValues } from './playground';
+import './styles.scss';
+import { createDefaultValidationResult } from '@lemoncode/fonk';
+import { formValidation } from './form-validation';
+import {
+  setErrorsByIds,
+  setRecordErrorsByIds,
+  setValuesByIds,
+  onValidateField,
+  onValidateForm,
+} from './helpers';
 
-getResults().then(([fieldResult, recordResult, formResult]) => {
-  setTimeout(() => Prism.highlightAll(), 0);
-  document.getElementById('app').innerHTML = `
-  <div style="flex-grow: 1;margin-left:2rem;">
-  <h2>Example using validate field, form and record:</h2>
-<pre><code class="language-js">
-import { createFormValidation, Validators } from '@lemoncode/fonk';
+const fieldIds = ['product', 'discount', 'price', 'isPrime'];
+const recordIds = ['freeShipping'];
+const createEmptyValues = () => ({
+  product: '',
+  discount: '',
+  price: '',
+  isPrime: false,
+});
 
-const freeShippingRecordValidator = ({ values }) => {
-  const succeeded = values.isPrime || values.price - values.discount > 20;
+let values = createEmptyValues();
 
-  return {
-    succeeded,
-    message: succeeded
-      ? ''
-      : 'Subscribe to prime service or total must be greater than 20USD',
-    type: 'RECORD_FREE_SHIPPING',
-  };
+const setValues = newValues => {
+  values = { ...newValues };
+  const set = setValuesByIds(fieldIds);
+  set(values);
 };
 
-const validationSchema = {
-  field: {
-    product: [Validators.required.validator],
-    discount: [Validators.required.validator],
-    price: [Validators.required.validator],
-  },
-  record: {
-    freeShipping: [freeShippingRecordValidator],
-  },
+const createEmptyErrors = () => ({
+  product: createDefaultValidationResult(),
+  discount: createDefaultValidationResult(),
+  price: createDefaultValidationResult(),
+});
+
+let errors = createEmptyErrors();
+const setErrors = newErrors => {
+  errors = { ...newErrors };
+  const set = setErrorsByIds(fieldIds);
+  set(errors);
 };
 
-export const formValidation = createFormValidation(validationSchema);
-
-// Update values in ./playground.js
-const formValues = ${JSON.stringify({ ...formValues }, null, 2)};
-</code></pre>
-</div>
-
-<div style="flex-grow: 1;margin-left:2rem;">
-
-<h2>Validate field </h2>
-<pre class="language-js" style="display: flex;">
-<code class="language-js">
-formValidation
-.validateField('product', formValues.product)
-.then(validationResult => {
-  console.log(validationResult);
+const createEmptyRecordErrors = () => ({
+  freeShipping: createDefaultValidationResult(),
 });
-</code>
+let recordErrors = createEmptyRecordErrors();
 
-<code class="language-js" style="margin-left:4rem;">
-// Result
-${JSON.stringify(fieldResult, null, 2)}
-</code>
-</pre>
+const setRecordErrors = newErrors => {
+  recordErrors = { ...newErrors };
+  const set = setRecordErrorsByIds(recordIds);
+  set(recordErrors);
+};
 
-<h2>Validate record </h2>
-<pre class="language-js" style="display: flex;">
-<code class="language-js">
-formValidation
-.validateRecord(formValues)
-.then(recordValidationResult => {
-  console.log(recordValidationResult);
+onValidateForm('form', () => {
+  formValidation.validateForm(values).then(validationResult => {
+    setErrors(validationResult.fieldErrors);
+    setRecordErrors(validationResult.recordErrors);
+    if (validationResult.succeeded) {
+      window.alert(JSON.stringify(values, null, 2));
+    }
+  });
 });
-</code>
 
-<code class="language-js" style="margin-left:4rem;">
-// Result
-${JSON.stringify(recordResult, null, 2)}
-</code>
-</pre>
+onValidateField('product', event => {
+  const value = event.target.value;
+  setValues({ ...values, product: value });
 
-<h2>Validate form </h2>
-<pre class="language-js" style="display: flex;">
-<code class="language-js">
-formValidation
-.validateForm(formValues)
-.then(formValidationResult => {
-  console.log(formValidationResult);
+  formValidation.validateField('product', value).then(validationResult => {
+    setErrors({ ...errors, product: validationResult });
+  });
 });
-</code>
 
-<code class="language-js" style="margin-left:4rem;">
-// Result
-${JSON.stringify(formResult, null, 2)}
-</code>
-</pre>
-</div>
-    `;
+onValidateField('discount', event => {
+  const value = event.target.value;
+  setValues({ ...values, discount: value });
+
+  formValidation.validateField('discount', value).then(validationResult => {
+    setErrors({ ...errors, discount: validationResult });
+  });
+  formValidation.validateRecord(values).then(validationResult => {
+    setRecordErrors(validationResult.recordErrors);
+  });
 });
+
+onValidateField('price', event => {
+  const value = event.target.value;
+  setValues({ ...values, price: value });
+
+  formValidation.validateField('price', value).then(validationResult => {
+    setErrors({ ...errors, price: validationResult });
+  });
+  formValidation.validateRecord(values).then(validationResult => {
+    setRecordErrors(validationResult.recordErrors);
+  });
+});
+
+onValidateField('isPrime', event => {
+  const value = event.target.checked;
+  setValues({ ...values, isPrime: value });
+  formValidation.validateRecord(values).then(validationResult => {
+    setRecordErrors(validationResult.recordErrors);
+  });
+});
+
+const resetButton = document.getElementById('reset-button');
+resetButton.onclick = () => {
+  setValues(createEmptyValues());
+  setErrors(createEmptyErrors());
+  setRecordErrors(createEmptyRecordErrors());
+};

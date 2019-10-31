@@ -5,7 +5,30 @@
   </head>
 
   <body>
-    <div id="app" style="display: flex;justify-content: center;"></div>
+    <div class="app">
+      <h1>Local error message with Fonk and Plain Vanilla Javascript</h1>
+      <form id="form">
+        <div>
+          <label>IBAN Account</label>
+          <input id="ibanAccount" type="text" placeholder="IBAN Account" />
+          <span id="ibanAccount-error"></span>
+        </div>
+        <div>
+          <label>BIC Account</label>
+          <input id="bicAccount" type="text" placeholder="BIC Account" />
+          <span id="bicAccount-error"></span>
+        </div>
+        <div class="buttons">
+          <button type="submit">
+            Submit
+          </button>
+          <button id="reset-button" type="button">
+            Reset
+          </button>
+        </div>
+        <pre id="result"></pre>
+      </form>
+    </div>
 
     <script src="./src/index.js"></script>
   </body>

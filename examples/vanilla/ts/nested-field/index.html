@@ -5,7 +5,26 @@
   </head>
 
   <body>
-    <div id="app" style="display: flex;justify-content: center;"></div>
+    <div class="app">
+      <h1>Nested field with Fonk and Plain Vanilla Typescript</h1>
+      <form id="form">
+        <div>
+          <label>Product Name</label>
+          <input id="product.name" type="text" placeholder="Product Name" />
+          <span id="product.name-error"></span>
+        </div>
+        <div class="buttons">
+          <button type="submit">
+            Submit
+          </button>
+          <button id="reset-button" type="button">
+            Reset
+          </button>
+        </div>
+        <pre id="result"></pre>
+      </form>
+    </div>
+
 
     <script src="./src/index.ts"></script>
   </body>

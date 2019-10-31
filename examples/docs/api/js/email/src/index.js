@@ -1,39 +1,57 @@
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-tomorrow.css';
-import { getResults, formValues } from './playground';
+import './styles.scss';
+import { createDefaultValidationResult } from '@lemoncode/fonk';
+import { formValidation } from './form-validation';
+import {
+  setErrorsByIds,
+  setValuesByIds,
+  onValidateField,
+  onValidateForm,
+} from './helpers';
 
-getResults().then(validationResult => {
-  setTimeout(() => Prism.highlightAll(), 0);
-  document.getElementById('app').innerHTML = `
-    <div style="flex-grow: 1;margin-left:2rem;">
-      <h2>Email example</h2>
+const fieldIds = ['email'];
+const createEmptyValues = () => ({
+  email: '',
+});
 
-<pre><code class="language-js">
-import { Validators, createFormValidation } from '@lemoncode/fonk';
+let values = createEmptyValues();
 
-const validationSchema = {
-  field: {
-    email: [Validators.email.validator],
-  },
+const setValues = newValues => {
+  values = { ...newValues };
+  const set = setValuesByIds(fieldIds);
+  set(values);
 };
 
-const formValidation = createFormValidation(validationSchema);
-
-// Update values in ./playground.js
-const formValues = ${JSON.stringify({ ...formValues }, null, 2)};
-
-// Execute form validation
-formValidation
-  .validateForm(formValues)
-  .then(validationResult => {
-    console.log(validationResult);
-  });
-</code></pre>
-
-<h3>Result: </h3>
-<pre><code class="language-js">
-${JSON.stringify(validationResult, null, 2)}
-</code></pre>
-</div>
-    `;
+const createEmptyErrors = () => ({
+  email: createDefaultValidationResult(),
 });
+
+let errors = createEmptyErrors();
+const setErrors = newErrors => {
+  errors = { ...newErrors };
+  const set = setErrorsByIds(fieldIds);
+  set(errors);
+};
+
+onValidateForm('form', () => {
+  formValidation.validateForm(values).then(validationResult => {
+    setErrors(validationResult.fieldErrors);
+    if (validationResult.succeeded) {
+      window.alert(JSON.stringify(values, null, 2));
+    }
+  });
+});
+
+onValidateField('email', event => {
+  const value = event.target.value;
+  setValues({ ...values, email: value });
+
+  formValidation.validateField('email', value).then(validationResult => {
+    setErrors({ ...errors, email: validationResult });
+  });
+});
+
+const resetButton = document.getElementById('reset-button');
+resetButton.onclick = () => {
+  setValues(createEmptyValues());
+  setErrors(createEmptyErrors());
+};
