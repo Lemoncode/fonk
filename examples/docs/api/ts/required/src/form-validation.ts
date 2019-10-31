@@ -6,7 +6,7 @@ import {
 
 const validationSchema: ValidationSchema = {
   field: {
-    user: [Validators.required.validator],
+    login: [Validators.required.validator],
     password: [
       {
         validator: Validators.required.validator,
@@ -16,13 +16,4 @@ const validationSchema: ValidationSchema = {
   },
 };
 
-const formValidation = createFormValidation(validationSchema);
-
-export const loginModel = {
-  user: '    ',
-  password: '    ',
-};
-
-export const getResults = () => {
-  return formValidation.validateForm(loginModel);
-};
+export const formValidation = createFormValidation(validationSchema);
