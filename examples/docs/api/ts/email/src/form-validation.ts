@@ -10,12 +10,4 @@ const validationSchema: ValidationSchema = {
   },
 };
 
-const formValidation = createFormValidation(validationSchema);
-
-export const formValues = {
-  email: '',
-};
-
-export const getResults = () => {
-  return formValidation.validateForm(formValues);
-};
+export const formValidation = createFormValidation(validationSchema);
