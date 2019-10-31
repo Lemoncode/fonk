@@ -5,7 +5,20 @@
   </head>
 
   <body>
-    <div id="app" style="display: flex;justify-content: center;"></div>
+    <div class="app">
+      <h1>Async record validator with Fonk and Plain Vanilla Javascript</h1>
+      <form id="form">
+        <div class="buttons">
+          <button id="next-process-button" type="button">
+            Execute next process
+          </button>
+          <button id="reset-button" type="button">
+            Reset
+          </button>
+        </div>
+        <ul id="processList"></ul>
+      </form>
+    </div>
 
     <script src="./src/index.ts"></script>
   </body>
