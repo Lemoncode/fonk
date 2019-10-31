@@ -1,54 +1,68 @@
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-tomorrow.css';
-import { getResults, checkoutForm } from './playground';
-
-getResults().then(validationResult => {
-  setTimeout(() => Prism.highlightAll(), 0);
-  document.getElementById('app').innerHTML = `
-    <div style="flex-grow: 1;margin-left:2rem;">
-      <h2>Record validator example</h2>
-
-<pre><code class="language-js">
+import './styles.scss';
+import { createDefaultValidationResult } from '@lemoncode/fonk';
+import { formValidation } from './form-validation';
 import {
-  createFormValidation,
-  ValidationSchema,
-  RecordValidationFunctionSync,
-} from '@lemoncode/fonk';
+  setRecordErrorsByIds,
+  setValuesByIds,
+  onValidateField,
+  onValidateForm,
+} from './helpers';
 
-const freeShippingAllowed: RecordValidationFunctionSync = ({ values }) => {
-  const succeeded = values.subtotal - values.discount >= 30;
-  return {
-    type: 'RECORD_FREE_SHIPPING',
-    succeeded,
-    message: succeeded
-      ? ''
-      : 'Total must be greater than 30USD to get cost free shippings',
-  };
-};
-
-const validationSchema: ValidationSchema = {
-  record: {
-    freeShippingValidation: [freeShippingAllowed],
-  },
-};
-
-const formValidation = createFormValidation(validationSchema);
-
-// Update values in ./playground.ts
-const checkoutForm = ${JSON.stringify({ ...checkoutForm }, null, 2)};
-
-// Execute form validation
-formValidation
-  .validateRecord(checkoutForm)
-  .then(validationResult => {
-    console.log(validationResult);
-  });
-</code></pre>
-
-<h3>Result: </h3>
-<pre><code class="language-js">
-${JSON.stringify(validationResult, null, 2)}
-</code></pre>
-</div>
-    `;
+const fieldIds = ['subtotal', 'discount'];
+const recordIds = ['freeShippingValidation'];
+const createEmptyValues = () => ({
+  subtotal: '',
+  discount: '',
 });
+
+let values = createEmptyValues();
+
+const setValues = newValues => {
+  values = { ...newValues };
+  const set = setValuesByIds(fieldIds);
+  set(values);
+};
+
+const createEmptyErrors = () => ({
+  freeShippingValidation: createDefaultValidationResult(),
+});
+
+let recordErrors = createEmptyErrors();
+const setRecordErrors = newErrors => {
+  recordErrors = { ...newErrors };
+  const set = setRecordErrorsByIds(recordIds);
+  set(recordErrors);
+};
+
+onValidateForm('form', () => {
+  formValidation.validateForm(values).then(validationResult => {
+    setRecordErrors(validationResult.recordErrors);
+    if (validationResult.succeeded) {
+      window.alert(JSON.stringify(values, null, 2));
+    }
+  });
+});
+
+onValidateField('subtotal', event => {
+  const value = event.target.value;
+  setValues({ ...values, subtotal: value });
+
+  formValidation.validateRecord(values).then(validationResult => {
+    setRecordErrors(validationResult.recordErrors);
+  });
+});
+
+onValidateField('discount', event => {
+  const value = event.target.value;
+  setValues({ ...values, discount: value });
+
+  formValidation.validateRecord(values).then(validationResult => {
+    setRecordErrors(validationResult.recordErrors);
+  });
+});
+
+const resetButton = document.getElementById('reset-button');
+resetButton.onclick = () => {
+  setValues(createEmptyValues());
+  setRecordErrors(createEmptyErrors());
+};
