@@ -19,21 +19,4 @@ const validationSchema = {
   },
 };
 
-const formValidation = createFormValidation(validationSchema);
-
-export const failedValues = {
-  ibanAccount: '1234',
-  bicAccount: '1234',
-};
-
-export const succeededValues = {
-  ibanAccount: 'ES0051354874545454546462',
-  bicAccount: 'BIC0051354874545454546462',
-};
-
-export const getResults = () => {
-  return Promise.all([
-    formValidation.validateForm(failedValues),
-    formValidation.validateForm(succeededValues),
-  ]);
-};
+export const formValidation = createFormValidation(validationSchema);
