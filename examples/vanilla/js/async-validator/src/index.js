@@ -8,6 +8,7 @@ import {
   onValidateForm,
 } from './helpers';
 
+const fieldIds = ['user'];
 const createEmptyValues = () => ({
   user: '',
 });
@@ -16,7 +17,7 @@ let values = createEmptyValues();
 
 const setValues = newValues => {
   values = { ...newValues };
-  const set = setValuesByIds(['user']);
+  const set = setValuesByIds(fieldIds);
   set(values);
 };
 
@@ -27,7 +28,7 @@ const createEmptyErrors = () => ({
 let errors = createEmptyErrors();
 const setErrors = newErrors => {
   errors = { ...newErrors };
-  const set = setErrorsByIds(['user']);
+  const set = setErrorsByIds(fieldIds);
   set(errors);
 };
 
