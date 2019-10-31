@@ -1,7 +1,7 @@
 import { Validators, createFormValidation } from '@lemoncode/fonk';
 
 // Spanish message
-Validators.required.setErrorMessage("Debe informar el campo");
+Validators.required.setErrorMessage('Debe informar el campo');
 
 const validationSchema = {
   field: {
@@ -15,13 +15,4 @@ const validationSchema = {
   },
 };
 
-const formValidation = createFormValidation(validationSchema);
-
-export const loginModel = {
-  user: '    ',
-  password: '    ',
-};
-
-export const getResults = () => {
-  return formValidation.validateForm(loginModel);
-};
+export const formValidation = createFormValidation(validationSchema);
