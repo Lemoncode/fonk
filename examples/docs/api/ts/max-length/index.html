@@ -5,7 +5,25 @@
   </head>
 
   <body>
-    <div id="app" style="display: flex;justify-content: center;"></div>
+    <div class="app">
+      <h1>Max length Validator with Fonk and Plain Vanilla Javascript</h1>
+      <form id="form">
+        <div>
+          <label>Description</label>
+          <input id="description" type="text" placeholder="Description" />
+          <span id="description-error"></span>
+        </div>
+        <div class="buttons">
+          <button type="submit">
+            Submit
+          </button>
+          <button id="reset-button" type="button">
+            Reset
+          </button>
+        </div>
+        <pre id="result"></pre>
+      </form>
+    </div>
 
     <script src="./src/index.ts"></script>
   </body>
