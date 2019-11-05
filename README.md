@@ -15,8 +15,6 @@
 
 ✅ 💥 [**<4.5k gzipped**](https://bundlephobia.com/result?p=@lemoncode/fonk) 💥
 
-
-
 Form schema validation library.
 
 ![let's get fonky](./content/fonky.jpg)
@@ -29,6 +27,8 @@ It allows you to:
 - Isolate your form validation business logic from the ui.
 - Unit test your form validation without having to mount the ui.
 - Create reusable validation rules that can be easily unit tested.
+
+![validate-field](./content/validate-field.gif)
 
 [Live Demo (Fonk + React Final Form)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/react-final-form/js/validate-field)
 
