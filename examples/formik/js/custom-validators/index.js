@@ -16,7 +16,7 @@ const App = () => (
       fonk-min-number-validator)
     </span>
     <Formik
-      initialValues={{ firstname: '', lastName: '', age: '' }}
+      initialValues={{ firstName: '', lastName: '', age: '' }}
       validate={values => formValidation.validateForm(values)}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
@@ -27,10 +27,10 @@ const App = () => (
     >
       {({ isSubmitting }) => (
         <Form>
-          <Field name="firstname" placeholder="Firstname" />
-          <ErrorMessage name="firstname" component="div" />
-          <Field name="lastname" placeholder="Lastname" />
-          <ErrorMessage name="lastname" component="div" />
+          <Field name="firstName" placeholder="Firstname" />
+          <ErrorMessage name="firstName" component="div" />
+          <Field name="lastName" placeholder="Lastname" />
+          <ErrorMessage name="lastName" component="div" />
           <Field name="age" placeholder="Age" />
           <ErrorMessage name="age" component="div" />
           <button type="submit" disabled={isSubmitting}>
