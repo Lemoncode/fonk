@@ -13,9 +13,6 @@
     "react"
   ],
   "main": "index.js",
-  "scripts": {
-    "post-update": "yarn upgrade --latest"
-  },
   "dependencies": {
     "@lemoncode/fonk": "latest",
     "@lemoncode/fonk-formik": "latest",
