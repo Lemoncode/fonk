@@ -6,6 +6,7 @@ import {
   RecordValidationFunctionAsync,
   RecordValidationFunctionSync,
   FieldValidatorArgs,
+  FormValidationResult,
 } from './model';
 
 describe('FormValidation', () => {
@@ -2190,6 +2191,200 @@ when adding two validators to a given field fails and second fails
         expect(validationResult.recordErrors).toEqual({});
         done();
       });
+    });
+  });
+
+  describe('updateValidationSchema', () => {
+    it(`spec #1: should update validation schema when it feeds new validationSchema with one new field to validate`, async () => {
+      // Arrange
+      const values = {
+        field1: '',
+        field2: '',
+      };
+
+      const mockValidationFn = () => ({
+        type: 'MY_TYPE',
+        succeeded: false,
+        message: 'mymessage',
+      });
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          field1: [mockValidationFn],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result1 = await formValidation.validateForm(values);
+
+      const newValidationSchema: ValidationSchema = {
+        ...validationSchema,
+        field: {
+          ...validationSchema.field,
+          field2: [mockValidationFn],
+        },
+      };
+      formValidation.updateValidationSchema(newValidationSchema);
+      const result2 = await formValidation.validateForm(values);
+
+      // Assert
+      expect(result1).toEqual({
+        succeeded: false,
+        fieldErrors: {
+          field1: {
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: 'mymessage',
+          },
+        },
+        recordErrors: {},
+      } as FormValidationResult);
+
+      expect(result2).toEqual({
+        succeeded: false,
+        fieldErrors: {
+          field1: {
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: 'mymessage',
+          },
+          field2: {
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: 'mymessage',
+          },
+        },
+        recordErrors: {},
+      } as FormValidationResult);
+    });
+
+    it(`spec #1: should update validation schema when it feeds new validationSchema removing one field to validate`, async () => {
+      // Arrange
+      const values = {
+        field1: '',
+        field2: '',
+      };
+
+      const mockValidationFn = () => ({
+        type: 'MY_TYPE',
+        succeeded: false,
+        message: 'mymessage',
+      });
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          field1: [mockValidationFn],
+          field2: [mockValidationFn],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result1 = await formValidation.validateForm(values);
+
+      const newValidationSchema: ValidationSchema = {
+        ...validationSchema,
+        field: {
+          field1: [mockValidationFn],
+        },
+      };
+      formValidation.updateValidationSchema(newValidationSchema);
+      const result2 = await formValidation.validateForm(values);
+
+      // Assert
+      expect(result1).toEqual({
+        succeeded: false,
+        fieldErrors: {
+          field1: {
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: 'mymessage',
+          },
+          field2: {
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: 'mymessage',
+          },
+        },
+        recordErrors: {},
+      } as FormValidationResult);
+
+      expect(result2).toEqual({
+        succeeded: false,
+        fieldErrors: {
+          field1: {
+            type: 'MY_TYPE',
+            succeeded: false,
+            message: 'mymessage',
+          },
+        },
+        recordErrors: {},
+      } as FormValidationResult);
+    });
+
+    it(`spec #1: should update validation schema when it feeds new validationSchema updating one field, adding new validator`, async () => {
+      // Arrange
+      const values = {
+        field1: '',
+        field2: '',
+      };
+
+      const mockValidationFn1 = () => ({
+        type: 'MY_TYPE_1',
+        succeeded: true,
+        message: 'mymessage1',
+      });
+
+      const mockValidationFn2 = () => ({
+        type: 'MY_TYPE_2',
+        succeeded: false,
+        message: 'mymessage2',
+      });
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          field1: [mockValidationFn1],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result1 = await formValidation.validateForm(values);
+
+      const newValidationSchema: ValidationSchema = {
+        ...validationSchema,
+        field: {
+          field1: [...validationSchema.field.field1, mockValidationFn2],
+        },
+      };
+      formValidation.updateValidationSchema(newValidationSchema);
+      const result2 = await formValidation.validateForm(values);
+
+      // Assert
+      expect(result1).toEqual({
+        succeeded: true,
+        fieldErrors: {
+          field1: {
+            type: 'MY_TYPE_1',
+            succeeded: true,
+            message: 'mymessage1',
+          },
+        },
+        recordErrors: {},
+      } as FormValidationResult);
+
+      expect(result2).toEqual({
+        succeeded: false,
+        fieldErrors: {
+          field1: {
+            type: 'MY_TYPE_2',
+            succeeded: false,
+            message: 'mymessage2',
+          },
+        },
+        recordErrors: {},
+      } as FormValidationResult);
     });
   });
 });
