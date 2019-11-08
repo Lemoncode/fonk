@@ -28,6 +28,7 @@ export {
 
 /**
  * Main function to create an instance of FormValidation. We could use `validateField`, `validateRecord` and/or `validateForm` to fire validations.
+ * `updateValidationSchema`: to update validation schema after create form validation instance.
  *
  * **Arguments**
  * - ValidationSchema
@@ -47,6 +48,7 @@ interface FormValidation {
   ) => Promise<ValidationResult>;
   validateRecord: (values: any) => Promise<RecordValidationResult>;
   validateForm: (values: any) => Promise<FormValidationResult>;
+  updateValidationSchema(validationSchema: ValidationSchema): void;
 }
 
 /**

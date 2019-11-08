@@ -62,7 +62,7 @@ export class FormValidation {
     return validateForm(values, this.fieldSchema, this.recordSchema);
   }
 
-  public updateValidationSchema(validationSchema: ValidationSchema) {
+  public updateValidationSchema(validationSchema: ValidationSchema): void {
     this.setupValidationSchema(validationSchema);
   }
 }
