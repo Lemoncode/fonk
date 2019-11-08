@@ -61,6 +61,10 @@ export class FormValidation {
   public validateForm(values: any): Promise<FormValidationResult> {
     return validateForm(values, this.fieldSchema, this.recordSchema);
   }
+
+  public updateValidationSchema(validationSchema: ValidationSchema): void {
+    this.setupValidationSchema(validationSchema);
+  }
 }
 
 export const createFormValidation = (validationSchema: ValidationSchema) =>
