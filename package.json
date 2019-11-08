@@ -1,6 +1,6 @@
 {
   "name": "@lemoncode/fonk",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Form schema validator library",
   "main": "dist/@lemoncode/fonk.cjs.js",
   "module": "dist/@lemoncode/fonk.esm.js",
