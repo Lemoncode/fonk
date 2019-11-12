@@ -49,9 +49,12 @@ export class FormValidation {
     value: any,
     values?: any
   ): Promise<ValidationResult> {
-    return validateField(fieldId, value, values, this.fieldSchema).then(
-      ({ key, ...validationResult }) => ({ ...validationResult })
-    );
+    return validateField(
+      fieldId,
+      value,
+      values,
+      this.fieldSchema
+    ).then(({ key, ...validationResult }) => ({ ...validationResult }));
   }
 
   public validateRecord(values: any): Promise<RecordValidationResult> {

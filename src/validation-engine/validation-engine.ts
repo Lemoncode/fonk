@@ -99,12 +99,12 @@ export const validateForm = (
 
   return Promise.all(promiseFieldValidationResults)
     .then(fieldValidationResults =>
-      Promise.all(promiseRecordValidationResults).then(
-        recordValidationResults => [
-          fieldValidationResults,
-          recordValidationResults,
-        ]
-      )
+      Promise.all(
+        promiseRecordValidationResults
+      ).then(recordValidationResults => [
+        fieldValidationResults,
+        recordValidationResults,
+      ])
     )
     .then(([fieldValidationResults, recordValidationResults]) =>
       buildFormValidationResult(fieldValidationResults, recordValidationResults)
