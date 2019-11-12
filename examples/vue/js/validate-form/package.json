@@ -1,7 +1,7 @@
 {
-  "name": "validate-field-with-vue",
+  "name": "validate-form-example-with-vue",
   "version": "1.0.0",
-  "description": "Example integrating fonk with Vue.js 2 at field level.",
+  "description": "Example integrating fonk with Vue.js 2",
   "keywords": [
     "fonk",
     "form-validation",

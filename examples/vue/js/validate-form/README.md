@@ -1,8 +1,8 @@
-# Validate field Example
+# Validate form Example
 
-Example integrating `fonk` with `Vue.js 2` at field level.
+Example using `validateForm` with `Vue.js 2`.
 
-[![See validate-field example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/LissetteIbnz/fonk/tree/master/examples/vue/js/validate-field)
+[![See validate-field example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/LissetteIbnz/fonk/tree/master/examples/vue/js/validate-form)
 
 # About Basefactor + Lemoncode
 
