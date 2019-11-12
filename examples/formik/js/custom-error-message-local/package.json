@@ -14,10 +14,10 @@
   ],
   "main": "index.js",
   "dependencies": {
-    "@lemoncode/fonk": "latest",
+    "@lemoncode/fonk": "1.1.0",
     "@lemoncode/fonk-formik": "latest",
     "formik": "latest",
-    "react": "latest",
-    "react-dom": "latest"
+    "react": "16.11.0",
+    "react-dom": "16.11.0"
   }
 }
