@@ -9,6 +9,7 @@
           placeholder="First name"
           :value="values.firstName"
           @input="handleInputChange('firstName')"
+          @blur="handleInputChange('firstName')"
         />
         <span>{{errors.firstName.message}}</span>
       </div>
@@ -19,6 +20,7 @@
           placeholder="Last name"
           :value="values.lastName"
           @input="handleInputChange('lastName')"
+          @blur="handleInputChange('lastName')"
         />
         <span>{{errors.lastName.message}}</span>
       </div>
@@ -29,6 +31,7 @@
           placeholder="Age"
           :value="values.age"
           @input="handleInputChange('age')"
+          @blur="handleInputChange('age')"
         />
         <span>{{errors.age.message}}</span>
       </div>
