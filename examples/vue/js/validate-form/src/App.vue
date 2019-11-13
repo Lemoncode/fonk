@@ -6,7 +6,6 @@
       <div>
         <label>Username</label>
         <input
-          name="username"
           type="text"
           placeholder="Username"
           :value="values.username"
@@ -18,7 +17,6 @@
       <div>
         <label>Password</label>
         <input
-          nme="password"
           type="password"
           placeholder="Password"
           :value="values.password"
@@ -30,7 +28,6 @@
       <div>
         <label>Confirm</label>
         <input
-          name="confirm"
           type="password"
           placeholder="Confirm"
           :value="values.confirm"
