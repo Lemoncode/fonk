@@ -14,14 +14,14 @@
   },
   "dependencies": {
     "@lemoncode/fonk": "1.1.0",
-    "vue": "^2.6.10"
+    "vue": "2.6.10"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "3.6.0",
     "@vue/cli-service": "3.6.0",
-    "node-sass": "^4.13.0",
-    "sass-loader": "^8.0.0",
-    "vue-template-compiler": "^2.5.21"
+    "node-sass": "4.13.0",
+    "sass-loader": "8.0.0",
+    "vue-template-compiler": "2.6.10"
   },
   "browserslist": [
     "> 1%",
