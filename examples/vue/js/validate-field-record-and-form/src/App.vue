@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <h1>Validate record with Fonk and Vue.js 2 Example</h1>
+    <h1>Validate field, record and form with Fonk and Vue.js 2 Example</h1>
     <form id="form">
       <div>
         <label>Product</label>
