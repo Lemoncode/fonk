@@ -2,7 +2,7 @@ Validate field, record and form example
 
 Example using `validateField`, `validateRecord` and `validateForm` with `Vue.js 2`.
 
-[![See validate-record example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/Lemoncode/fonk/tree/master/examples/vue/js/validate-field-record-and-form)
+[![See validate-field-record-and-form example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/Lemoncode/fonk/tree/master/examples/vue/js/validate-field-record-and-form)
 
 # About Basefactor + Lemoncode
 
