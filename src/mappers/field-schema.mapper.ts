@@ -20,7 +20,9 @@ const mapToInternalFieldValidation = (
       }
     : {
         validator: convertFieldValidationToAsyncIfNeeded(
-          fieldValidation.validator
+          isFunction(fieldValidation.validator)
+            ? fieldValidation.validator
+            : fieldValidation.validator.validator
         ),
         customArgs: fieldValidation.customArgs,
         message: fieldValidation.message,

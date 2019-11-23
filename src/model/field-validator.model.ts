@@ -20,7 +20,9 @@ export type FieldValidationFunctionSyncAsync =
   | FieldValidationFunctionSync;
 
 export interface FullFieldValidation {
-  validator: FieldValidationFunctionSyncAsync;
+  validator:
+    | FieldValidationFunctionSyncAsync
+    | { validator: FieldValidationFunctionSyncAsync };
   customArgs?: any;
   message?: string | string[];
 }
