@@ -508,6 +508,39 @@ when adding one validator to a given nested field with kebap case
         done();
       });
     });
+
+    it(`spec #14:should execute validation for a given field and failed
+when adding one validator with validator as object
+`, done => {
+      // Arrange
+      const mockValidationFn = jest.fn().mockReturnValue({
+        type: 'MY_VALIDATOR_A',
+        succeeded: false,
+        message: 'mymessageA',
+      });
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          myField: [
+            {
+              validator: { validator: mockValidationFn },
+            },
+          ],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateField('myField', 'whatever');
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationResult.succeeded).toBe(false);
+        expect(validationResult.type).toBe('MY_VALIDATOR_A');
+        expect(mockValidationFn).toHaveBeenCalled();
+        done();
+      });
+    });
   });
 
   describe('validateRecords', () => {
@@ -912,6 +945,49 @@ when adding one validator to a given nested field with kebap case
             type: '',
             succeeded: false,
             message: 'mymessageB',
+          },
+        });
+        done();
+      });
+    });
+
+    it(`#Spec 10: should fail form validation, and return back one validationResult on forms
+    when adding one record with one validation as validator object
+    `, done => {
+      // Arrange
+      const validationFn: RecordValidationFunctionSync = jest.fn(
+        ({ message }) => ({
+          type: '',
+          succeeded: false,
+          message: message ? (message as string) : 'mymessageA',
+        })
+      );
+
+      const validationSchema: ValidationSchema = {
+        record: {
+          MY_RECORD_VALIDATION: [
+            {
+              validator: { validator: validationFn },
+            },
+          ],
+        },
+      };
+
+      const values = {};
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateRecord(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(validationFn).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.recordErrors).toEqual({
+          MY_RECORD_VALIDATION: {
+            type: '',
+            succeeded: false,
+            message: 'mymessageA',
           },
         });
         done();
@@ -2186,6 +2262,53 @@ when adding two validators to a given field fails and second fails
             type: 'MY_TYPE_B',
             succeeded: true,
             message: 'mymessageB value2',
+          },
+        });
+        expect(validationResult.recordErrors).toEqual({});
+        done();
+      });
+    });
+
+    it(`#Spec 27: should fail form validation, and return one field validation result
+    and form validation result
+    when adding one field validation with validator as object
+    `, done => {
+      // Arrange
+      const myFieldValidation: FieldValidationFunctionSync = jest.fn(
+        ({ value }) => ({
+          type: 'MY_TYPE_A',
+          succeeded: false,
+          message: `mymessageA ${value}`,
+        })
+      );
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          myField: [
+            {
+              validator: { validator: myFieldValidation },
+            },
+          ],
+        },
+      };
+
+      const values = {
+        myField: 'value1',
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateForm(values);
+
+      // Assert
+      result.then(validationResult => {
+        expect(myFieldValidation).toHaveBeenCalled();
+        expect(validationResult.succeeded).toBeFalsy();
+        expect(validationResult.fieldErrors).toEqual({
+          myField: {
+            type: 'MY_TYPE_A',
+            succeeded: false,
+            message: 'mymessageA value1',
           },
         });
         expect(validationResult.recordErrors).toEqual({});
