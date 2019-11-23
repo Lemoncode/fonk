@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <h1>Nested field with Fonk and Vue.js 2 Example</h1>
-    <form id="form">
+    <form>
       <div>
         <label>Product Name</label>
         <input
@@ -11,11 +11,11 @@
           @input="handleInputChange"
           @blur="handleInputChange"
         />
-        <span>{{ errors["product.name"].message }}</span>
+        <span>{{ errors['product.name'].message }}</span>
       </div>
       <div class="buttons">
         <button type="submit" @click.prevent="onValidateForm">Submit</button>
-        <button id="reset-button" type="button" @click="resetButton">
+        <button type="button" @click="resetButton">
           Reset
         </button>
       </div>
@@ -51,8 +51,10 @@ export default {
       this.values.product.name = value;
 
       formValidation
-        .validateField("product.name", value)
-        .then(validationResult => (this.errors["product.name"] = validationResult));
+        .validateField('product.name', value)
+        .then(
+          validationResult => (this.errors['product.name'] = validationResult)
+        );
     },
     async onValidateForm() {
       try {
