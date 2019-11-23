@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <h1>Validate field, record and form with Fonk and Vue.js 2 Example</h1>
-    <form id="form">
+    <form>
       <div>
         <label>Product</label>
         <input
@@ -11,7 +11,7 @@
           @input="handleInputChange('product')"
           @blur="handleInputChange('product')"
         />
-        <span>{{errors.product.message}}</span>
+        <span>{{ errors.product.message }}</span>
       </div>
       <div>
         <label>Discount</label>
@@ -22,7 +22,7 @@
           @input="handleInputChange('discount')"
           @blur="handleInputChange('discount')"
         />
-        <span>{{errors.discount.message}}</span>
+        <span>{{ errors.discount.message }}</span>
       </div>
       <div>
         <label>Price</label>
@@ -33,7 +33,7 @@
           @input="handleInputChange('price')"
           @blur="handleInputChange('price')"
         />
-        <span>{{errors.price.message}}</span>
+        <span>{{ errors.price.message }}</span>
       </div>
       <div>
         <label>Prime</label>
@@ -44,12 +44,14 @@
           @blur="handleInputChange('isPrime')"
         />
       </div>
-      <span>{{recordErrors.freeShipping.message}}</span>
+      <span>{{ recordErrors.freeShipping.message }}</span>
       <div class="buttons">
         <button type="submit" @click.prevent="onValidateForm">Submit</button>
-        <button id="reset-button" type="button" @click="resetButton">Reset</button>
+        <button type="button" @click="resetButton">
+          Reset
+        </button>
       </div>
-      <pre>{{values}}</pre>
+      <pre>{{ values }}</pre>
     </form>
   </div>
 </template>
