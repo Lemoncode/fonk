@@ -20,7 +20,6 @@
     "@vue/cli-plugin-babel": "3.6.0",
     "@vue/cli-service": "3.6.0",
     "node-sass": "4.13.0",
-    "prettier": "1.19.1",
     "sass-loader": "8.0.0",
     "vue-template-compiler": "2.5.21"
   },
