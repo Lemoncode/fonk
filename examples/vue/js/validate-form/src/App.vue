@@ -2,7 +2,7 @@
   <div class="app">
     <h1>Form Validation with Fonk and Vue.js 2 Example</h1>
     <h2>Password / Confirm Validation</h2>
-    <form id="form">
+    <form>
       <div>
         <label>Username</label>
         <input
@@ -12,7 +12,7 @@
           @input="handleInputChange('username')"
           @blur="handleInputChange('username')"
         />
-        <span>{{errors.username.message}}</span>
+        <span>{{ errors.username.message }}</span>
       </div>
       <div>
         <label>Password</label>
@@ -23,7 +23,7 @@
           @input="handleInputChange('password')"
           @blur="handleInputChange('password')"
         />
-        <span>{{errors.password.message}}</span>
+        <span>{{ errors.password.message }}</span>
       </div>
       <div>
         <label>Confirm</label>
@@ -34,13 +34,13 @@
           @input="handleInputChange('confirm')"
           @blur="handleInputChange('confirm')"
         />
-        <span>{{errors.confirm.message}}</span>
+        <span>{{ errors.confirm.message }}</span>
       </div>
       <div class="buttons">
         <button type="submit" @click.prevent="onValidateForm">Submit</button>
-        <button id="reset-button" type="button" @click="resetButton">Reset</button>
+        <button type="button" @click="resetButton">Reset</button>
       </div>
-      <pre>{{values}}</pre>
+      <pre>{{ values }}</pre>
     </form>
   </div>
 </template>
