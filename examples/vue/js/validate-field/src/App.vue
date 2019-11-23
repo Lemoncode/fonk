@@ -2,7 +2,7 @@
   <div class="app">
     <h1>Form Validation with Fonk and Vue.js 2 Example</h1>
     <h2>Synchronous Field-Level Validation</h2>
-    <form id="form">
+    <form>
       <div>
         <label>First Name</label>
         <input
@@ -12,35 +12,35 @@
           @input="handleInputChange('firstName')"
           @blur="handleInputChange('firstName')"
         />
-        <span>{{errors.firstName.message}}</span>
+        <span>{{ errors.firstName.message }}</span>
       </div>
       <div>
         <label>Last Name</label>
         <input
-          type="number"
+          type="text"
           placeholder="Last Name"
           :value="values.lastName"
           @input="handleInputChange('lastName')"
           @blur="handleInputChange('lastName')"
         />
-        <span>{{errors.lastName.message}}</span>
+        <span>{{ errors.lastName.message }}</span>
       </div>
       <div>
         <label>Age</label>
         <input
-          type="number"
+          type="text"
           placeholder="Age"
           :value="values.age"
           @input="handleInputChange('age')"
           @blur="handleInputChange('age')"
         />
-        <span>{{errors.age.message}}</span>
+        <span>{{ errors.age.message }}</span>
       </div>
       <div class="buttons">
         <button type="submit" @click.prevent="onValidateForm">Submit</button>
-        <button id="reset-button" type="button" @click="resetButton">Reset</button>
+        <button type="button" @click="resetButton">Reset</button>
       </div>
-      <pre>{{values}}</pre>
+      <pre>{{ values }}</pre>
     </form>
   </div>
 </template>
