@@ -9,7 +9,9 @@ import {
 
 export type FieldValidation =
   | FieldValidationFunctionSyncAsync
-  | FullFieldValidation;
+  | FullFieldValidation
+  | { validator: FieldValidationFunctionSyncAsync }
+  | { validator: FullFieldValidation };
 
 export interface FieldValidationSchema {
   [fieldId: string]: FieldValidation[];
@@ -17,7 +19,9 @@ export interface FieldValidationSchema {
 
 export type RecordValidation =
   | RecordValidationFunctionSyncAsync
-  | FullRecordValidation;
+  | FullRecordValidation
+  | { validator: RecordValidationFunctionSyncAsync }
+  | { validator: FullRecordValidation };
 
 export interface RecordValidationSchema {
   [recordId: string]: RecordValidation[];
