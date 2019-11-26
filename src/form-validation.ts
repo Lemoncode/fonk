@@ -24,7 +24,7 @@ export class FormValidation {
     this.setupValidationSchema(validationSchema);
   }
 
-  private setupValidationSchema(validationSchema: ValidationSchema) {
+  private setupValidationSchema = (validationSchema: ValidationSchema) => {
     if (validationSchema && typeof validationSchema === 'object') {
       const { record, field } = validationSchema;
 
@@ -42,32 +42,34 @@ export class FormValidation {
     } else {
       console.error('ValidationSchema must be a valid object');
     }
-  }
+  };
 
-  public validateField(
+  public validateField = (
     fieldId: string,
     value: any,
     values?: any
-  ): Promise<ValidationResult> {
+  ): Promise<ValidationResult> => {
     return validateField(
       fieldId,
       value,
       values,
       this.fieldSchema
     ).then(({ key, ...validationResult }) => ({ ...validationResult }));
-  }
+  };
 
-  public validateRecord(values: any): Promise<RecordValidationResult> {
+  public validateRecord = (values: any): Promise<RecordValidationResult> => {
     return validateRecord(values, this.recordSchema);
-  }
+  };
 
-  public validateForm(values: any): Promise<FormValidationResult> {
+  public validateForm = (values: any): Promise<FormValidationResult> => {
     return validateForm(values, this.fieldSchema, this.recordSchema);
-  }
+  };
 
-  public updateValidationSchema(validationSchema: ValidationSchema): void {
+  public updateValidationSchema = (
+    validationSchema: ValidationSchema
+  ): void => {
     this.setupValidationSchema(validationSchema);
-  }
+  };
 }
 
 export const createFormValidation = (validationSchema: ValidationSchema) =>
