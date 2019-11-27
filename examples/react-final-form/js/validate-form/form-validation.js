@@ -6,19 +6,19 @@ const validationSchema = {
   field: {
     username: [
       {
-        validator: Validators.required.validator,
+        validator: Validators.required,
         message: 'Required',
       },
     ],
     password: [
       {
-        validator: Validators.required.validator,
+        validator: Validators.required,
         message: 'Required',
       },
     ],
     confirm: [
       {
-        validator: Validators.required.validator,
+        validator: Validators.required,
         message: 'Required',
       },
       {

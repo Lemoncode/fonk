@@ -4,7 +4,7 @@ import { userExistsOnGithubValidator } from './custom-validators';
 
 const validationSchema: ValidationSchema = {
   field: {
-    user: [Validators.required.validator, userExistsOnGithubValidator],
+    user: [Validators.required, userExistsOnGithubValidator],
   },
 };
 

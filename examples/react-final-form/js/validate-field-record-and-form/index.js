@@ -16,7 +16,7 @@ const App = () => (
     <h2>validateField + validateRecord approach:</h2>
     <Form
       onSubmit={onSubmit}
-      validate={values => formValidation.validateRecord(values)}
+      validate={formValidation.validateRecord}
       render={({
         handleSubmit,
         form,
@@ -101,7 +101,7 @@ const App = () => (
     <h2>validateForm approach:</h2>
     <Form
       onSubmit={onSubmit}
-      validate={values => formValidation.validateForm(values)}
+      validate={formValidation.validateForm}
       render={({
         handleSubmit,
         form,
