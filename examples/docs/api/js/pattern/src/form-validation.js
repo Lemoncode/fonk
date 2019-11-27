@@ -4,21 +4,21 @@ const validationSchema = {
   field: {
     phone1: [
       {
-        validator: Validators.pattern.validator,
+        validator: Validators.pattern,
         customArgs: { pattern: '^7\\d{9}$' },
         message: 'Please provide format like {{pattern}}',
       },
     ],
     phone2: [
       {
-        validator: Validators.pattern.validator,
+        validator: Validators.pattern,
         customArgs: { pattern: /^8\d{9}$/ },
         message: 'Please provide format like {{pattern}}',
       },
     ],
     phone3: [
       {
-        validator: Validators.pattern.validator,
+        validator: Validators.pattern,
         customArgs: { pattern: new RegExp(/^9\d{9}$/) },
         message: 'Please provide format like {{pattern}}',
       },

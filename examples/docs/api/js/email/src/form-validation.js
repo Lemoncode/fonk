@@ -2,7 +2,7 @@ import { Validators, createFormValidation } from '@lemoncode/fonk';
 
 const validationSchema = {
   field: {
-    email: [Validators.email.validator],
+    email: [Validators.email],
   },
 };
 

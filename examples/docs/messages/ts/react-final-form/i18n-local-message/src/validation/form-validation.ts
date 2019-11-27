@@ -11,13 +11,13 @@ export const createLoginValidation = (t: TFunction): FinalFormValidation => {
     field: {
       user: [
         {
-          validator: Validators.required.validator,
+          validator: Validators.required,
           message: t(keys.required),
         },
       ],
       password: [
         {
-          validator: Validators.required.validator,
+          validator: Validators.required,
           message: t(keys.required),
         },
       ],

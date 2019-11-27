@@ -30,7 +30,7 @@ const App = () => {
       <Form
         initialValues={initialValues}
         onSubmit={onSubmit}
-        validate={values => formValidation.validateForm(values)}
+        validate={formValidation.validateForm}
         render={({ handleSubmit, form, submitting, values }) => (
           <form onSubmit={handleSubmit}>
             <FlagContainer

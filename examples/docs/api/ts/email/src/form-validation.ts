@@ -6,7 +6,7 @@ import {
 
 const validationSchema: ValidationSchema = {
   field: {
-    email: [Validators.email.validator],
+    email: [Validators.email],
   },
 };
 
