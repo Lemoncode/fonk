@@ -6,7 +6,7 @@ import {
 
 const validationSchema: ValidationSchema = {
   field: {
-    'product.name': [Validators.required.validator],
+    'product.name': [Validators.required],
   },
 };
 

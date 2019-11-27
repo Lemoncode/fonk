@@ -8,7 +8,7 @@ const validationSchema: ValidationSchema = {
   field: {
     product: [
       {
-        validator: Validators.required.validator,
+        validator: Validators.required,
         message: 'My custom error message',
       },
     ],
