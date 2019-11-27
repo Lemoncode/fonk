@@ -17,7 +17,7 @@ const App = () => (
     </span>
     <Formik
       initialValues={{ firstName: '', lastName: '', age: '' }}
-      validate={values => formValidation.validateForm(values)}
+      validate={formValidation.validateForm}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
           alert(JSON.stringify(values, null, 2));

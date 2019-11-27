@@ -7,19 +7,19 @@ const validationSchema = {
   field: {
     firstName: [
       {
-        validator: Validators.required.validator,
+        validator: Validators.required,
         message: 'Required',
       },
     ],
     lastName: [
       {
-        validator: Validators.required.validator,
+        validator: Validators.required,
         message: 'Required',
       },
     ],
     age: [
       {
-        validator: Validators.required.validator,
+        validator: Validators.required,
         message: 'Required',
       },
       isNumberValidator,

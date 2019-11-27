@@ -5,15 +5,15 @@ const validationSchema = {
   field: {
     email: [
       {
-        validator: Validators.required.validator,
+        validator: Validators.required,
       },
       {
-        validator: Validators.email.validator,
+        validator: Validators.email,
       },
     ],
     password: [
       {
-        validator: Validators.required.validator,
+        validator: Validators.required,
       },
     ],
   },

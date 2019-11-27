@@ -5,7 +5,7 @@ const validationSchema = {
   field: {
     product: [
       {
-        validator: Validators.required.validator,
+        validator: Validators.required,
       },
     ],
   },

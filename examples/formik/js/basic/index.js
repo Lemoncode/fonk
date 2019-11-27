@@ -33,7 +33,7 @@ const App = () => (
           setSubmitting(false);
         }, 500);
       }}
-      validate={values => formValidation.validateForm(values)}
+      validate={formValidation.validateForm}
     >
       {props => {
         const {
