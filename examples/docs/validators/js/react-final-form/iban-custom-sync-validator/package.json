@@ -14,7 +14,7 @@
   ],
   "main": "index.js",
   "dependencies": {
-    "@lemoncode/fonk": "1.1.0",
+    "@lemoncode/fonk": "1.2.0",
     "@lemoncode/fonk-final-form": "2.3.1",
     "final-form": "4.18.6",
     "react": "16.11.0",

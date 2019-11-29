@@ -14,7 +14,7 @@
   ],
   "main": "index.js",
   "dependencies": {
-    "@lemoncode/fonk": "1.1.0",
+    "@lemoncode/fonk": "1.2.0",
     "@lemoncode/fonk-formik": "4.0.1",
     "formik": "2.0.3",
     "final-form": "4.18.6",
