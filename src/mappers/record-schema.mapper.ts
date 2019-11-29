@@ -19,7 +19,9 @@ const mapToInternalRecordValidation = (
       }
     : {
         validator: convertRecordValidationToAsyncIfNeeded(
-          recordValidation.validator
+          isFunction(recordValidation.validator)
+            ? recordValidation.validator
+            : recordValidation.validator.validator
         ),
         message: recordValidation.message,
       };

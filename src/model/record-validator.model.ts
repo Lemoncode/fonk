@@ -18,7 +18,9 @@ export type RecordValidationFunctionSyncAsync =
   | RecordValidationFunctionAsync;
 
 export interface FullRecordValidation {
-  validator: RecordValidationFunctionSyncAsync;
+  validator:
+    | RecordValidationFunctionSyncAsync
+    | { validator: RecordValidationFunctionSyncAsync };
   message?: string | string[];
 }
 

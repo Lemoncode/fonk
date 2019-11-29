@@ -5,7 +5,7 @@ const validationSchema = {
   field: {
     email: [
       {
-        validator: Validators.email.validator,
+        validator: Validators.email,
       },
     ],
   },

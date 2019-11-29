@@ -13,7 +13,7 @@ const App = () => (
     <h1>Validate record with Fonk and React Final Form Example</h1>
     <Form
       onSubmit={onSubmit}
-      validate={values => formValidation.validateRecord(values)}
+      validate={formValidation.validateRecord}
       render={({
         handleSubmit,
         form,

@@ -6,7 +6,7 @@ import { createFinalFormValidation } from '@lemoncode/fonk-final-form';
 
 const validationSchema: ValidationSchema = {
   field: {
-    'product.name': [Validators.required.validator],
+    'product.name': [Validators.required],
   },
 };
 

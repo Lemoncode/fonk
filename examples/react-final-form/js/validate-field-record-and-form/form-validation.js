@@ -4,9 +4,9 @@ import { freeShippingRecordValidator } from './custom-validators';
 
 const validationSchema = {
   field: {
-    product: [Validators.required.validator],
-    discount: [Validators.required.validator],
-    price: [Validators.required.validator],
+    product: [Validators.required],
+    discount: [Validators.required],
+    price: [Validators.required],
   },
   record: {
     freeShipping: [freeShippingRecordValidator],

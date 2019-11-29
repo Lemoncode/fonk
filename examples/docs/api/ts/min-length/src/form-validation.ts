@@ -8,7 +8,7 @@ const validationSchema: ValidationSchema = {
   field: {
     description: [
       {
-        validator: Validators.minLength.validator,
+        validator: Validators.minLength,
         customArgs: { length: 10 },
         message: 'The min length is {{length}}',
       },

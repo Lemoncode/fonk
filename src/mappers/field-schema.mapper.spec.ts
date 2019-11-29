@@ -701,4 +701,77 @@ describe('field-schema.mapper specs', () => {
       done();
     });
   });
+
+  it('spec #16: should return InternalFieldValidationSchema when it feeds fieldValidationSchema with two fields with one FullFieldValidation and the another one with validator object', done => {
+    // Arrange
+    const validator1: FieldValidationFunctionAsync = () =>
+      Promise.resolve({
+        succeeded: true,
+        message: 'test message 1',
+        type: 'test type 1',
+      });
+
+    const fullFieldValidation1: FullFieldValidation = {
+      validator: validator1,
+      customArgs: { arg: 1 },
+      message: 'updated message 1',
+    };
+    const validator2 = {
+      validator: () =>
+        Promise.resolve({
+          succeeded: false,
+          message: 'test message 2',
+          type: 'test type 2',
+        }),
+    };
+
+    const fullFieldValidation2: FullFieldValidation = {
+      validator: validator2,
+      customArgs: { arg: 2 },
+      message: 'updated message 2',
+    };
+
+    const fieldValidationSchema: FieldValidationSchema = {
+      fieldId1: [fullFieldValidation1],
+      fieldId2: [fullFieldValidation2],
+    };
+
+    // Act
+    const result = mapToInternalFieldValidationSchema(fieldValidationSchema);
+
+    // Assert
+    const expectedResult: InternalFieldValidationSchema = {
+      fieldId1: [
+        {
+          validator: expect.any(Function),
+          customArgs: { arg: 1 },
+          message: 'updated message 1',
+        },
+      ],
+      fieldId2: [
+        {
+          validator: expect.any(Function),
+          customArgs: { arg: 2 },
+          message: 'updated message 2',
+        },
+      ],
+    };
+    expect(result).toEqual(expectedResult);
+    Promise.all([
+      result['fieldId1'][0].validator(null),
+      result['fieldId2'][0].validator(null),
+    ]).then(validationResults => {
+      expect(validationResults[0]).toEqual({
+        succeeded: true,
+        message: 'test message 1',
+        type: 'test type 1',
+      });
+      expect(validationResults[1]).toEqual({
+        succeeded: false,
+        message: 'test message 2',
+        type: 'test type 2',
+      });
+      done();
+    });
+  });
 });

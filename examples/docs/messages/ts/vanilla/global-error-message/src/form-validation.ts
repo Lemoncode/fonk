@@ -9,10 +9,10 @@ Validators.required.setErrorMessage('Debe informar el campo');
 
 const validationSchema: ValidationSchema = {
   field: {
-    user: [Validators.required.validator],
+    user: [Validators.required],
     password: [
       {
-        validator: Validators.required.validator,
+        validator: Validators.required,
         customArgs: { trim: false },
       },
     ],

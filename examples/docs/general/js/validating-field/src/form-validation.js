@@ -3,9 +3,9 @@ import { Validators, createFormValidation } from '@lemoncode/fonk';
 const validationSchema = {
   field: {
     user: [
-      Validators.required.validator,
+      Validators.required,
       {
-        validator: Validators.minLength.validator,
+        validator: Validators.minLength,
         customArgs: { length: 3 },
       },
     ],

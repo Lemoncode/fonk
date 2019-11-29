@@ -7,13 +7,13 @@ export const createLoginValidation = t => {
     field: {
       user: [
         {
-          validator: Validators.required.validator,
+          validator: Validators.required,
           message: t(keys.required),
         },
       ],
       password: [
         {
-          validator: Validators.required.validator,
+          validator: Validators.required,
           message: t(keys.required),
         },
       ],

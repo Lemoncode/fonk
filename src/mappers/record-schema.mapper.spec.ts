@@ -671,4 +671,73 @@ describe('record-schema.mapper specs', () => {
       done();
     });
   });
+
+  it('spec #16: should return InternalRecordValidationSchema when it feeds recordValidationSchema with two records with one FullRecordValidation and the another one with validator object', done => {
+    // Arrange
+    const validator1: RecordValidationFunctionAsync = () =>
+      Promise.resolve({
+        succeeded: true,
+        message: 'test message 1',
+        type: 'test type 1',
+      });
+
+    const fullRecordValidation1: FullRecordValidation = {
+      validator: validator1,
+      message: 'updated message 1',
+    };
+    const validator2 = {
+      validator: () =>
+        Promise.resolve({
+          succeeded: false,
+          message: 'test message 2',
+          type: 'test type 2',
+        }),
+    };
+
+    const fullRecordValidation2: FullRecordValidation = {
+      validator: validator2,
+      message: 'updated message 2',
+    };
+
+    const recordValidationSchema: RecordValidationSchema = {
+      recordId1: [fullRecordValidation1],
+      recordId2: [fullRecordValidation2],
+    };
+
+    // Act
+    const result = mapToInternalRecordValidationSchema(recordValidationSchema);
+
+    // Assert
+    const expectedResult: InternalRecordValidationSchema = {
+      recordId1: [
+        {
+          validator: expect.any(Function),
+          message: 'updated message 1',
+        },
+      ],
+      recordId2: [
+        {
+          validator: expect.any(Function),
+          message: 'updated message 2',
+        },
+      ],
+    };
+    expect(result).toEqual(expectedResult);
+    Promise.all([
+      result['recordId1'][0].validator(null),
+      result['recordId2'][0].validator(null),
+    ]).then(validationResults => {
+      expect(validationResults[0]).toEqual({
+        succeeded: true,
+        message: 'test message 1',
+        type: 'test type 1',
+      });
+      expect(validationResults[1]).toEqual({
+        succeeded: false,
+        message: 'test message 2',
+        type: 'test type 2',
+      });
+      done();
+    });
+  });
 });

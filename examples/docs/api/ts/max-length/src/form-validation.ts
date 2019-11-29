@@ -4,7 +4,7 @@ const validationSchema = {
   field: {
     description: [
       {
-        validator: Validators.maxLength.validator,
+        validator: Validators.maxLength,
         customArgs: { length: 20 },
         message: 'The max length is {{length}}',
       },

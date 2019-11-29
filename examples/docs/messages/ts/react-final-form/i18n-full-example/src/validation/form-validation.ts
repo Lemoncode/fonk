@@ -11,18 +11,18 @@ export const createFormValidation = (t: TFunction): FinalFormValidation => {
 
   const validationSchema: ValidationSchema = {
     field: {
-      name: [Validators.required.validator],
+      name: [Validators.required],
       email: [
-        Validators.required.validator,
+        Validators.required,
         {
-          validator: Validators.email.validator,
+          validator: Validators.email,
           message: t(keys.validations.email),
         },
       ],
       landline: [
-        Validators.required.validator,
+        Validators.required,
         {
-          validator: Validators.pattern.validator,
+          validator: Validators.pattern,
           message: t(keys.validations.phone, {
             example: '912345678',
           }),
@@ -30,9 +30,9 @@ export const createFormValidation = (t: TFunction): FinalFormValidation => {
         },
       ],
       mobile: [
-        Validators.required.validator,
+        Validators.required,
         {
-          validator: Validators.pattern.validator,
+          validator: Validators.pattern,
           message: t(keys.validations.phone, {
             example: '612345678',
           }),

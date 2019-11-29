@@ -10,22 +10,22 @@ const validationSchema: ValidationSchema = {
   field: {
     firstName: [
       {
-        validator: Validators.required.validator,
+        validator: Validators.required,
         message: "Required"
       }
     ],
     lastName: [
       {
-        validator: Validators.required.validator,
+        validator: Validators.required,
         message: "Required"
       }
     ],
     age: [
       {
-        validator: Validators.required.validator,
+        validator: Validators.required,
         message: "Required"
       },
-      isNumber.validator,
+      isNumber,
       {
         validator: minNumberValidator,
         customArgs: { min: 18 }
