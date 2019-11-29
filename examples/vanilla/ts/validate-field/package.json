@@ -12,7 +12,7 @@
     "vanilla typescript"
   ],
   "dependencies": {
-    "@lemoncode/fonk": "1.2.0",
+    "@lemoncode/fonk": "1.3.0",
     "@lemoncode/fonk-is-number-validator": "1.1.2"
   },
   "devDependencies": {
