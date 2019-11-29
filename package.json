@@ -84,5 +84,9 @@
       "pretty-quick — staged",
       "git add"
     ]
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   }
 }
