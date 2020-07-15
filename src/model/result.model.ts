@@ -15,6 +15,7 @@ export interface InternalValidationResult {
   type: string;
   succeeded: boolean;
   message: string;
+  arrayErrors?: { [fieldId: string]: ValidationResult }[];
 }
 
 export const createDefaultInternalValidationResult = (): InternalValidationResult => ({

@@ -40,7 +40,7 @@ export interface FormValidation {
     fieldId: string,
     value: any,
     values?: any
-  ) => Promise<ValidationResult>;
+  ) => Promise<ValidationResult | { [fieldId: string]: ValidationResult }>;
   validateRecord: (values: any) => Promise<RecordValidationResult>;
   validateForm: (values: any) => Promise<FormValidationResult>;
   updateValidationSchema(validationSchema: ValidationSchema): void;

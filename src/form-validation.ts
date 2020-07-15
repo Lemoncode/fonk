@@ -9,6 +9,7 @@ import {
 import {
   mapToInternalFieldValidationSchema,
   mapToInternalRecordValidationSchema,
+  mapInternalValidationResultToValidationResult,
 } from './mappers';
 import {
   validateField,
@@ -48,13 +49,10 @@ export class FormValidation {
     fieldId: string,
     value: any,
     values?: any
-  ): Promise<ValidationResult> => {
-    return validateField(
-      fieldId,
-      value,
-      values,
-      this.fieldSchema
-    ).then(({ key, ...validationResult }) => ({ ...validationResult }));
+  ): Promise<ValidationResult | { [fieldId: string]: ValidationResult }> => {
+    return validateField(fieldId, value, values, this.fieldSchema).then(
+      mapInternalValidationResultToValidationResult
+    );
   };
 
   public validateRecord = (values: any): Promise<RecordValidationResult> => {
