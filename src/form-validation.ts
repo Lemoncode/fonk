@@ -10,6 +10,7 @@ import {
   mapToInternalFieldValidationSchema,
   mapToInternalRecordValidationSchema,
   mapInternalValidationResultToValidationResult,
+  mapInternalFormValidationResultToFormValidationResult,
 } from './mappers';
 import {
   validateField,
@@ -59,8 +60,13 @@ export class FormValidation {
     return validateRecord(values, this.recordSchema);
   };
 
-  public validateForm = (values: any): Promise<FormValidationResult> => {
-    return validateForm(values, this.fieldSchema, this.recordSchema);
+  public validateForm = async (values: any): Promise<FormValidationResult> => {
+    const result = await validateForm(
+      values,
+      this.fieldSchema,
+      this.recordSchema
+    );
+    return mapInternalFormValidationResultToFormValidationResult(result);
   };
 
   public updateValidationSchema = (

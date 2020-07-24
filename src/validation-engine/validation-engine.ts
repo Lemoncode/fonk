@@ -5,6 +5,7 @@ import {
   createDefaultInternalValidationResult,
   RecordValidationResult,
   FormValidationResult,
+  InternalFormValidationResult,
 } from '../model';
 import {
   fireSingleFieldValidations,
@@ -82,7 +83,7 @@ export const validateForm = (
   values: any,
   fieldSchema: InternalFieldValidationSchema,
   recordSchema: InternalRecordValidationSchema
-): Promise<FormValidationResult> => {
+): Promise<InternalFormValidationResult> => {
   const promiseFieldValidationResults = fireAllFieldsValidations(
     safeObjectKeys(fieldSchema),
     values,
