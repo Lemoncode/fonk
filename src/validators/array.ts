@@ -4,6 +4,7 @@ import {
   ValidationResult,
 } from '../model';
 import { createFormValidation } from '../form-validation';
+import { reduceAsync } from '../helpers';
 
 export interface ArrayArgs {
   field: FieldValidationSchema;
@@ -25,10 +26,9 @@ export const validator: FieldValidationFunctionAsync = async validatorArgs => {
   const { value, customArgs } = validatorArgs;
   const formValidation = createFormValidation(customArgs);
 
-  const arrayValidationResult: ArrayValidationResult = await value.reduce(
-    async (promise, item) => {
-      const validationResult =
-        (await promise) || createEmptyArrayValidationResult();
+  const arrayValidationResult: ArrayValidationResult = await reduceAsync(
+    value,
+    async (validationResult, item) => {
       const { fieldErrors, succeeded } = await formValidation.validateForm(
         item
       );
@@ -36,9 +36,9 @@ export const validator: FieldValidationFunctionAsync = async validatorArgs => {
       return {
         succeeded: validationResult.succeeded && succeeded,
         arrayErrors: [...validationResult.arrayErrors, fieldErrors],
-      };
+      } as ArrayValidationResult;
     },
-    null
+    createEmptyArrayValidationResult()
   );
 
   return {

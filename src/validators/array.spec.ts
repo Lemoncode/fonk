@@ -1290,7 +1290,7 @@ describe('array validator', () => {
         field: {
           clients: [
             {
-              validator,
+              validator, //Validators.array
               customArgs: {
                 field: {
                   name: [required],

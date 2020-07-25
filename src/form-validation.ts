@@ -50,24 +50,18 @@ export class FormValidation {
     fieldId: string,
     value: any,
     values?: any
-  ): Promise<ValidationResult | { [fieldId: string]: ValidationResult }> => {
-    return validateField(fieldId, value, values, this.fieldSchema).then(
+  ): Promise<ValidationResult | { [fieldId: string]: ValidationResult }> =>
+    validateField(fieldId, value, values, this.fieldSchema).then(
       mapInternalValidationResultToValidationResult
     );
-  };
 
-  public validateRecord = (values: any): Promise<RecordValidationResult> => {
-    return validateRecord(values, this.recordSchema);
-  };
+  public validateRecord = (values: any): Promise<RecordValidationResult> =>
+    validateRecord(values, this.recordSchema);
 
-  public validateForm = async (values: any): Promise<FormValidationResult> => {
-    const result = await validateForm(
-      values,
-      this.fieldSchema,
-      this.recordSchema
+  public validateForm = (values: any): Promise<FormValidationResult> =>
+    validateForm(values, this.fieldSchema, this.recordSchema).then(
+      mapInternalFormValidationResultToFormValidationResult
     );
-    return mapInternalFormValidationResultToFormValidationResult(result);
-  };
 
   public updateValidationSchema = (
     validationSchema: ValidationSchema

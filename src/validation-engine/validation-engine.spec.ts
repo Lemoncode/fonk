@@ -1761,8 +1761,8 @@ describe('validation-engine specs', () => {
         expect(result).toEqual('Test validator error');
         expect(validator).toHaveBeenCalled();
         expect(consoleErrorStub.mock.calls).toEqual([
-          ['Validation Exception, field: myField'],
           ['Validation Exception, record: myRecord'],
+          ['Validation Exception, field: myField'],
           ['Uncontrolled error validating records'],
         ]);
         done();

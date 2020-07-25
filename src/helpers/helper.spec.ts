@@ -7,6 +7,7 @@ import {
   isLastIndexInArray,
   isPromise,
   safeObjectKeys,
+  reduceAsync,
 } from './helpers';
 
 describe('safeArrayLength', () => {
@@ -824,5 +825,91 @@ describe('safeObjectKeys', () => {
 
     // Assert
     expect(result).toEqual(['field', 'other']);
+  });
+});
+
+describe('reduceAsync', () => {
+  it('should return default value when it calls with array equals empty', async () => {
+    // Arrange
+    const array = [];
+
+    const sumAsync = async (a, b): Promise<number> => {
+      return a + b;
+    };
+
+    const callback = jest.fn();
+    const defaultValue = 0;
+
+    // Act
+    const result = await reduceAsync(array, callback, defaultValue);
+
+    // Assert
+    expect(result).toEqual(defaultValue);
+  });
+
+  it('should not call callback when it calls with array equals empty', async () => {
+    // Arrange
+    const array = [];
+    const callback = jest.fn();
+    const defaultValue = 'default value';
+
+    // Act
+    const result = await reduceAsync(array, callback, defaultValue);
+
+    // Assert
+    expect(callback).not.toHaveBeenCalled();
+  });
+
+  it('should call callback when it calls with array has some items', async () => {
+    // Arrange
+    const array = [1, 2];
+    const callback = jest.fn();
+    const defaultValue = 0;
+
+    // Act
+    const result = await reduceAsync(array, callback, defaultValue);
+
+    // Assert
+    expect(callback).toHaveBeenCalled();
+  });
+
+  it('should return 3 when it calls with array equals [1, 2], callback is an async sum and default value equals 0', async () => {
+    // Arrange
+    const array = [1, 2];
+
+    const sumAsync = async (a, b): Promise<number> => {
+      return a + b;
+    };
+
+    const callback = async (acc, value) => {
+      return await sumAsync(acc, value);
+    };
+    const defaultValue = 0;
+
+    // Act
+    const result = await reduceAsync(array, callback, defaultValue);
+
+    // Assert
+    expect(result).toEqual(3);
+  });
+
+  it('should return 5 when it calls with array equals [1, 2], callback is an async sum and default value calls async sum with 1 + 1', async () => {
+    // Arrange
+    const array = [1, 2];
+
+    const sumAsync = async (a, b): Promise<number> => {
+      return a + b;
+    };
+
+    const callback = async (acc, value) => {
+      return await sumAsync(acc, value);
+    };
+    const defaultValue = sumAsync(1, 1);
+
+    // Act
+    const result = await reduceAsync(array, callback, defaultValue);
+
+    // Assert
+    expect(result).toEqual(5);
   });
 });
