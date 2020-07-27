@@ -7,6 +7,7 @@ import {
 
 const renameFieldNameKeys = (
   internalValidationResult: InternalValidationResult,
+  fieldKey: string,
   fieldErrors: { [field: string]: ValidationResult },
   index: number
 ) => {
@@ -14,21 +15,25 @@ const renameFieldNameKeys = (
   return fieldNames.reduce(
     (result, fieldName) => ({
       ...result,
-      [`${internalValidationResult.key}[${index}].${fieldName}`]: fieldErrors[
-        fieldName
-      ],
+      [`${fieldKey}[${index}].${fieldName}`]: fieldErrors[fieldName],
     }),
     {}
   );
 };
 
 const mapArrayErrorListToValidationResult = (
-  internalValidationResult: InternalValidationResult
+  internalValidationResult: InternalValidationResult,
+  fieldKey: string
 ): { [fieldId: string]: ValidationResult } =>
   internalValidationResult.arrayErrors.reduce(
     (validationResult, fieldErrors, index) => ({
       ...validationResult,
-      ...renameFieldNameKeys(internalValidationResult, fieldErrors, index),
+      ...renameFieldNameKeys(
+        internalValidationResult,
+        fieldKey,
+        fieldErrors,
+        index
+      ),
     }),
     {}
   );
@@ -37,7 +42,10 @@ export const mapInternalValidationResultToValidationResult = (
   internalValidationResult: InternalValidationResult
 ): ValidationResult | { [fieldId: string]: ValidationResult } =>
   Boolean(internalValidationResult.arrayErrors)
-    ? mapArrayErrorListToValidationResult(internalValidationResult)
+    ? mapArrayErrorListToValidationResult(
+        internalValidationResult,
+        internalValidationResult.key
+      )
     : {
         type: internalValidationResult.type,
         message: internalValidationResult.message,
@@ -49,11 +57,12 @@ const mapInternalFieldErrorsToFieldErrors = (internalFieldErrors: {
 }): { [fieldId: string]: ValidationResult } =>
   Object.keys(internalFieldErrors).reduce((fieldErrors, field) => {
     const validationResult = internalFieldErrors[field];
+    const fieldValidationResult = Boolean(validationResult.arrayErrors)
+      ? mapArrayErrorListToValidationResult(validationResult, field)
+      : { [field]: validationResult };
     return {
       ...fieldErrors,
-      [field]: Boolean(validationResult.arrayErrors)
-        ? validationResult.arrayErrors
-        : validationResult,
+      ...fieldValidationResult,
     };
   }, {});
 

@@ -842,32 +842,18 @@ describe('array validator', () => {
         succeeded: true,
         recordErrors: {},
         fieldErrors: {
-          clients: [
-            {
-              name: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-              surname: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-            },
-            {
-              name: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-              surname: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-            },
-          ],
+          'clients[0].name': { succeeded: true, message: '', type: 'REQUIRED' },
+          'clients[0].surname': {
+            succeeded: true,
+            message: '',
+            type: 'REQUIRED',
+          },
+          'clients[1].name': { succeeded: true, message: '', type: 'REQUIRED' },
+          'clients[1].surname': {
+            succeeded: true,
+            message: '',
+            type: 'REQUIRED',
+          },
         },
       };
       expect(result).toEqual(expectedResult);
@@ -909,32 +895,18 @@ describe('array validator', () => {
         succeeded: false,
         recordErrors: {},
         fieldErrors: {
-          clients: [
-            {
-              name: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-              surname: {
-                succeeded: false,
-                type: 'REQUIRED',
-                message: 'Please fill in this mandatory field.',
-              },
-            },
-            {
-              name: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-              surname: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-            },
-          ],
+          'clients[0].name': { succeeded: true, message: '', type: 'REQUIRED' },
+          'clients[0].surname': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
+          'clients[1].name': { succeeded: true, message: '', type: 'REQUIRED' },
+          'clients[1].surname': {
+            succeeded: true,
+            message: '',
+            type: 'REQUIRED',
+          },
         },
       };
       expect(result).toEqual(expectedResult);
@@ -976,32 +948,22 @@ describe('array validator', () => {
         succeeded: false,
         recordErrors: {},
         fieldErrors: {
-          clients: [
-            {
-              name: {
-                succeeded: false,
-                type: 'REQUIRED',
-                message: 'Please fill in this mandatory field.',
-              },
-              surname: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-            },
-            {
-              name: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-              surname: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-            },
-          ],
+          'clients[0].name': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
+          'clients[0].surname': {
+            succeeded: true,
+            message: '',
+            type: 'REQUIRED',
+          },
+          'clients[1].name': { succeeded: true, message: '', type: 'REQUIRED' },
+          'clients[1].surname': {
+            succeeded: true,
+            message: '',
+            type: 'REQUIRED',
+          },
         },
       };
       expect(result).toEqual(expectedResult);
@@ -1043,32 +1005,22 @@ describe('array validator', () => {
         succeeded: false,
         recordErrors: {},
         fieldErrors: {
-          clients: [
-            {
-              name: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-              surname: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-            },
-            {
-              name: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-              surname: {
-                succeeded: false,
-                type: 'REQUIRED',
-                message: 'Please fill in this mandatory field.',
-              },
-            },
-          ],
+          'clients[0].name': {
+            succeeded: true,
+            message: '',
+            type: 'REQUIRED',
+          },
+          'clients[0].surname': {
+            succeeded: true,
+            message: '',
+            type: 'REQUIRED',
+          },
+          'clients[1].name': { succeeded: true, message: '', type: 'REQUIRED' },
+          'clients[1].surname': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
         },
       };
       expect(result).toEqual(expectedResult);
@@ -1110,32 +1062,26 @@ describe('array validator', () => {
         succeeded: false,
         recordErrors: {},
         fieldErrors: {
-          clients: [
-            {
-              name: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-              surname: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-            },
-            {
-              name: {
-                succeeded: false,
-                type: 'REQUIRED',
-                message: 'Please fill in this mandatory field.',
-              },
-              surname: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-            },
-          ],
+          'clients[0].name': {
+            succeeded: true,
+            message: '',
+            type: 'REQUIRED',
+          },
+          'clients[0].surname': {
+            succeeded: true,
+            message: '',
+            type: 'REQUIRED',
+          },
+          'clients[1].name': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
+          'clients[1].surname': {
+            succeeded: true,
+            message: '',
+            type: 'REQUIRED',
+          },
         },
       };
       expect(result).toEqual(expectedResult);
@@ -1177,32 +1123,26 @@ describe('array validator', () => {
         succeeded: false,
         recordErrors: {},
         fieldErrors: {
-          clients: [
-            {
-              name: {
-                succeeded: false,
-                type: 'REQUIRED',
-                message: 'Please fill in this mandatory field.',
-              },
-              surname: {
-                succeeded: false,
-                type: 'REQUIRED',
-                message: 'Please fill in this mandatory field.',
-              },
-            },
-            {
-              name: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-              surname: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-            },
-          ],
+          'clients[0].name': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
+          'clients[0].surname': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
+          'clients[1].name': {
+            succeeded: true,
+            message: '',
+            type: 'REQUIRED',
+          },
+          'clients[1].surname': {
+            succeeded: true,
+            message: '',
+            type: 'REQUIRED',
+          },
         },
       };
       expect(result).toEqual(expectedResult);
@@ -1244,32 +1184,26 @@ describe('array validator', () => {
         succeeded: false,
         recordErrors: {},
         fieldErrors: {
-          clients: [
-            {
-              name: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-              surname: {
-                succeeded: true,
-                type: 'REQUIRED',
-                message: '',
-              },
-            },
-            {
-              name: {
-                succeeded: false,
-                type: 'REQUIRED',
-                message: 'Please fill in this mandatory field.',
-              },
-              surname: {
-                succeeded: false,
-                type: 'REQUIRED',
-                message: 'Please fill in this mandatory field.',
-              },
-            },
-          ],
+          'clients[0].name': {
+            succeeded: true,
+            message: '',
+            type: 'REQUIRED',
+          },
+          'clients[0].surname': {
+            succeeded: true,
+            message: '',
+            type: 'REQUIRED',
+          },
+          'clients[1].name': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
+          'clients[1].surname': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
         },
       };
       expect(result).toEqual(expectedResult);
@@ -1311,32 +1245,26 @@ describe('array validator', () => {
         succeeded: false,
         recordErrors: {},
         fieldErrors: {
-          clients: [
-            {
-              name: {
-                succeeded: false,
-                type: 'REQUIRED',
-                message: 'Please fill in this mandatory field.',
-              },
-              surname: {
-                succeeded: false,
-                type: 'REQUIRED',
-                message: 'Please fill in this mandatory field.',
-              },
-            },
-            {
-              name: {
-                succeeded: false,
-                type: 'REQUIRED',
-                message: 'Please fill in this mandatory field.',
-              },
-              surname: {
-                succeeded: false,
-                type: 'REQUIRED',
-                message: 'Please fill in this mandatory field.',
-              },
-            },
-          ],
+          'clients[0].name': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
+          'clients[0].surname': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
+          'clients[1].name': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
+          'clients[1].surname': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
         },
       };
       expect(result).toEqual(expectedResult);

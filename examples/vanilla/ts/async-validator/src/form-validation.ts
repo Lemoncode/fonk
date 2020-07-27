@@ -2,7 +2,6 @@ import {
   Validators,
   ValidationSchema,
   createFormValidation,
-  
 } from '@lemoncode/fonk';
 import { userExistsOnGithubValidator } from './custom-validators';
 
