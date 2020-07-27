@@ -1,6 +1,6 @@
 {
   "name": "@lemoncode/fonk",
-  "version": "1.4.0-beta.1",
+  "version": "1.4.0-beta.0",
   "description": "Form schema validator library",
   "main": "dist/@lemoncode/fonk.cjs.js",
   "module": "dist/@lemoncode/fonk.esm.js",
@@ -24,7 +24,7 @@
   "bundlesize": [
     {
       "path": "./dist/**/*.js",
-      "maxSize": "12.5kB"
+      "maxSize": "13.5kB"
     }
   ],
   "repository": {
