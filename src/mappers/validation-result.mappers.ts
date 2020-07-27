@@ -5,26 +5,31 @@ import {
   FormValidationResult,
 } from '../model';
 
-const mapArrayErrorToValidationResult = (
+const renameFieldNameKeys = (
+  internalValidationResult: InternalValidationResult,
+  fieldErrors: { [field: string]: ValidationResult },
+  index: number
+) => {
+  const fieldNames = Object.keys(fieldErrors);
+  return fieldNames.reduce(
+    (result, fieldName) => ({
+      ...result,
+      [`${internalValidationResult.key}[${index}].${fieldName}`]: fieldErrors[
+        fieldName
+      ],
+    }),
+    {}
+  );
+};
+
+const mapArrayErrorListToValidationResult = (
   internalValidationResult: InternalValidationResult
 ): { [fieldId: string]: ValidationResult } =>
   internalValidationResult.arrayErrors.reduce(
-    (validationResult, fieldErrors, index) => {
-      const fieldNames = Object.keys(fieldErrors);
-      const fieldValidationResult = fieldNames.reduce(
-        (result, key) => ({
-          ...result,
-          [`${internalValidationResult.key}[${index}].${key}`]: fieldErrors[
-            key
-          ],
-        }),
-        {}
-      );
-      return {
-        ...validationResult,
-        ...fieldValidationResult,
-      };
-    },
+    (validationResult, fieldErrors, index) => ({
+      ...validationResult,
+      ...renameFieldNameKeys(internalValidationResult, fieldErrors, index),
+    }),
     {}
   );
 
@@ -32,7 +37,7 @@ export const mapInternalValidationResultToValidationResult = (
   internalValidationResult: InternalValidationResult
 ): ValidationResult | { [fieldId: string]: ValidationResult } =>
   Boolean(internalValidationResult.arrayErrors)
-    ? mapArrayErrorToValidationResult(internalValidationResult)
+    ? mapArrayErrorListToValidationResult(internalValidationResult)
     : {
         type: internalValidationResult.type,
         message: internalValidationResult.message,
