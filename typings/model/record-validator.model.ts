@@ -37,12 +37,3 @@ export interface FullRecordValidation {
     | { validator: RecordValidationFunctionSyncAsync };
   message?: string | string[];
 }
-
-interface InternalRecordValidation {
-  validator: RecordValidationFunctionAsync;
-  message?: string | string[];
-}
-
-export type InternalRecordValidationSchema = {
-  [recordId: string]: InternalRecordValidation[];
-};
