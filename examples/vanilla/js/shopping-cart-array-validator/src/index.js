@@ -1,14 +1,13 @@
 import './styles.scss';
-import { createDefaultValidationResult } from '@lemoncode/fonk';
 import { formValidation } from './form-validation';
 import {
   setErrorsByIds,
   onValidateField,
   onValidateForm,
   addProduct,
+  removeProduct,
 } from './helpers';
 
-const fieldIds = ['products'];
 const createEmptyValues = () => ({
   products: [],
 });
@@ -32,25 +31,50 @@ const setValues = (newValues, index) => {
   priceElement.value = values.products[index].price;
 };
 
+const handleValidateField = (index, fieldName) => {
+  onValidateField(`products[${index}].${fieldName}`, event => {
+    const value = event.target.value;
+    const product = { ...values.products[index], [fieldName]: value };
+    const products = values.products.map((p, i) => (i === index ? product : p));
+    setValues({ ...values, products }, index);
+
+    formValidation
+      .validateField(`products`, values.products)
+      .then(validationResult => {
+        setErrors({
+          ...errors,
+          [`products[${index}].${fieldName}`]: validationResult[
+            `products[${index}].${fieldName}`
+          ],
+        });
+      });
+  });
+};
+
+const onAddHandlers = index => {
+  const removeButton = document.getElementById(
+    `products[${index}]-remove-button`
+  );
+  removeButton.onclick = () => {
+    const newProducts = [...values.products];
+    newProducts.splice(index, 1);
+    values = { products: newProducts };
+    removeProduct(newProducts, index, onAddHandlers);
+    handleValidateForm();
+  };
+
+  Object.keys(createEmptyProduct()).forEach(field => {
+    handleValidateField(index, field);
+  });
+};
+
 const addButton = document.getElementById('add-button');
 addButton.onclick = () => {
   const index = values.products.length;
   addProduct(index);
   const newProduct = createEmptyProduct();
   values = { products: [...values.products, newProduct] };
-
-  onValidateField(`products[${index}].name`, event => {
-    const value = event.target.value;
-    const product = { ...values.products[index], name: value };
-    const products = values.products.map((p, i) => (i === index ? product : p));
-    setValues({ ...values, products }, index);
-
-    formValidation
-      .validateField(`products[${index}].name`, value)
-      .then(validationResult => {
-        setErrors({ ...errors, [`products[${index}].name`]: validationResult });
-      });
-  });
+  onAddHandlers(index);
 };
 
 let errors = {};
@@ -62,11 +86,12 @@ const setErrors = newErrors => {
   errorElement.textContent = JSON.stringify(errors, null, 2);
 };
 
-onValidateForm('form', () => {
+const handleValidateForm = () => {
   formValidation.validateForm(values).then(validationResult => {
     setErrors(validationResult.fieldErrors);
     if (validationResult.succeeded) {
       window.alert(JSON.stringify(values, null, 2));
     }
   });
-});
+};
+onValidateForm('form', handleValidateForm);
