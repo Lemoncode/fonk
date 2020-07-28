@@ -16,7 +16,7 @@ const App = () => (
     <h1>Validating a product list in shopping cart</h1>
     <span>Add new products and check validations:</span>
     <Formik
-      initialValues={{ products: [] }}
+      initialValues={{ products: [createEmptyProduct()] }}
       validate={formValidation.validateForm}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
@@ -33,35 +33,62 @@ const App = () => (
               <div>
                 <button
                   type="button"
-                  onClick={() => arrayHelpers.push(createEmptyProduct)}
+                  onClick={() => arrayHelpers.push(createEmptyProduct())}
                 >
                   Add product
                 </button>
                 {values.products.map((_, index) => (
-                  <div>
-                    <Field type="text" name={`products[${index}].name`} />
-                    <ErrorMessage
-                      name={`products[${index}].name`}
-                      component="div"
-                    />
-                    <Field type="text" name={`products[${index}].quantity`} />
-                    <ErrorMessage
-                      name={`products[${index}].quantity`}
-                      component="div"
-                    />
-                    <Field type="text" name={`products[${index}].price`} />
-                    <ErrorMessage
-                      name={`products[${index}].price`}
-                      component="div"
-                    />
+                  <div className="row">
+                    <button
+                      type="button"
+                      onClick={() => arrayHelpers.remove(index)}
+                    >
+                      -
+                    </button>
+                    <div className="input">
+                      <Field
+                        type="text"
+                        name={`products[${index}].name`}
+                        placeholder="Name"
+                      />
+                      <ErrorMessage
+                        className="input-feedback"
+                        name={`products[${index}].name`}
+                        component="div"
+                      />
+                    </div>
+                    <div className="input">
+                      <Field
+                        type="text"
+                        name={`products[${index}].quantity`}
+                        placeholder="Quantity"
+                      />
+                      <ErrorMessage
+                        className="input-feedback"
+                        name={`products[${index}].quantity`}
+                        component="div"
+                      />
+                    </div>
+                    <div className="input">
+                      <Field
+                        type="text"
+                        name={`products[${index}].price`}
+                        placeholder="Price"
+                      />
+                      <ErrorMessage
+                        className="input-feedback"
+                        name={`products[${index}].price`}
+                        component="div"
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
             )}
           />
 
-          <pre>{JSON.stringify(errors, null, 2)}</pre>
           <button type="submit">Submit</button>
+          <pre>{JSON.stringify(errors, null, 2)}</pre>
         </Form>
       )}
     </Formik>

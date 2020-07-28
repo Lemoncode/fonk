@@ -43,8 +43,9 @@ input:focus {
   outline: none;
 }
 
-input.error {
-  border-color: red;
+.input {
+  display: flex;
+  flex-direction: column;
 }
 
 label {
@@ -87,4 +88,19 @@ button.outline {
   background-color: #eee;
   border: 1px solid #aaa;
   color: #555;
+}
+
+.row {
+  display: flex;
+  margin-top: 1rem;
+  width: 100%;
+  align-items: baseline;
+}
+
+.row > :nth-child(n+2) {
+  margin-left: 1rem;
+}
+
+.row > :nth-child(n) {
+  flex-grow: 1;
 }
