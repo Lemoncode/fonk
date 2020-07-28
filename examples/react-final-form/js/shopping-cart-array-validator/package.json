@@ -1,7 +1,7 @@
 {
   "name": "nested-field",
   "version": "1.0.0",
-  "description": "Example integrating fonk with react-final-form using nested field.",
+  "description": "Example integrating fonk with react-final-form. How to validate a products list in shopping cart.",
   "keywords": [
     "fonk",
     "form-validation",
@@ -14,12 +14,14 @@
   ],
   "main": "index.js",
   "dependencies": {
-    "@lemoncode/fonk": "1.3.0",
+    "@lemoncode/fonk": "1.4.0-beta.1",
     "@lemoncode/fonk-final-form": "2.3.4",
-    "final-form": "4.18.6",
-    "react": "16.11.0",
-    "react-dom": "16.11.0",
-    "react-final-form": "6.3.0",
+    "final-form": "4.20.1",
+    "final-form-arrays": "3.0.2",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-final-form": "6.5.1",
+    "react-final-form-arrays": "3.1.2",
     "styled-components": "4.4.1"
   }
 }

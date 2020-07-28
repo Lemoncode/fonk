@@ -1,4 +1,4 @@
-# Multiple user creation array validator Example
+# Multiple user creation array validator example
 
 Example integrating `fonk` with `formik`.
 

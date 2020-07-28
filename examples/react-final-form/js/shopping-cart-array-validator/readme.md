@@ -1,10 +1,11 @@
 # Shopping cart array validator example
 
-Example integrating `fonk` with `formik`.
+Example integrating `fonk` with `react-final-form`.
 
 How to validate a products list in shopping cart.
 
-[![Example: shopping-cart-array-validator example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/feature/validate-array-fields/examples/formik/js/shopping-cart-array-validator)
+[![See fonk example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/react-final-form/js/shopping-cart-array-validator)
+
 
 # About Basefactor + Lemoncode
 
