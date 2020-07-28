@@ -91,5 +91,5 @@ const handleValidateForm = () => {
 };
 onValidateForm('form', handleValidateForm);
 
-const element = document.getElementById('form');
-element.onsubmit();
+const element = document.getElementById('submit');
+element.click();
