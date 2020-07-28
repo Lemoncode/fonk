@@ -1,34 +1,36 @@
-import React from 'react';
-import { render } from 'react-dom';
-import Styles from './styles';
-import { Form, Field } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
-import { FieldArray } from 'react-final-form-arrays';
-import { formValidation } from './form-validation';
+import React from "react";
+import { render } from "react-dom";
+import Styles from "./styles";
+import { Form, Field } from "react-final-form";
+import arrayMutators from "final-form-arrays";
+import { FieldArray } from "react-final-form-arrays";
+import { formValidation } from "./form-validation";
 
 const onSubmit = values => {
   console.log({ values });
 };
 
 const createEmptyProduct = () => ({
-  name: '',
-  quantity: '',
-  price: '',
+  name: "",
+  quantity: "",
+  price: ""
 });
 
 const App = () => (
   <Styles>
-    <h1>Nested field with Fonk and React Final Form Example</h1>
+    <h1>Validating a product list in shopping cart</h1>
+    <span>Add new products and check validations:</span>
     <Form
       onSubmit={onSubmit}
+      initialValues={{ products: [] }}
       validate={formValidation.validateForm}
       mutators={{ ...arrayMutators }}
-      render={({ handleSubmit, values }) => (
+      render={({ handleSubmit, values, errors }) => (
         <form onSubmit={handleSubmit}>
           <FieldArray
             name="products"
             render={({ fields }) => (
-              <div>
+              <React.Fragment>
                 <button
                   type="button"
                   onClick={() => fields.push(createEmptyProduct())}
@@ -42,44 +44,41 @@ const App = () => (
                     </button>
                     <Field name={`products[${index}].name`}>
                       {({ input, meta }) => (
-                        <div>
-                          <label>Name</label>
+                        <div className="input">
                           <input {...input} type="text" placeholder="Name" />
                           {meta.error && meta.touched && (
-                            <span>{meta.error}</span>
+                            <span className="input-feedback">{meta.error}</span>
                           )}
                         </div>
                       )}
                     </Field>
                     <Field name={`products[${index}].quantity`}>
                       {({ input, meta }) => (
-                        <div>
-                          <label>Quantity</label>
+                        <div className="input">
                           <input
                             {...input}
                             type="text"
                             placeholder="Quantity"
                           />
                           {meta.error && meta.touched && (
-                            <span>{meta.error}</span>
+                            <span className="input-feedback">{meta.error}</span>
                           )}
                         </div>
                       )}
                     </Field>
                     <Field name={`products[${index}].price`}>
                       {({ input, meta }) => (
-                        <div>
-                          <label>Price</label>
+                        <div className="input">
                           <input {...input} type="text" placeholder="Price" />
                           {meta.error && meta.touched && (
-                            <span>{meta.error}</span>
+                            <span className="input-feedback">{meta.error}</span>
                           )}
                         </div>
                       )}
                     </Field>
                   </div>
                 ))}
-              </div>
+              </React.Fragment>
             )}
           />
 
@@ -91,4 +90,4 @@ const App = () => (
   </Styles>
 );
 
-render(<App />, document.getElementById('root'));
+render(<App />, document.getElementById("root"));

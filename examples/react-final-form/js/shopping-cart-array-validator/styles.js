@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
 const btn = (light, dark) => css`
   white-space: nowrap;
@@ -28,12 +28,17 @@ const btn = (light, dark) => css`
 `;
 
 const btnDefault = css`
-  ${btn('#ffffff', '#d5d5d5')} color: #555;
+  ${btn("#ffffff", "#d5d5d5")} color: #555;
 `;
 
-const btnPrimary = btn('#4f93ce', '#285f8f');
+const btnPrimary = btn("#4f93ce", "#285f8f");
 
 export default styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+
   font-family: sans-serif;
 
   h1 {
@@ -57,7 +62,7 @@ export default styled.div`
   }
 
   form {
-    max-width: 500px;
+    width: 90%;
     margin: 10px auto;
     border: 1px solid #ccc;
     padding: 20px;
@@ -65,27 +70,8 @@ export default styled.div`
     border-radius: 3px;
 
     & > div {
-      display: flex;
-      flex-flow: row nowrap;
-      line-height: 2em;
       margin: 5px;
-      & > label {
-        color: #333;
-        width: 110px;
-        font-size: 1em;
-        line-height: 32px;
-      }
-      & > input,
-      & > select,
-      & > textarea {
-        flex: 1;
-        padding: 3px 5px;
-        font-size: 1em;
-        margin-left: 15px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-      }
-      & > input[type='checkbox'] {
+      & > input[type="checkbox"] {
         margin-top: 7px;
       }
       & > div {
@@ -104,18 +90,14 @@ export default styled.div`
         font-weight: bold;
       }
     }
-    & > .buttons {
-      display: flex;
-      flex-flow: row nowrap;
-      justify-content: center;
-      margin-top: 15px;
-    }
     button {
       margin: 0 10px;
-      &[type='submit'] {
+      &[type="submit"] {
         ${btnPrimary};
+        margin-top: 1rem;
+        margin-bottom: 1rem;
       }
-      &[type='button'] {
+      &[type="button"] {
         ${btnDefault};
       }
     }
@@ -125,5 +107,34 @@ export default styled.div`
       box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2);
       padding: 20px;
     }
+  }
+
+  .row {
+    display: flex;
+    margin-top: 1rem;
+    align-items: baseline;
+    justify-content: center;
+    & > :nth-child(n + 2) {
+      margin-left: 1rem;
+      flex-grow: 1;
+    }
+  }
+
+  .input {
+    display: flex;
+    flex-direction: column;
+    max-width: 150px;
+
+    & input {
+      font-size: 1rem;
+      padding: 3px 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+  }
+
+  .input-feedback {
+    color: red;
+    margin-top: 0.25rem;
   }
 `;
