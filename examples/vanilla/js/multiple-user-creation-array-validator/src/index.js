@@ -52,9 +52,7 @@ const handleValidateField = (index, fieldName) => {
 };
 
 const onAddHandlers = index => {
-  const removeButton = document.getElementById(
-    `users[${index}]-remove-button`
-  );
+  const removeButton = document.getElementById(`users[${index}]-remove-button`);
   removeButton.onclick = () => {
     const newUsers = [...values.users];
     newUsers.splice(index, 1);
@@ -89,9 +87,6 @@ const setErrors = newErrors => {
 const handleValidateForm = () => {
   formValidation.validateForm(values).then(validationResult => {
     setErrors(validationResult.fieldErrors);
-    if (validationResult.succeeded) {
-      window.alert(JSON.stringify(values, null, 2));
-    }
   });
 };
 onValidateForm('form', handleValidateForm);

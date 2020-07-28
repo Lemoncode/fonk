@@ -89,9 +89,6 @@ const setErrors = newErrors => {
 const handleValidateForm = () => {
   formValidation.validateForm(values).then(validationResult => {
     setErrors(validationResult.fieldErrors);
-    if (validationResult.succeeded) {
-      window.alert(JSON.stringify(values, null, 2));
-    }
   });
 };
 onValidateForm('form', handleValidateForm);
