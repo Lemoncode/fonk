@@ -16,6 +16,7 @@
   "dependencies": {
     "@lemoncode/fonk": "1.4.0-beta.1",
     "@lemoncode/fonk-final-form": "2.3.4",
+    "@lemoncode/fonk-is-number-validator": "1.1.2",
     "final-form": "4.20.1",
     "final-form-arrays": "3.0.2",
     "react": "16.13.1",
