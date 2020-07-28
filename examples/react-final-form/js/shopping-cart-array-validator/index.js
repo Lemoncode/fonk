@@ -1,19 +1,19 @@
-import React from "react";
-import { render } from "react-dom";
-import Styles from "./styles";
-import { Form, Field } from "react-final-form";
-import arrayMutators from "final-form-arrays";
-import { FieldArray } from "react-final-form-arrays";
-import { formValidation } from "./form-validation";
+import React from 'react';
+import { render } from 'react-dom';
+import Styles from './styles';
+import { Form, Field } from 'react-final-form';
+import arrayMutators from 'final-form-arrays';
+import { FieldArray } from 'react-final-form-arrays';
+import { formValidation } from './form-validation';
 
 const onSubmit = values => {
   console.log({ values });
 };
 
 const createEmptyProduct = () => ({
-  name: "",
-  quantity: "",
-  price: ""
+  name: '',
+  quantity: '',
+  price: '',
 });
 
 const App = () => (
@@ -90,4 +90,4 @@ const App = () => (
   </Styles>
 );
 
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById('root'));

@@ -1,14 +1,14 @@
-import "./helper.css";
+import './helper.css';
 
-import React from "react";
-import { render } from "react-dom";
-import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
-import { formValidation } from "./form-validation";
+import React from 'react';
+import { render } from 'react-dom';
+import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
+import { formValidation } from './form-validation';
 
 const createEmptyUser = () => ({
-  name: "",
-  email: "",
-  repeatEmail: ""
+  name: '',
+  email: '',
+  repeatEmail: '',
 });
 
 const App = () => (
@@ -95,4 +95,4 @@ const App = () => (
   </div>
 );
 
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById('root'));

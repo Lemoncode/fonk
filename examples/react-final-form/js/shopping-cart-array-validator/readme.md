@@ -6,7 +6,6 @@ How to validate a products list in shopping cart.
 
 [![See fonk example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/feature/validate-array-fields/examples/react-final-form/js/shopping-cart-array-validator)
 
-
 # About Basefactor + Lemoncode
 
 We are an innovating team of Javascript experts, passionate about turning your ideas into robust products.

@@ -1,7 +1,4 @@
-import {
-  Validators,
-  ValidationSchema,
-} from '@lemoncode/fonk';
+import { Validators, ValidationSchema } from '@lemoncode/fonk';
 import { createFinalFormValidation } from '@lemoncode/fonk-final-form';
 import { matchField } from '@lemoncode/fonk-match-field-validator';
 

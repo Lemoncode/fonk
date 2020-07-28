@@ -55,11 +55,7 @@ const App = () => (
                     <Field name={`users[${index}].email`}>
                       {({ input, meta }) => (
                         <div className="input">
-                          <input
-                            {...input}
-                            type="text"
-                            placeholder="Email"
-                          />
+                          <input {...input} type="text" placeholder="Email" />
                           {meta.error && meta.touched && (
                             <span className="input-feedback">{meta.error}</span>
                           )}
@@ -69,7 +65,11 @@ const App = () => (
                     <Field name={`users[${index}].repeatEmail`}>
                       {({ input, meta }) => (
                         <div className="input">
-                          <input {...input} type="text" placeholder="Repeat email" />
+                          <input
+                            {...input}
+                            type="text"
+                            placeholder="Repeat email"
+                          />
                           {meta.error && meta.touched && (
                             <span className="input-feedback">{meta.error}</span>
                           )}

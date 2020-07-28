@@ -97,7 +97,7 @@ button.outline {
   align-items: baseline;
 }
 
-.row > :nth-child(n+2) {
+.row > :nth-child(n + 2) {
   margin-left: 1rem;
 }
 
