@@ -4,7 +4,7 @@ import { matchField } from '@lemoncode/fonk-match-field-validator';
 
 const validationSchema = {
   field: {
-    products: [
+    users: [
       {
         validator: Validators.array,
         customArgs: {
