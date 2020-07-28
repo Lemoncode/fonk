@@ -60,7 +60,7 @@ const onAddHandlers = index => {
     newProducts.splice(index, 1);
     values = { products: newProducts };
     removeProduct(newProducts, index, onAddHandlers);
-    handleValidateForm();
+    handleValidateForm()
   };
 
   Object.keys(createEmptyProduct()).forEach(field => {
