@@ -22,29 +22,25 @@ const createEmptyArrayValidationResult = (): ArrayValidationResult => ({
   arrayErrors: [],
 });
 
-export const validator: FieldValidationFunctionAsync = async validatorArgs => {
+export const validator: FieldValidationFunctionAsync = validatorArgs => {
   const { value, customArgs } = validatorArgs;
   const formValidation = createFormValidation(customArgs);
 
-  const arrayValidationResult: ArrayValidationResult = await reduceAsync(
+  return reduceAsync(
     value,
-    async (validationResult, item) => {
-      const { fieldErrors, succeeded } = await formValidation.validateForm(
-        item
-      );
-
-      return {
-        succeeded: validationResult.succeeded && succeeded,
-        arrayErrors: [...validationResult.arrayErrors, fieldErrors],
-      } as ArrayValidationResult;
-    },
+    (validationResult, item) =>
+      formValidation.validateForm(item).then(
+        ({ fieldErrors, succeeded }) =>
+          ({
+            succeeded: validationResult.succeeded && succeeded,
+            arrayErrors: [...validationResult.arrayErrors, fieldErrors],
+          } as ArrayValidationResult)
+      ),
     createEmptyArrayValidationResult()
-  );
-
-  return {
+  ).then(arrayValidationResult => ({
     succeeded: arrayValidationResult.succeeded,
     type: 'ARRAY_VALIDATIONS',
     message: null,
     arrayErrors: arrayValidationResult.arrayErrors,
-  };
+  }));
 };
