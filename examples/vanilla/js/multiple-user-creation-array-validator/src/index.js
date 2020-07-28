@@ -90,6 +90,3 @@ const handleValidateForm = () => {
   });
 };
 onValidateForm('form', handleValidateForm);
-
-const element = document.getElementById('submit');
-element.click();
