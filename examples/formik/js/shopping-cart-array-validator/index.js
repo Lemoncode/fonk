@@ -1,14 +1,14 @@
-import './helper.css';
+import "./helper.css";
 
-import React from 'react';
-import { render } from 'react-dom';
-import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
-import { formValidation } from './form-validation';
+import React from "react";
+import { render } from "react-dom";
+import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
+import { formValidation } from "./form-validation";
 
 const createEmptyProduct = () => ({
-  name: '',
-  quantity: '',
-  price: '',
+  name: "",
+  quantity: "",
+  price: ""
 });
 
 const App = () => (
@@ -25,7 +25,7 @@ const App = () => (
         }, 400);
       }}
     >
-      {({ isSubmitting, values }) => (
+      {({ values, errors }) => (
         <Form>
           <FieldArray
             name="products"
@@ -61,13 +61,11 @@ const App = () => (
           />
 
           <pre>{JSON.stringify(errors, null, 2)}</pre>
-          <button type="submit" disabled={isSubmitting}>
-            Submit
-          </button>
+          <button type="submit">Submit</button>
         </Form>
       )}
     </Formik>
   </div>
 );
 
-render(<App />, document.getElementById('root'));
+render(<App />, document.getElementById("root"));
