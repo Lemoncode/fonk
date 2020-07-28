@@ -65,15 +65,15 @@ export const removeUser = (users, index, onAddHandlers) => {
         `users[${oldIndex}].name-error`
       );
       nameError.id = `users[${i}].name-error`;
-      const email = document.getElementById(
-        `users[${oldIndex}].email`
-      );
+      const email = document.getElementById(`users[${oldIndex}].email`);
       email.id = `users[${i}].email`;
       const emailError = document.getElementById(
         `users[${oldIndex}].email-error`
       );
       emailError.id = `users[${i}].email-error`;
-      const repeatEmail = document.getElementById(`users[${oldIndex}].repeatEmail`);
+      const repeatEmail = document.getElementById(
+        `users[${oldIndex}].repeatEmail`
+      );
       repeatEmail.id = `users[${i}].repeatEmail`;
       const repeatEmailError = document.getElementById(
         `users[${oldIndex}].repeatEmail-error`
@@ -83,4 +83,16 @@ export const removeUser = (users, index, onAddHandlers) => {
       onAddHandlers(i);
     }
   });
+};
+
+export const docReady = fn => {
+  if (
+    document.readyState === 'complete' ||
+    document.readyState === 'interactive'
+  ) {
+    // call on next available tick
+    setTimeout(fn, 1);
+  } else {
+    document.addEventListener('DOMContentLoaded', fn);
+  }
 };
