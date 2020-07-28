@@ -1,5 +1,5 @@
 {
-  "name": "validate-field",
+  "name": "array-validator",
   "version": "1.0.0",
   "description": "Example integrating fonk with formik. How to validate a products list in shopping cart.",
   "keywords": [
