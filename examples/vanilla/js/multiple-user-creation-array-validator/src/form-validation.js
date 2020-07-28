@@ -1,5 +1,5 @@
 import { Validators, createFormValidation } from '@lemoncode/fonk';
-import { isNumber } from '@lemoncode/fonk-is-number-validator';
+import { matchField } from '@lemoncode/fonk-match-field-validator';
 
 const validationSchema = {
   field: {
