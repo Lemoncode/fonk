@@ -4,47 +4,47 @@ import {
   setErrorsByIds,
   onValidateField,
   onValidateForm,
-  addProduct,
-  removeProduct,
+  addUser,
+  removeUser,
 } from './helpers';
 
 const createEmptyValues = () => ({
-  products: [],
+  users: [],
 });
-const createEmptyProduct = () => ({
+const createEmptyUser = () => ({
   name: '',
-  quantity: '',
-  price: '',
+  email: '',
+  repeatEmail: '',
 });
 
 let values = createEmptyValues();
 
 const setValues = (newValues, index) => {
   values = { ...newValues };
-  const nameElement = document.getElementById(`products[${index}].name`);
-  nameElement.value = values.products[index].name;
-  const quantityElement = document.getElementById(
-    `products[${index}].quantity`
+  const nameElement = document.getElementById(`users[${index}].name`);
+  nameElement.value = values.users[index].name;
+  const emailElement = document.getElementById(`users[${index}].email`);
+  emailElement.value = values.users[index].email;
+  const repeatEmailElement = document.getElementById(
+    `users[${index}].repeatEmail`
   );
-  quantityElement.value = values.products[index].quantity;
-  const priceElement = document.getElementById(`products[${index}].price`);
-  priceElement.value = values.products[index].price;
+  repeatEmailElement.value = values.users[index].repeatEmail;
 };
 
 const handleValidateField = (index, fieldName) => {
-  onValidateField(`products[${index}].${fieldName}`, event => {
+  onValidateField(`users[${index}].${fieldName}`, event => {
     const value = event.target.value;
-    const product = { ...values.products[index], [fieldName]: value };
-    const products = values.products.map((p, i) => (i === index ? product : p));
-    setValues({ ...values, products }, index);
+    const user = { ...values.users[index], [fieldName]: value };
+    const users = values.users.map((p, i) => (i === index ? user : p));
+    setValues({ ...values, users }, index);
 
     formValidation
-      .validateField(`products`, values.products)
+      .validateField(`users`, values.users)
       .then(validationResult => {
         setErrors({
           ...errors,
-          [`products[${index}].${fieldName}`]: validationResult[
-            `products[${index}].${fieldName}`
+          [`users[${index}].${fieldName}`]: validationResult[
+            `users[${index}].${fieldName}`
           ],
         });
       });
@@ -53,27 +53,27 @@ const handleValidateField = (index, fieldName) => {
 
 const onAddHandlers = index => {
   const removeButton = document.getElementById(
-    `products[${index}]-remove-button`
+    `users[${index}]-remove-button`
   );
   removeButton.onclick = () => {
-    const newProducts = [...values.products];
-    newProducts.splice(index, 1);
-    values = { products: newProducts };
-    removeProduct(newProducts, index, onAddHandlers);
+    const newUsers = [...values.users];
+    newUsers.splice(index, 1);
+    values = { users: newUsers };
+    removeUser(newUsers, index, onAddHandlers);
     handleValidateForm();
   };
 
-  Object.keys(createEmptyProduct()).forEach(field => {
+  Object.keys(createEmptyUser()).forEach(field => {
     handleValidateField(index, field);
   });
 };
 
 const addButton = document.getElementById('add-button');
 addButton.onclick = () => {
-  const index = values.products.length;
-  addProduct(index);
-  const newProduct = createEmptyProduct();
-  values = { products: [...values.products, newProduct] };
+  const index = values.users.length;
+  addUser(index);
+  const newUser = createEmptyUser();
+  values = { users: [...values.users, newUser] };
   onAddHandlers(index);
 };
 
