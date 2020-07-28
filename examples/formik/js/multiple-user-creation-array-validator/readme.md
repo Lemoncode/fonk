@@ -1,10 +1,10 @@
-# Shopping cart array validator Example
+# Multiple user creation array validator Example
 
 Example integrating `fonk` with `formik`.
 
-How to validate a products list in shopping cart.
+How to validate a user list when it creates multiple users.
 
-[![Example: shopping-cart-array-validator example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/feature/validate-array-fields/examples/formik/js/shopping-cart-array-validator)
+[![Example: multiple-user-creation-array-validator example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/feature/validate-array-fields/examples/formik/js/multiple-user-creation-array-validator)
 
 # About Basefactor + Lemoncode
 
