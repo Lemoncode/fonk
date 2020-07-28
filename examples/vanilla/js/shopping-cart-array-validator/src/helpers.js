@@ -24,15 +24,15 @@ export const addProduct = index => {
   const productElement = `
     <div class="input">
       <input id="products[${index}].name" type="text" placeholder="Name" />
-      <span id="products[${index}].name-error"></span>
+      <span class="input-feedback" id="products[${index}].name-error"></span>
     </div>
     <div class="input">
       <input id="products[${index}].quantity" type="text" placeholder="Quantity" />
-      <span id="products[${index}].quantity-error"></span>
+      <span class="input-feedback" id="products[${index}].quantity-error"></span>
     </div>
     <div class="input">
       <input id="products[${index}].price" type="text" placeholder="Price" />
-      <span id="products[${index}].price-error"></span>
+      <span class="input-feedback" id="products[${index}].price-error"></span>
     </div>
 `;
   const div = document.createElement('div');
