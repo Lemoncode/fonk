@@ -30,12 +30,12 @@ export const addUser = index => {
       <span class="input-feedback" id="users[${index}].name-error"></span>
     </div>
     <div class="input">
-      <input id="users[${index}].quantity" type="text" placeholder="Quantity" />
-      <span class="input-feedback" id="users[${index}].quantity-error"></span>
+      <input id="users[${index}].email" type="text" placeholder="Email" />
+      <span class="input-feedback" id="users[${index}].email-error"></span>
     </div>
     <div class="input">
-      <input id="users[${index}].price" type="text" placeholder="Price" />
-      <span class="input-feedback" id="users[${index}].price-error"></span>
+      <input id="users[${index}].repeatEmail" type="text" placeholder="Repeat Email" />
+      <span class="input-feedback" id="users[${index}].repeatEmail-error"></span>
     </div>
 `;
   const div = document.createElement('div');
@@ -65,20 +65,20 @@ export const removeUser = (users, index, onAddHandlers) => {
         `users[${oldIndex}].name-error`
       );
       nameError.id = `users[${i}].name-error`;
-      const quantity = document.getElementById(
-        `users[${oldIndex}].quantity`
+      const email = document.getElementById(
+        `users[${oldIndex}].email`
       );
-      quantity.id = `users[${i}].quantity`;
-      const quantityError = document.getElementById(
-        `users[${oldIndex}].quantity-error`
+      email.id = `users[${i}].email`;
+      const emailError = document.getElementById(
+        `users[${oldIndex}].email-error`
       );
-      quantityError.id = `users[${i}].quantity-error`;
-      const price = document.getElementById(`users[${oldIndex}].price`);
-      price.id = `users[${i}].price`;
-      const priceError = document.getElementById(
-        `users[${oldIndex}].price-error`
+      emailError.id = `users[${i}].email-error`;
+      const repeatEmail = document.getElementById(`users[${oldIndex}].repeatEmail`);
+      repeatEmail.id = `users[${i}].repeatEmail`;
+      const repeatEmailError = document.getElementById(
+        `users[${oldIndex}].repeatEmail-error`
       );
-      priceError.id = `users[${i}].price-error`;
+      repeatEmailError.id = `users[${i}].repeatEmail-error`;
 
       onAddHandlers(i);
     }
