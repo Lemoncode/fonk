@@ -68,7 +68,6 @@ const onAddHandlers = index => {
 
 const addButton = document.getElementById('add-button');
 addButton.onclick = () => {
-  debugger;
   const index = values.users.length;
   addUser(index);
   const newUser = createEmptyUser();
@@ -91,3 +90,6 @@ const handleValidateForm = () => {
   });
 };
 onValidateForm('form', handleValidateForm);
+
+const element = document.getElementById('form');
+element.onsubmit();
