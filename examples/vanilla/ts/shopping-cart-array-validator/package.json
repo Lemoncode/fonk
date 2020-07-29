@@ -1,7 +1,7 @@
 {
-  "name": "array-validator",
+  "name": "nested-field-ts-example",
   "version": "1.0.0",
-  "description": "Example integrating fonk in vanilla Javascript. How to validate a products list in shopping cart.",
+  "description": "Example integrating fonk in vanilla Typescript. How to validate a products list in shopping cart.",
   "main": "index.html",
   "scripts": {
     "start": "parcel index.html --open"
@@ -9,11 +9,11 @@
   "keywords": [
     "fonk",
     "form-validation",
-    "vanilla javascript"
+    "vanilla typescript"
   ],
   "dependencies": {
     "@lemoncode/fonk": "1.4.0-beta.2",
-    "@lemoncode/fonk-match-field-validator": "1.0.1"
+    "@lemoncode/fonk-is-number-validator": "1.1.2"
   },
   "devDependencies": {
     "@babel/core": "7.7.2",
