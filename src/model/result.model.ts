@@ -15,6 +15,7 @@ export interface InternalValidationResult {
   type: string;
   succeeded: boolean;
   message: string;
+  arrayErrors?: { [fieldId: string]: ValidationResult }[];
 }
 
 export const createDefaultInternalValidationResult = (): InternalValidationResult => ({
@@ -34,13 +35,29 @@ export const createDefaultRecordValidationResult = (): RecordValidationResult =>
   recordErrors: {},
 });
 
+export interface InternalFormValidationResult {
+  succeeded: boolean;
+  fieldErrors: { [fieldId: string]: InternalValidationResult };
+  recordErrors: { [recordId: string]: ValidationResult };
+}
+
 export interface FormValidationResult {
   succeeded: boolean;
-  fieldErrors: { [fieldId: string]: ValidationResult };
+  fieldErrors: {
+    [fieldId: string]:
+      | ValidationResult
+      | { [fieldId: string]: ValidationResult }[];
+  };
   recordErrors: { [recordId: string]: ValidationResult };
 }
 
 export const createDefaultFormValidationResult = (): FormValidationResult => ({
+  succeeded: true,
+  fieldErrors: {},
+  recordErrors: {},
+});
+
+export const createDefaultInternalFormValidationResult = (): InternalFormValidationResult => ({
   succeeded: true,
   fieldErrors: {},
   recordErrors: {},

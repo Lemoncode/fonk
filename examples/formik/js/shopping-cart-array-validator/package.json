@@ -1,0 +1,24 @@
+{
+  "name": "array-validator",
+  "version": "1.0.0",
+  "description": "Example integrating fonk with formik. How to validate a products list in shopping cart.",
+  "keywords": [
+    "fonk",
+    "form-validation",
+    "formik integration",
+    "state management",
+    "formik",
+    "form",
+    "fonk-formik",
+    "react"
+  ],
+  "main": "index.js",
+  "dependencies": {
+    "@lemoncode/fonk": "1.4.0",
+    "@lemoncode/fonk-formik": "4.0.1",
+    "@lemoncode/fonk-is-number-validator": "1.1.2",
+    "formik": "2.1.5",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
+  }
+}

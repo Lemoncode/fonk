@@ -1,0 +1,28 @@
+{
+  "name": "array-validator",
+  "version": "1.0.0",
+  "description": "Example integrating fonk with react-final-form. How to validate a user list when it creates multiple users.",
+  "keywords": [
+    "fonk",
+    "form-validation",
+    "react-final-form integration",
+    "state management",
+    "react-final-form",
+    "form",
+    "final-form",
+    "react"
+  ],
+  "main": "index.js",
+  "dependencies": {
+    "@lemoncode/fonk": "1.4.0",
+    "@lemoncode/fonk-final-form": "2.3.4",
+    "@lemoncode/fonk-match-field-validator": "1.0.1",
+    "final-form": "4.20.1",
+    "final-form-arrays": "3.0.2",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-final-form": "6.5.1",
+    "react-final-form-arrays": "3.1.2",
+    "styled-components": "4.4.1"
+  }
+}

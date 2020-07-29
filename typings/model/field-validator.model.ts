@@ -40,13 +40,3 @@ export interface FullFieldValidation {
   customArgs?: any;
   message?: string | string[];
 }
-
-interface InternalFieldValidation {
-  validator: FieldValidationFunctionAsync;
-  customArgs?: any;
-  message?: string | string[];
-}
-
-export interface InternalFieldValidationSchema {
-  [fieldId: string]: InternalFieldValidation[];
-}

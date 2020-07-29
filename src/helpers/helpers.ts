@@ -21,3 +21,12 @@ export const isPromise = <T>(value: any): value is Promise<T> =>
 
 export const safeObjectKeys = (value): string[] =>
   Boolean(value) ? Object.keys(value) : [];
+
+export const reduceAsync = <Entity, Result>(
+  collection: Entity[],
+  callback: (acc: Result, entity: Entity, index?: number) => Promise<Result>,
+  defaultResult: Result | Promise<Result>
+): Promise<any> =>
+  collection.reduce<Promise<Result>>((promise, item, index) => {
+    return promise.then(result => callback(result, item, index));
+  }, Promise.resolve(defaultResult));

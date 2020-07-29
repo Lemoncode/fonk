@@ -40,7 +40,7 @@ export interface FormValidation {
     fieldId: string,
     value: any,
     values?: any
-  ) => Promise<ValidationResult>;
+  ) => Promise<ValidationResult | { [fieldId: string]: ValidationResult }>;
   validateRecord: (values: any) => Promise<RecordValidationResult>;
   validateForm: (values: any) => Promise<FormValidationResult>;
   updateValidationSchema(validationSchema: ValidationSchema): void;
@@ -74,6 +74,9 @@ export namespace Validators {
   export const pattern: FieldValidator;
   export const minLength: FieldValidator;
   export const maxLength: FieldValidator;
+  export const array: {
+    validator: FieldValidationFunctionSyncAsync;
+  };
 }
 
 interface FieldValidator {
