@@ -4,7 +4,7 @@ Example integrating `fonk` in vanilla Javascript.
 
 How to validate a user list when it creates multiple users.
 
-[![See fonk example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/feature/validate-array-fields/examples/vanilla/js/multiple-user-creation-array-validator)
+[![See fonk example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/vanilla/js/multiple-user-creation-array-validator)
 
 # About Basefactor + Lemoncode
 

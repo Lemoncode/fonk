@@ -4,7 +4,7 @@ Example integrating `fonk` in vanilla Typescript.
 
 How to validate a products list in shopping cart.
 
-[![See fonk example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/feature/validate-array-fields/examples/vanilla/ts/shopping-cart-array-validator)
+[![See fonk example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/vanilla/ts/shopping-cart-array-validator)
 
 # About Basefactor + Lemoncode
 

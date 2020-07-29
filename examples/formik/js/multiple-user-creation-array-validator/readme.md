@@ -4,7 +4,7 @@ Example integrating `fonk` with `formik`.
 
 How to validate a user list when it creates multiple users.
 
-[![Example: multiple-user-creation-array-validator example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/feature/validate-array-fields/examples/formik/js/multiple-user-creation-array-validator)
+[![Example: multiple-user-creation-array-validator example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/lemoncode/fonk/tree/master/examples/formik/js/multiple-user-creation-array-validator)
 
 # About Basefactor + Lemoncode
 
