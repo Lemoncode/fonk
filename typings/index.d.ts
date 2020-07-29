@@ -74,7 +74,9 @@ export namespace Validators {
   export const pattern: FieldValidator;
   export const minLength: FieldValidator;
   export const maxLength: FieldValidator;
-  export const array: FieldValidator;
+  export const array: {
+    validator: FieldValidationFunctionSyncAsync;
+  };
 }
 
 interface FieldValidator {
