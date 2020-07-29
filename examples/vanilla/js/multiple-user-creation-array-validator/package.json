@@ -12,7 +12,7 @@
     "vanilla javascript"
   ],
   "dependencies": {
-    "@lemoncode/fonk": "1.4.0-beta.2",
+    "@lemoncode/fonk": "1.4.0-beta.3",
     "@lemoncode/fonk-match-field-validator": "1.0.1"
   },
   "devDependencies": {
