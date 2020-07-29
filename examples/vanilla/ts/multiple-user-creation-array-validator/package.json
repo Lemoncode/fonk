@@ -1,7 +1,7 @@
 {
   "name": "array-validator",
   "version": "1.0.0",
-  "description": "Example integrating fonk in vanilla Typescript. How to validate a products list in shopping cart.",
+  "description": "Example integrating fonk in vanilla Typescript. How to validate a user list when it creates multiple users.",
   "main": "index.html",
   "scripts": {
     "start": "parcel index.html --open"
@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "@lemoncode/fonk": "1.4.0-beta.2",
-    "@lemoncode/fonk-is-number-validator": "1.1.2"
+    "@lemoncode/fonk-match-field-validator": "1.0.1"
   },
   "devDependencies": {
     "@babel/core": "7.7.2",
