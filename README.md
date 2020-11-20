@@ -13,6 +13,8 @@
 
 ✅ Seamless integration with [React Final Form](https://github.com/final-form/react-final-form#readme)
 
+✅ Seamless integration with [Formik](https://github.com/formium/formik#readme)
+
 ✅ 💥 [**<4.5k gzipped**](https://bundlephobia.com/result?p=@lemoncode/fonk) 💥
 
 Form schema validation library.
