@@ -5,7 +5,7 @@ import {
 
 const validatorType = 'MY_IBAN_VALIDATOR';
 
-let defaultMessage = 'IBAN does not belong to {{countryCode}}';
+let defaultMessage = 'IBAN does not belong to {{countryCode}}.';
 export const setErrorMessage = message => (defaultMessage = message);
 
 const hasValidCountryCode = (value, customArgs) =>
