@@ -4,7 +4,7 @@ import { parseMessageWithCustomArgs } from './validators.helpers';
 
 const VALIDATOR_TYPE = 'MAX_LENGTH';
 
-let defaultMessage = 'The value provided does not fulfill max length';
+let defaultMessage = 'The value provided does not fulfill max length.';
 export const setErrorMessage = message => (defaultMessage = message);
 
 const BAD_PARAMETER =
