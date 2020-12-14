@@ -1,6 +1,6 @@
 # Fonk
 
-[![CircleCI](https://badgen.net/github/status/Lemoncode/fonk/master?icon=circleci&label=circleci)](https://circleci.com/gh/Lemoncode/fonk/tree/master)
+![CI](https://github.com/Lemoncode/fonk/workflows/Continuos%20Integration/badge.svg)
 [![NPM Version](https://badgen.net/npm/v/@lemoncode/fonk?icon=npm&label=npm)](https://www.npmjs.com/package/@lemoncode/fonk)
 [![bundle-size](https://badgen.net/bundlephobia/min/@lemoncode/fonk)](https://bundlephobia.com/result?p=@lemoncode/fonk)
 [![bundle-size](https://badgen.net/bundlephobia/minzip/@lemoncode/fonk)](https://bundlephobia.com/result?p=@lemoncode/fonk)
