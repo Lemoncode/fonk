@@ -5,7 +5,6 @@ describe(`required validator`, () => {
     it('should return true if value is null', () => {
       // Arrange
       const value = null;
-      const values = undefined;
 
       // Act
       const validationResult = validator({ value });
@@ -19,7 +18,6 @@ describe(`required validator`, () => {
     it('should return true if value is undefined', () => {
       // Arrange
       const value = void 0;
-      const values = undefined;
 
       // Act
       const validationResult = validator({ value });
@@ -34,7 +32,6 @@ describe(`required validator`, () => {
     it('should return custom global message for invalid email address', () => {
       // Arrange
       const value = 'some text';
-      const values = undefined;
 
       // Act
       setErrorMessage('custom message');
@@ -53,7 +50,6 @@ describe(`required validator`, () => {
     it('should return false for invalid email address', () => {
       // Arrange
       const value = 'some text';
-      const values = undefined;
 
       // Act
       const validationResult = validator({ value });
@@ -68,7 +64,6 @@ describe(`required validator`, () => {
     it('should return true for a valid email address', () => {
       // Arrange
       const value = 'john.doe@acme.com';
-      const values = undefined;
 
       // Act
       const validationResult = validator({ value });

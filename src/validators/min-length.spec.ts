@@ -2,6 +2,9 @@ import { validator, setErrorMessage } from './min-length';
 import { LengthArgs } from './length';
 import { FieldValidatorArgs } from '../model';
 
+const expectedDefaultMessage =
+  'The value provided does not fulfill min length.';
+
 describe('[minLength] validation rule tests =>', () => {
   describe('When validating a non string value', () => {
     it('should return true if value is undefined', () => {
@@ -95,9 +98,7 @@ describe('[minLength] validation rule tests =>', () => {
       // Assert
       expect(validationResult.succeeded).toBeFalsy;
       expect(validationResult.type).toBe('MIN_LENGTH');
-      expect(validationResult.message).toBe(
-        'The value provided does not fulfill min length'
-      );
+      expect(validationResult.message).toBe(expectedDefaultMessage);
     });
 
     it('should return false if value length is lesser than length option and display custom message', () => {

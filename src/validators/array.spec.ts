@@ -1,11 +1,6 @@
 import { validator } from './array';
 import * as required from './required';
-import {
-  ValidationSchema,
-  ValidationResult,
-  FormValidationResult,
-  InternalValidationResult,
-} from '../model';
+import { ValidationSchema, FormValidationResult } from '../model';
 import { createFormValidation } from '../form-validation';
 
 describe('array validator', () => {

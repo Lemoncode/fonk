@@ -1,0 +1,13 @@
+name: Continuos Integration
+
+on: [pull_request]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install
+        run: npm install
+      - name: Validate
+        run: npm run validate
