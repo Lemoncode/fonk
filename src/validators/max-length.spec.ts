@@ -2,6 +2,9 @@ import { validator, setErrorMessage } from './max-length';
 import { LengthArgs } from './length';
 import { FieldValidatorArgs } from '../model';
 
+const expectedDefaultMessage =
+  'The value provided does not fulfill max length.';
+
 describe('[maxLength] validation rule tests =>', () => {
   describe('When validating a non string value', () => {
     it('should return true if value is undefined', () => {
@@ -95,9 +98,7 @@ describe('[maxLength] validation rule tests =>', () => {
       // Assert
       expect(validationResult.succeeded).toBeFalsy;
       expect(validationResult.type).toBe('MAX_LENGTH');
-      expect(validationResult.message).toBe(
-        'The value provided does not fulfill max length'
-      );
+      expect(validationResult.message).toBe(expectedDefaultMessage);
     });
 
     it('should return false if value length is greater than length option and display custom message', () => {
