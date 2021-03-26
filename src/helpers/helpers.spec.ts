@@ -1,3 +1,4 @@
+import { InternalFieldValidationSchema } from '../model';
 import {
   safeArrayLength,
   arrayContainsEntries,
@@ -8,6 +9,8 @@ import {
   isPromise,
   safeObjectKeys,
   reduceAsync,
+  isFieldIdInSchema,
+  hasFieldIdArrayValidator,
 } from './helpers';
 
 describe('safeArrayLength', () => {
@@ -911,5 +914,175 @@ describe('reduceAsync', () => {
 
     // Assert
     expect(result).toEqual(5);
+  });
+});
+
+describe('isFieldIdInSchema', () => {
+  it('should return false when it feeds fieldId and schema equals undefined', () => {
+    // Arrange
+    const fieldId: string = undefined;
+    const schema: InternalFieldValidationSchema = undefined;
+
+    // Act
+    const result = isFieldIdInSchema(fieldId, schema);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds fieldId and schema equals null', () => {
+    // Arrange
+    const fieldId: string = null;
+    const schema: InternalFieldValidationSchema = null;
+
+    // Act
+    const result = isFieldIdInSchema(fieldId, schema);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds fieldId equals empty string and schema equals undefined', () => {
+    // Arrange
+    const fieldId: string = '';
+    const schema: InternalFieldValidationSchema = undefined;
+
+    // Act
+    const result = isFieldIdInSchema(fieldId, schema);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds fieldId with value and schema equals undefined', () => {
+    // Arrange
+    const fieldId: string = 'test-field';
+    const schema: InternalFieldValidationSchema = undefined;
+
+    // Act
+    const result = isFieldIdInSchema(fieldId, schema);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds fieldId with value and schema with values but it does not match', () => {
+    // Arrange
+    const fieldId: string = 'test-field';
+    const schema: InternalFieldValidationSchema = {
+      'another-field': [],
+    };
+
+    // Act
+    const result = isFieldIdInSchema(fieldId, schema);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return true when it feeds fieldId with value and schema with values and it matches', () => {
+    // Arrange
+    const fieldId: string = 'test-field';
+    const schema: InternalFieldValidationSchema = {
+      'test-field': [],
+    };
+
+    // Act
+    const result = isFieldIdInSchema(fieldId, schema);
+
+    // Assert
+    expect(result).toBeTruthy();
+  });
+});
+
+describe('hasFieldIdArrayValidator', () => {
+  it('should return false when it feeds fieldId and schema equals undefined', () => {
+    // Arrange
+    const fieldId: string = undefined;
+    const schema: InternalFieldValidationSchema = undefined;
+
+    // Act
+    const result = hasFieldIdArrayValidator(fieldId, schema);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds fieldId and schema equals null', () => {
+    // Arrange
+    const fieldId: string = null;
+    const schema: InternalFieldValidationSchema = null;
+
+    // Act
+    const result = hasFieldIdArrayValidator(fieldId, schema);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds fieldId equals empty string and schema equals undefined', () => {
+    // Arrange
+    const fieldId: string = '';
+    const schema: InternalFieldValidationSchema = undefined;
+
+    // Act
+    const result = hasFieldIdArrayValidator(fieldId, schema);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds fieldId with value and schema equals undefined', () => {
+    // Arrange
+    const fieldId: string = 'test-field';
+    const schema: InternalFieldValidationSchema = undefined;
+
+    // Act
+    const result = hasFieldIdArrayValidator(fieldId, schema);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds fieldId with value and schema with values but it does not match', () => {
+    // Arrange
+    const fieldId: string = 'test-field';
+    const schema: InternalFieldValidationSchema = {
+      'another-field': [],
+    };
+
+    // Act
+    const result = hasFieldIdArrayValidator(fieldId, schema);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false when it feeds fieldId is field array and schema with values and it matches', () => {
+    // Arrange
+    const fieldId: string = 'test-fields[0].name';
+    const schema: InternalFieldValidationSchema = {
+      'test-fields[0].name': [],
+    };
+
+    // Act
+    const result = hasFieldIdArrayValidator(fieldId, schema);
+
+    // Assert
+    expect(result).toBeFalsy();
+  });
+
+  it('should return true when it feeds fieldId is field array and schema with values and it does not match', () => {
+    // Arrange
+    const fieldId: string = 'test-fields[0].name';
+    const schema: InternalFieldValidationSchema = {
+      'test-fields': [],
+    };
+
+    // Act
+    const result = hasFieldIdArrayValidator(fieldId, schema);
+
+    // Assert
+    expect(result).toBeTruthy();
   });
 });

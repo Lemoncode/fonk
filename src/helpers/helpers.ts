@@ -1,3 +1,8 @@
+import {
+  InternalFieldValidationSchema,
+  InternalRecordValidationSchema,
+} from '../model';
+
 // TODO: Better naming for this?
 export const safeArrayLength = <T>(collection: T[]) =>
   Array.isArray(collection) ? collection.length : 0;
@@ -30,3 +35,13 @@ export const reduceAsync = <Entity, Result>(
   collection.reduce<Promise<Result>>((promise, item, index) => {
     return promise.then(result => callback(result, item, index));
   }, Promise.resolve(defaultResult));
+
+export const isFieldIdInSchema = (
+  fieldId: string,
+  schema: InternalFieldValidationSchema | InternalRecordValidationSchema
+): boolean => !isUndefinedOrNull(schema) && !isUndefinedOrNull(schema[fieldId]);
+
+export const hasFieldIdArrayValidator = (
+  fieldId: string,
+  schema: InternalFieldValidationSchema
+): boolean => /\[.*\]/.test(fieldId) && !isFieldIdInSchema(fieldId, schema);
