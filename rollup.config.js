@@ -1,7 +1,7 @@
-import resolve from 'rollup-plugin-node-resolve';
-import babel from 'rollup-plugin-babel';
-import commonjs from 'rollup-plugin-commonjs';
-import typescript from 'rollup-plugin-typescript2';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import typescript from '@rollup/plugin-typescript';
+import babel from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import { DEFAULT_EXTENSIONS } from '@babel/core';
 import pkg from './package.json';
@@ -23,19 +23,28 @@ export default builds.map(({ format, minify }) => {
       exports: 'named',
       file: `dist/${pkg.name}.${format}${minExtension}.js`,
       format,
-      // globals: {}, // Necessary for externals libraries and umd format
     },
     external: Object.keys(pkg.peerDependencies || {}),
     plugins: [
-      resolve(),
+      nodeResolve(),
       commonjs(),
       typescript({
         tsconfig: 'tsconfig.json',
-        rollupCommonJSResolveHack: true, // To be compatible with commonjs plugin
       }),
       babel({
         extensions,
+        include: ['src/**/*'],
         exclude: 'node_modules/**',
+        babelHelpers: 'runtime',
+        // plugins: [
+        //   [
+        //     '@babel/plugin-transform-runtime',
+        //     {
+        //       useESModules: true,
+        //       version: pkg.dependencies['@babel/runtime'],
+        //     },
+        //   ],
+        // ],
       }),
       minify ? terser() : null,
     ],

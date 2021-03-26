@@ -11,6 +11,7 @@ import {
   reduceAsync,
   isFieldIdInSchema,
   hasFieldIdArrayValidator,
+  getBaseFieldIdFromArrayField,
 } from './helpers';
 
 describe('safeArrayLength', () => {
@@ -1084,5 +1085,62 @@ describe('hasFieldIdArrayValidator', () => {
 
     // Assert
     expect(result).toBeTruthy();
+  });
+});
+
+describe('getBaseFieldIdFromArrayField', () => {
+  it('should return empty string when it feeds fieldId equals undefined', () => {
+    // Arrange
+    const fieldId: string = undefined;
+
+    // Act
+    const result = getBaseFieldIdFromArrayField(fieldId);
+
+    // Assert
+    expect(result).toEqual('');
+  });
+
+  it('should return empty string when it feeds fieldId equals null', () => {
+    // Arrange
+    const fieldId: string = null;
+
+    // Act
+    const result = getBaseFieldIdFromArrayField(fieldId);
+
+    // Assert
+    expect(result).toEqual('');
+  });
+
+  it('should return empty string when it feeds fieldId equals empty string', () => {
+    // Arrange
+    const fieldId: string = '';
+
+    // Act
+    const result = getBaseFieldIdFromArrayField(fieldId);
+
+    // Assert
+    expect(result).toEqual('');
+  });
+
+  it('should return empty string when it feeds fieldId without array syntax', () => {
+    // Arrange
+    const fieldId: string = 'test-field.name';
+
+    // Act
+    const result = getBaseFieldIdFromArrayField(fieldId);
+
+    // Assert
+    expect(result).toEqual('');
+  });
+
+  it('should return baseFieldId when it feeds fieldId with array syntax', () => {
+    // Arrange
+    const fieldId: string = 'test-fields[234].name';
+
+    // Act
+    const result = getBaseFieldIdFromArrayField(fieldId);
+
+    // Assert
+    expect(result).toEqual('test-fields');
   });
 });

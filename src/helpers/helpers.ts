@@ -19,7 +19,7 @@ export const isLastIndexInArray = <T>(index: number, array: T[]) =>
 export const isUndefinedOrNull = (v: any) => v === void 0 || v === null;
 
 export const areAllElementsInArrayDefined = <T>(collection: T[]) =>
-  arrayContainsEntries(collection) && collection.every(element => element);
+  arrayContainsEntries(collection) && collection.every((element) => element);
 
 export const isPromise = <T>(value: any): value is Promise<T> =>
   value instanceof Promise;
@@ -33,7 +33,7 @@ export const reduceAsync = <Entity, Result>(
   defaultResult: Result | Promise<Result>
 ): Promise<any> =>
   collection.reduce<Promise<Result>>((promise, item, index) => {
-    return promise.then(result => callback(result, item, index));
+    return promise.then((result) => callback(result, item, index));
   }, Promise.resolve(defaultResult));
 
 export const isFieldIdInSchema = (
@@ -45,3 +45,8 @@ export const hasFieldIdArrayValidator = (
   fieldId: string,
   schema: InternalFieldValidationSchema
 ): boolean => /\[.*\]/.test(fieldId) && !isFieldIdInSchema(fieldId, schema);
+
+export const getBaseFieldIdFromArrayField = (fieldId: string) => {
+  const [, baseFieldId] = fieldId?.match(/(.*)\[.*\]/) || [];
+  return baseFieldId || '';
+};
