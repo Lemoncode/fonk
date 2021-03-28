@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "npm run clean && rollup --config",
-    "clean": "rimraf dist .rpt2_cache package-lock.json",
+    "clean": "rimraf dist .rpt2_cache",
     "test": "jest -c ./config/test/jest.json --verbose",
     "test:watch": "npm test -- --watchAll -i",
     "deploy": "np",
