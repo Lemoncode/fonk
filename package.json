@@ -14,7 +14,9 @@
     "clean": "rimraf dist .rpt2_cache",
     "test": "jest -c ./config/test/jest.json --verbose",
     "test:watch": "npm test -- --watchAll -i",
+    "predeploy": "npm run build",
     "deploy": "np",
+    "predeploy:beta": "npm run build",
     "deploy:beta": "np --tag=beta --any-branch"
   },
   "repository": {
