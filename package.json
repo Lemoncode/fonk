@@ -36,9 +36,13 @@
     "url": "https://github.com/Lemoncode/fonk/issues"
   },
   "homepage": "https://github.com/Lemoncode/fonk#readme",
+  "dependencies": {
+    "@babel/runtime": "^7.13.10"
+  },
   "devDependencies": {
     "@babel/cli": "^7.13.10",
     "@babel/core": "^7.13.10",
+    "@babel/plugin-transform-runtime": "^7.13.10",
     "@babel/preset-env": "^7.13.12",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^18.0.0",

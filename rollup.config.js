@@ -36,15 +36,15 @@ export default builds.map(({ format, minify }) => {
         include: ['src/**/*'],
         exclude: 'node_modules/**',
         babelHelpers: 'runtime',
-        // plugins: [
-        //   [
-        //     '@babel/plugin-transform-runtime',
-        //     {
-        //       useESModules: true,
-        //       version: pkg.dependencies['@babel/runtime'],
-        //     },
-        //   ],
-        // ],
+        plugins: [
+          [
+            '@babel/plugin-transform-runtime',
+            {
+              useESModules: true,
+              version: pkg.dependencies['@babel/runtime'],
+            },
+          ],
+        ],
       }),
       minify ? terser() : null,
     ],
