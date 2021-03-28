@@ -11,7 +11,7 @@ import {
   reduceAsync,
   isFieldIdInSchema,
   hasFieldIdArrayValidator,
-  getBaseFieldIdFromArrayField,
+  formatFieldForArrayField,
 } from './helpers';
 
 describe('safeArrayLength', () => {
@@ -1088,59 +1088,121 @@ describe('hasFieldIdArrayValidator', () => {
   });
 });
 
-describe('getBaseFieldIdFromArrayField', () => {
-  it('should return empty string when it feeds fieldId equals undefined', () => {
+describe('formatFieldForArrayField', () => {
+  it('should return empty string when it feeds fieldId and value equals undefined', () => {
     // Arrange
     const fieldId: string = undefined;
+    const value: string = undefined;
 
     // Act
-    const result = getBaseFieldIdFromArrayField(fieldId);
+    const result = formatFieldForArrayField(fieldId, value);
 
     // Assert
-    expect(result).toEqual('');
+    const expectedResult = {
+      id: '',
+      value: undefined,
+    };
+    expect(result).toEqual(expectedResult);
   });
 
-  it('should return empty string when it feeds fieldId equals null', () => {
+  it('should return empty string when it feeds fieldId and value equals null', () => {
     // Arrange
     const fieldId: string = null;
+    const value: string = null;
 
     // Act
-    const result = getBaseFieldIdFromArrayField(fieldId);
+    const result = formatFieldForArrayField(fieldId, value);
 
     // Assert
-    expect(result).toEqual('');
+    const expectedResult = {
+      id: '',
+      value: undefined,
+    };
+    expect(result).toEqual(expectedResult);
   });
 
-  it('should return empty string when it feeds fieldId equals empty string', () => {
+  it('should return empty string when it feeds fieldId equals empty string and value equals undefined', () => {
     // Arrange
     const fieldId: string = '';
+    const value: string = undefined;
 
     // Act
-    const result = getBaseFieldIdFromArrayField(fieldId);
+    const result = formatFieldForArrayField(fieldId, value);
 
     // Assert
-    expect(result).toEqual('');
+    const expectedResult = {
+      id: '',
+      value: undefined,
+    };
+    expect(result).toEqual(expectedResult);
   });
 
-  it('should return empty string when it feeds fieldId without array syntax', () => {
+  it('should return empty string when it feeds fieldId without array syntax and value equals undefined', () => {
     // Arrange
     const fieldId: string = 'test-field.name';
+    const value: string = undefined;
 
     // Act
-    const result = getBaseFieldIdFromArrayField(fieldId);
+    const result = formatFieldForArrayField(fieldId, value);
 
     // Assert
-    expect(result).toEqual('');
+    const expectedResult = {
+      id: 'test-field',
+      value: {
+        name: undefined,
+      },
+    };
+    expect(result).toEqual(expectedResult);
   });
 
-  it('should return baseFieldId when it feeds fieldId with array syntax', () => {
+  it('should return baseFieldId when it feeds fieldId with array syntax and value equals undefined', () => {
     // Arrange
-    const fieldId: string = 'test-fields[234].name';
+    const fieldId: string = 'test-fields[2].name';
+    const value: string = undefined;
 
     // Act
-    const result = getBaseFieldIdFromArrayField(fieldId);
+    const result = formatFieldForArrayField(fieldId, value);
 
     // Assert
-    expect(result).toEqual('test-fields');
+    const expectedResult = {
+      id: 'test-fields',
+      value: [
+        undefined,
+        undefined,
+        {
+          name: undefined,
+        },
+      ],
+    };
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('should return baseFieldId when it feeds fieldId with array syntax and value with value', () => {
+    // Arrange
+    const fieldId: string = 'test-fields[2].nested.field[1].name';
+    const value: string = 'test';
+
+    // Act
+    const result = formatFieldForArrayField(fieldId, value);
+
+    // Assert
+    const expectedResult = {
+      id: 'test-fields',
+      value: [
+        undefined,
+        undefined,
+        {
+          nested: {
+            field: [
+              undefined,
+              {
+                name: 'test',
+              },
+            ],
+          },
+        },
+      ],
+    };
+    expect(result).toEqual(expectedResult);
   });
 });

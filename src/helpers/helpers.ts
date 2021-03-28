@@ -2,6 +2,7 @@ import {
   InternalFieldValidationSchema,
   InternalRecordValidationSchema,
 } from '../model';
+import set from './set';
 
 // TODO: Better naming for this?
 export const safeArrayLength = <T>(collection: T[]) =>
@@ -46,7 +47,12 @@ export const hasFieldIdArrayValidator = (
   schema: InternalFieldValidationSchema
 ): boolean => /\[.*\]/.test(fieldId) && !isFieldIdInSchema(fieldId, schema);
 
-export const getBaseFieldIdFromArrayField = (fieldId: string) => {
-  const [, baseFieldId] = fieldId?.match(/(.*)\[.*\]/) || [];
-  return baseFieldId || '';
+export const formatFieldForArrayField = (fieldId: string, value) => {
+  const formattedValue = set({}, fieldId, value);
+  const keys = Boolean(fieldId) ? Object.keys(formattedValue) : [''];
+  const id = Array.isArray(keys) && keys.length > 0 ? keys[0] : '';
+  return {
+    id,
+    value: formattedValue[id],
+  };
 };

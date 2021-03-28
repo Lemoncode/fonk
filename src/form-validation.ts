@@ -19,7 +19,8 @@ import {
 } from './validation-engine';
 import {
   hasFieldIdArrayValidator,
-  getBaseFieldIdFromArrayField,
+  formatFieldForArrayField,
+  get,
 } from './helpers';
 
 export class FormValidation {
@@ -55,12 +56,19 @@ export class FormValidation {
     value: any,
     values?: any
   ): Promise<ValidationResult | { [fieldId: string]: ValidationResult }> => {
-    const id = hasFieldIdArrayValidator(fieldId, this.fieldSchema)
-      ? getBaseFieldIdFromArrayField(fieldId)
-      : fieldId;
+    const field = hasFieldIdArrayValidator(fieldId, this.fieldSchema)
+      ? formatFieldForArrayField(fieldId, value)
+      : { id: fieldId, value };
 
-    return validateField(id, value, values, this.fieldSchema).then(
-      mapInternalValidationResultToValidationResult
+    return validateField(field.id, field.value, values, this.fieldSchema).then(
+      (internalValidationResult) => {
+        const validationResult = mapInternalValidationResultToValidationResult(
+          internalValidationResult
+        );
+        return fieldId !== field.id
+          ? get(validationResult, fieldId)
+          : validationResult;
+      }
     );
   };
 
