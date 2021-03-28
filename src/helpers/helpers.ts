@@ -53,6 +53,8 @@ export const formatFieldForArrayField = (fieldId: string, value) => {
   const id = Array.isArray(keys) && keys.length > 0 ? keys[0] : '';
   return {
     id,
-    value: formattedValue[id],
+    value: Array.isArray(formattedValue[id])
+      ? [...formattedValue[id]]
+      : formattedValue[id],
   };
 };

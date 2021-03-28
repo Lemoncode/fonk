@@ -569,7 +569,7 @@ when adding validator using array nested fieldId`, (done) => {
       });
     });
 
-    it(`spec #16: should execute array validation for a given field and failed
+    it(`spec #16: should execute array validation for a given field equal "products[0].name" and failed
 when adding one array validator using nested fieldId`, (done) => {
       // Arrange
 
@@ -606,7 +606,44 @@ when adding one array validator using nested fieldId`, (done) => {
       });
     });
 
-    it(`spec #17: should execute array validation for a given field and failed
+    it(`spec #17: should execute array validation for a given field equal "products[0].name" and failed
+when adding one array validator using nested fieldId`, (done) => {
+      // Arrange
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          products: [
+            {
+              validator: Validators.array,
+              customArgs: {
+                field: {
+                  name: [Validators.required],
+                  quantity: [Validators.required],
+                  price: [Validators.required],
+                },
+              },
+            },
+          ],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = formValidation.validateField('products[1].name', '');
+
+      // Assert
+      result.then((validationResult) => {
+        const expectedResult: ValidationResult = {
+          type: 'REQUIRED',
+          succeeded: false,
+          message: 'Please fill in this mandatory field.',
+        };
+        expect(validationResult).toEqual(expectedResult);
+        done();
+      });
+    });
+
+    it(`spec #18: should execute array validation for a given field and failed
 when adding one array validator using base fieldId`, (done) => {
       // Arrange
 

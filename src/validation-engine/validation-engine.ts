@@ -4,7 +4,6 @@ import {
   InternalValidationResult,
   createDefaultInternalValidationResult,
   RecordValidationResult,
-  FormValidationResult,
   InternalFormValidationResult,
 } from '../model';
 import {
@@ -28,11 +27,11 @@ export const validateField = (
   !isFieldIdInSchema(fieldId, schema)
     ? Promise.resolve(createDefaultInternalValidationResult())
     : fireSingleFieldValidations(value, values, schema[fieldId])
-        .then(validationResult => {
+        .then((validationResult) => {
           validationResult.key = fieldId;
           return validationResult;
         })
-        .catch(error => {
+        .catch((error) => {
           const message = `Validation Exception, field: ${fieldId}`;
           console.error(message);
           throw error;
@@ -46,11 +45,11 @@ const validateSingleRecord = (
   !isFieldIdInSchema(recordId, schema)
     ? Promise.resolve(createDefaultInternalValidationResult())
     : fireSingleRecordValidations(values, schema[recordId])
-        .then(validationResult => {
+        .then((validationResult) => {
           validationResult.key = recordId;
           return validationResult;
         })
-        .catch(error => {
+        .catch((error) => {
           const message = `Validation Exception, record: ${recordId}`;
           console.error(message);
           throw error;
@@ -68,8 +67,8 @@ export const validateRecord = (
   );
 
   return Promise.all(promiseValidationResults)
-    .then(validationResults => buildRecordValidationResult(validationResults))
-    .catch(error => {
+    .then((validationResults) => buildRecordValidationResult(validationResults))
+    .catch((error) => {
       const message = 'Uncontrolled error validating records';
       console.error(message);
       throw error;
@@ -96,10 +95,10 @@ export const validateForm = (
   );
 
   return Promise.all(promiseFieldValidationResults)
-    .then(fieldValidationResults =>
+    .then((fieldValidationResults) =>
       Promise.all(
         promiseRecordValidationResults
-      ).then(recordValidationResults => [
+      ).then((recordValidationResults) => [
         fieldValidationResults,
         recordValidationResults,
       ])
@@ -107,7 +106,7 @@ export const validateForm = (
     .then(([fieldValidationResults, recordValidationResults]) =>
       buildFormValidationResult(fieldValidationResults, recordValidationResults)
     )
-    .catch(error => {
+    .catch((error) => {
       const message = 'Uncontrolled error validating records';
       console.error(message);
       throw error;
