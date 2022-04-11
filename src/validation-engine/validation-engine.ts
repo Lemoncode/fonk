@@ -107,7 +107,7 @@ export const validateForm = (
       buildFormValidationResult(fieldValidationResults, recordValidationResults)
     )
     .catch((error) => {
-      const message = 'Uncontrolled error validating records';
+      const message = 'Uncontrolled error validating form';
       console.error(message);
       throw error;
     });
