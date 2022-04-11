@@ -17,6 +17,11 @@ import {
   validateRecord,
   validateForm,
 } from './validation-engine';
+import {
+  hasFieldIdArrayValidator,
+  formatFieldForArrayField,
+  get,
+} from './helpers';
 
 export class FormValidation {
   private fieldSchema: InternalFieldValidationSchema = {};
@@ -50,10 +55,22 @@ export class FormValidation {
     fieldId: string,
     value: any,
     values?: any
-  ): Promise<ValidationResult | { [fieldId: string]: ValidationResult }> =>
-    validateField(fieldId, value, values, this.fieldSchema).then(
-      mapInternalValidationResultToValidationResult
+  ): Promise<ValidationResult | { [fieldId: string]: ValidationResult }> => {
+    const field = hasFieldIdArrayValidator(fieldId, this.fieldSchema)
+      ? formatFieldForArrayField(fieldId, value)
+      : { id: fieldId, value };
+
+    return validateField(field.id, field.value, values, this.fieldSchema).then(
+      (internalValidationResult) => {
+        const validationResult = mapInternalValidationResultToValidationResult(
+          internalValidationResult
+        );
+        return fieldId !== field.id
+          ? get(validationResult, fieldId)
+          : validationResult;
+      }
     );
+  };
 
   public validateRecord = (values: any): Promise<RecordValidationResult> =>
     validateRecord(values, this.recordSchema);

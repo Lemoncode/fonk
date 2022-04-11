@@ -1,6 +1,10 @@
 import { validator } from './array';
 import * as required from './required';
-import { ValidationSchema, FormValidationResult } from '../model';
+import {
+  ValidationSchema,
+  FormValidationResult,
+  ValidationResult,
+} from '../model';
 import { createFormValidation } from '../form-validation';
 
 describe('array validator', () => {
@@ -1219,7 +1223,7 @@ describe('array validator', () => {
         field: {
           clients: [
             {
-              validator, //Validators.array
+              validator,
               customArgs: {
                 field: {
                   name: [required],
@@ -1261,6 +1265,95 @@ describe('array validator', () => {
             message: 'Please fill in this mandatory field.',
           },
         },
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should return two failed validation when first value is undefined and second has values and items fail both validations using validateForm', async () => {
+      // Arrange
+      const clients = [undefined, { name: '' }];
+
+      const formValue = {
+        clients,
+      };
+
+      const validationSchema: ValidationSchema = {
+        field: {
+          clients: [
+            {
+              validator,
+              customArgs: {
+                field: {
+                  name: [required],
+                  surname: [required],
+                },
+              },
+            },
+          ],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = await formValidation.validateForm(formValue);
+
+      // Assert
+      const expectedResult: FormValidationResult = {
+        succeeded: false,
+        recordErrors: {},
+        fieldErrors: {
+          'clients[0].name': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
+          'clients[0].surname': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
+          'clients[1].name': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
+          'clients[1].surname': {
+            succeeded: false,
+            type: 'REQUIRED',
+            message: 'Please fill in this mandatory field.',
+          },
+        },
+      };
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should return failed validation when it feeds nested fieldId with array syntax and index is not zero', async () => {
+      // Arrange
+      const validationSchema: ValidationSchema = {
+        field: {
+          clients: [
+            {
+              validator,
+              customArgs: {
+                field: {
+                  name: [required],
+                  surname: [required],
+                },
+              },
+            },
+          ],
+        },
+      };
+
+      // Act
+      const formValidation = createFormValidation(validationSchema);
+      const result = await formValidation.validateField('clients[2].name', '');
+
+      // Assert
+      const expectedResult: ValidationResult = {
+        succeeded: false,
+        type: 'REQUIRED',
+        message: 'Please fill in this mandatory field.',
       };
       expect(result).toEqual(expectedResult);
     });

@@ -1,3 +1,9 @@
+import {
+  InternalFieldValidationSchema,
+  InternalRecordValidationSchema,
+} from '../model';
+import set from './set';
+
 // TODO: Better naming for this?
 export const safeArrayLength = <T>(collection: T[]) =>
   Array.isArray(collection) ? collection.length : 0;
@@ -14,7 +20,7 @@ export const isLastIndexInArray = <T>(index: number, array: T[]) =>
 export const isUndefinedOrNull = (v: any) => v === void 0 || v === null;
 
 export const areAllElementsInArrayDefined = <T>(collection: T[]) =>
-  arrayContainsEntries(collection) && collection.every(element => element);
+  arrayContainsEntries(collection) && collection.every((element) => element);
 
 export const isPromise = <T>(value: any): value is Promise<T> =>
   value instanceof Promise;
@@ -28,5 +34,27 @@ export const reduceAsync = <Entity, Result>(
   defaultResult: Result | Promise<Result>
 ): Promise<any> =>
   collection.reduce<Promise<Result>>((promise, item, index) => {
-    return promise.then(result => callback(result, item, index));
+    return promise.then((result) => callback(result, item, index));
   }, Promise.resolve(defaultResult));
+
+export const isFieldIdInSchema = (
+  fieldId: string,
+  schema: InternalFieldValidationSchema | InternalRecordValidationSchema
+): boolean => !isUndefinedOrNull(schema) && !isUndefinedOrNull(schema[fieldId]);
+
+export const hasFieldIdArrayValidator = (
+  fieldId: string,
+  schema: InternalFieldValidationSchema
+): boolean => /\[.*\]/.test(fieldId) && !isFieldIdInSchema(fieldId, schema);
+
+export const formatFieldForArrayField = (fieldId: string, value) => {
+  const formattedValue = set({}, fieldId, value);
+  const keys = Boolean(fieldId) ? Object.keys(formattedValue) : [''];
+  const id = Array.isArray(keys) && keys.length > 0 ? keys[0] : '';
+  return {
+    id,
+    value: Array.isArray(formattedValue[id])
+      ? [...formattedValue[id]]
+      : formattedValue[id],
+  };
+};
