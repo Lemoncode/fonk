@@ -1,14 +1,19 @@
+import { DefaultFieldIdType, DefaultRecordIdType } from './common';
+import { ValidationSchema } from './validation-schema';
 import {
-  ValidationSchema,
   FieldValidationFunctionSync,
   FieldValidationFunctionAsync,
+  FieldValidationFunctionSyncAsync,
+} from './field-validator';
+import {
   RecordValidationFunctionSync,
   RecordValidationFunctionAsync,
+} from './record-validator';
+import {
   ValidationResult,
   RecordValidationResult,
   FormValidationResult,
-  FieldValidationFunctionSyncAsync,
-} from './model';
+} from './result';
 
 export {
   ValidationSchema,
@@ -31,35 +36,39 @@ export {
  * **Returns**
  *  - FormValidation instance.
  */
-export function createFormValidation(
-  validationSchema: ValidationSchema
-): FormValidation;
+export declare function createFormValidation<
+  F extends DefaultFieldIdType = string,
+  R extends DefaultRecordIdType = string
+>(validationSchema: ValidationSchema<F, R>): FormValidation<F, R>;
 
-export interface FormValidation {
+export interface FormValidation<
+  F extends DefaultFieldIdType = string,
+  R extends DefaultRecordIdType = string
+> {
   validateField: (
-    fieldId: string,
+    fieldId: F,
     value: any,
     values?: any
-  ) => Promise<ValidationResult | { [fieldId: string]: ValidationResult }>;
-  validateRecord: (values: any) => Promise<RecordValidationResult>;
-  validateForm: (values: any) => Promise<FormValidationResult>;
-  updateValidationSchema(validationSchema: ValidationSchema): void;
+  ) => Promise<ValidationResult | Record<F, ValidationResult>>;
+  validateRecord: (values: any) => Promise<RecordValidationResult<R>>;
+  validateForm: (values: any) => Promise<FormValidationResult<F, R>>;
+  updateValidationSchema(validationSchema: ValidationSchema<F, R>): void;
 }
 
 /**
  * Function that returns a ValidationResult object with default values
  */
-export function createDefaultValidationResult(): ValidationResult;
+export declare function createDefaultValidationResult(): ValidationResult;
 
 /**
  * Function that returns a RecordValidationResult object with default values
  */
-export function createDefaultRecordValidationResult(): RecordValidationResult;
+export declare function createDefaultRecordValidationResult(): RecordValidationResult;
 
 /**
  * Function that returns a FormValidationResult object with default values
  */
-export function createDefaultFormValidationResult(): FormValidationResult;
+export declare function createDefaultFormValidationResult(): FormValidationResult;
 
 /**
  * Defined Validators
@@ -87,7 +96,7 @@ interface FieldValidator {
 /**
  * Function that returns the parsed message when it needs to interpolate customArgs in the custom error message.
  */
-export function parseMessageWithCustomArgs(
+export declare function parseMessageWithCustomArgs(
   message: string,
   customArgs: any
 ): string;

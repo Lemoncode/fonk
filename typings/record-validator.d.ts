@@ -1,4 +1,4 @@
-import { ValidationResult } from './result.model';
+import { ValidationResult } from './result';
 
 interface RecordValidatorArgs {
   values: any;

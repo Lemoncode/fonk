@@ -1,25 +1,18 @@
+import { DefaultFieldIdType, DefaultRecordIdType } from './common';
 import {
   FieldValidationFunctionSyncAsync,
   FullFieldValidation,
-} from './field-validator.model';
+} from './field-validator';
 import {
   RecordValidationFunctionSyncAsync,
   FullRecordValidation,
-} from './record-validator.model';
+} from './record-validator';
 
 type FieldValidation = FieldValidationFunctionSyncAsync | FullFieldValidation;
-
-export interface FieldValidationSchema {
-  [fieldId: string]: FieldValidation[];
-}
 
 type RecordValidation =
   | RecordValidationFunctionSyncAsync
   | FullRecordValidation;
-
-export interface RecordValidationSchema {
-  [recordId: string]: RecordValidation[];
-}
 
 /**
  * In this structure we can define all the validations associated to a given form (field and record validations).
@@ -30,7 +23,10 @@ export interface RecordValidationSchema {
  *
  * - **record**: optional entry, here we can define all record validations associated to a given form
  */
-export interface ValidationSchema {
-  field?: FieldValidationSchema;
-  record?: RecordValidationSchema;
+export interface ValidationSchema<
+  F extends DefaultFieldIdType = string,
+  R extends DefaultRecordIdType = string
+> {
+  field?: Record<F, FieldValidation[]>;
+  record?: Record<R, RecordValidation[]>;
 }
