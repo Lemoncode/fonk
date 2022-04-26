@@ -833,6 +833,24 @@ describe('safeObjectKeys', () => {
 });
 
 describe('reduceAsync', () => {
+  it('should return default value when it calls with array equals undefined', async () => {
+    // Arrange
+    const array = undefined;
+
+    const sumAsync = async (a, b): Promise<number> => {
+      return a + b;
+    };
+
+    const callback = jest.fn();
+    const defaultValue = 0;
+
+    // Act
+    const result = await reduceAsync(array, callback, defaultValue);
+
+    // Assert
+    expect(result).toEqual(defaultValue);
+  });
+
   it('should return default value when it calls with array equals empty', async () => {
     // Arrange
     const array = [];
