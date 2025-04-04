@@ -14,6 +14,11 @@
     "type-check": {},
     "test": {
       "dependsOn": ["^build"]
+    },
+    "e2e:watch": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build"]
     }
   }
 }

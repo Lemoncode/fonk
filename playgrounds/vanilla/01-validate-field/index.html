@@ -11,19 +11,19 @@
       <h2>Synchronous Field Validation</h2>
       <form id="form">
         <div>
-          <label>First Name</label>
+          <label for="firstName">First Name</label>
           <input id="firstName" type="text" placeholder="First Name" />
-          <span id="firstName-error"></span>
+          <span data-testid="firstName-error" id="firstName-error"></span>
         </div>
         <div>
-          <label>Last Name</label>
+          <label for="lastName">Last Name</label>
           <input id="lastName" type="text" placeholder="Last Name" />
-          <span id="lastName-error"></span>
+          <span data-testid="lastName-error" id="lastName-error"></span>
         </div>
         <div>
-          <label>Age</label>
+          <label for="age">Age</label>
           <input id="age" type="text" placeholder="Age" />
-          <span id="age-error"></span>
+          <span data-testid="age-error" id="age-error"></span>
         </div>
         <div class="buttons">
           <button type="submit">Submit</button>

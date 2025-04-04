@@ -9,7 +9,7 @@ if (length > 1) {
   const response: { selected: string } = await prompts({
     type: 'autocomplete',
     name: 'selected',
-    message: '[playgrounds]',
+    message: '[start]',
     choices: VANILLA_PLAYGROUNDS.map(playground => ({
       title: playground,
       value: formatPlaygroundName(PLAYGROUNDS_SCOPE, 'vanilla', playground),

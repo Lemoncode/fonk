@@ -1,5 +1,4 @@
 import prompts from 'prompts';
-import fs from 'node:fs';
 import { PACKAGES, PACKAGES_SCOPE } from './constants';
 import { filterChoices } from './helpers';
 

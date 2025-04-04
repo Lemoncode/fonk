@@ -38,3 +38,9 @@ backups
 
 playgrounds/**/public
 vite.config.ts.timestamp*
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

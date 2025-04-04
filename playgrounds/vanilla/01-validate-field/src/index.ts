@@ -1,27 +1,26 @@
 import './styles.css';
 import { getFonk, Validators } from '@lemoncode/fonk';
-import { onChange, setValues, setErrors, onSubmit, onReset } from './helpers';
+import { setValues, setErrors, onChange, onSubmit, onReset } from './helpers';
 
 interface MyForm {
   firstName: string;
   lastName: string;
-  age: number;
+  age: number | undefined;
 }
 
 const fonk = getFonk<MyForm>({
   firstName: [Validators.required({ message: 'Required' })],
   lastName: [Validators.required({ message: 'Required' })],
   age: [
-    Validators.required({ message: 'Required' }),
     ({ value }) => (Number.isInteger(value) ? undefined : 'Must be an integer'),
-    ({ value }) => (value >= 18 ? undefined : 'Must be at least 18'),
+    ({ value }) => (value === undefined || value >= 18 ? undefined : 'Must be at least 18'),
   ],
 });
 
 const values: MyForm = {
   firstName: '',
   lastName: '',
-  age: 0,
+  age: undefined,
 };
 
 const errors = {};
@@ -40,7 +39,7 @@ onChange<MyForm>('lastName', async value => {
 
 onChange<MyForm>('age', async value => {
   setValues({ ...values, age: value });
-  const error = await fonk.validateField('age', Number(value));
+  const error = await fonk.validateField('age', value === '' ? undefined : Number(value));
   setErrors({ ...errors, age: error });
 });
 

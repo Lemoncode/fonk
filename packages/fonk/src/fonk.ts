@@ -11,6 +11,7 @@ export const getFonk = <Model>(validationSchema: ValidationSchema<Model>) => {
 
       for (const validator of validators) {
         const error = await validator({ value, values });
+        console.log({ value, validator, error });
         if (error) {
           return error;
         }
