@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>iban-custom-sync-validator, typescript example</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div class="app">
+      <h1>IBAN custom sync validator with Fonk and Plain Vanilla Typescript</h1>
+      <form id="form">
+        <div>
+          <label>Account</label>
+          <input id="account" type="text" placeholder="Account" />
+          <span id="account-error"></span>
+        </div>
+        <div class="buttons">
+          <button type="submit">Submit</button>
+          <button id="reset-button" type="button">Reset</button>
+        </div>
+        <pre id="result"></pre>
+      </form>
+    </div>
+
+    <script src="./src/index.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+{
+  "name": "@lemoncode/fonk",
+  "version": "1.5.4",
+  "description": "Form schema validator library",
+  "private": false,
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "module": "./dist/index.js",
+  "main": "./dist/index.umd.cjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "type-check": "tsc --noEmit --preserveWatchOutput",
+    "test": "vitest run -c ./config/test/config.ts",
+    "test:watch": "vitest -c ./config/test/config.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lemoncode/fonk.git"
+  },
+  "keywords": [
+    "fonk",
+    "validation",
+    "form",
+    "form validation",
+    "validate",
+    "async validation",
+    "sync validation"
+  ],
+  "author": "Lemoncode",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Lemoncode/fonk/issues"
+  },
+  "homepage": "https://github.com/Lemoncode/fonk#readme"
+}

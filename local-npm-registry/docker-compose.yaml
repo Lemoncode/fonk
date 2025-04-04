@@ -1,0 +1,9 @@
+services:
+  local-npm-registry:
+    image: verdaccio/verdaccio
+    ports:
+      - '4873:4873'
+    volumes:
+      - ./config:/verdaccio/conf
+volumes:
+  config:

@@ -1,0 +1,10 @@
+{
+  "name": "local-npm-registry",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prestart": "npm stop",
+    "start": "docker compose up -d",
+    "stop": "docker compose down --remove-orphans"
+  }
+}

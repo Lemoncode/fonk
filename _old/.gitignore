@@ -1,0 +1,12 @@
+node_modules
+.DS_Store
+dist/
+*.orig
+.idea/
+*/src/**/*.js.map
+*.log
+coverage/
+.awcache/
+.rpt2_cache
+react-app-env.d.ts
+.cache

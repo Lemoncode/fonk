@@ -1,0 +1,11 @@
+{
+  "name": "@playgrounds/vanilla-01-validate-field",
+  "private": true,
+  "types": "module",
+  "scripts": {
+    "start": "vite"
+  },
+  "dependencies": {
+    "@lemoncode/fonk": "*"
+  }
+}
