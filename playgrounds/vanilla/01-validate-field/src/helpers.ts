@@ -1,7 +1,20 @@
 import { DeepKey, Errors } from '@lemoncode/fonk';
 
 export const setValues = <Model extends Record<string, any>>(values: Model): Model => {
-  Object.entries(values).forEach(([key, value]) => {
+  const flattenedValues = Object.entries(values).reduce(
+    (acc, [key, value]) => {
+      if (typeof value === 'object' && value !== null) {
+        Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+          acc[`${key}.${nestedKey}`] = nestedValue;
+        });
+      } else {
+        acc[key] = value;
+      }
+      return acc;
+    },
+    {} as Record<string, any>
+  );
+  Object.entries(flattenedValues).forEach(([key, value]) => {
     const element = document.getElementById(key) as HTMLInputElement;
     if (element) {
       element.value = value;
@@ -16,13 +29,15 @@ export const setValues = <Model extends Record<string, any>>(values: Model): Mod
 };
 
 export const setErrors = <Model>(errors: Errors<Model>): Errors<Model> => {
-  Object.entries(errors).forEach(entry => {
-    const [key, error] = entry as [DeepKey<Model>, string];
-    const element = document.getElementById(`${key}-error`);
-    if (element) {
-      element.textContent = error ? error : '';
-    }
-  });
+  if (errors) {
+    Object.entries(errors).forEach(entry => {
+      const [key, error] = entry as [DeepKey<Model>, string];
+      const element = document.getElementById(`${key}-error`);
+      if (element) {
+        element.textContent = error ? error : '';
+      }
+    });
+  }
   return errors;
 };
 

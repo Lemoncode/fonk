@@ -12,20 +12,25 @@ const get = (obj: any, path: string, defaultValue: any): any => {
   return current;
 };
 
-const getArgsToParse = (message: string): string[] => message.match(/{{[^{}][\w\.]*}}/g);
+const getParamsToParse = (message: string): string[] => message.match(/{{[^{}][\w\.]*}}/g);
 
-const getArgPath = (arg: string): string => arg.replace(/[{}]/g, '');
+const getParamPath = (param: string): string => param.replace(/[{}]/g, '');
 
-const parseMessage = (message: string, customArgs: any): string => {
-  const parsableArgs = getArgsToParse(message);
-  return Array.isArray(parsableArgs)
-    ? parsableArgs.reduce(
-        (customMessage, arg) => customMessage.replace(arg, get(customArgs, getArgPath(arg), arg)),
+const parseMessage = (message: string, params: any): string => {
+  const parsableParams = getParamsToParse(message);
+  return Array.isArray(parsableParams)
+    ? parsableParams.reduce(
+        (customMessage, param) => customMessage.replace(param, get(params, getParamPath(param), param)),
         message
       )
     : message;
 };
 
-export const parseMessageWithCustomArgs = (message: string, customArgs: any): string => {
-  return message ? parseMessage(message, customArgs) : '';
+export const replaceParamsInMessage = (message: string, params: any): string => {
+  return message ? parseMessage(message, params) : '';
 };
+
+const isEmptyValue = (value: string) => value === null || value === undefined || value === '';
+
+export const isValidPattern = (value: string, pattern: RegExp): boolean =>
+  isEmptyValue(value) ? true : pattern.test(value);

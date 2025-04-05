@@ -7,11 +7,11 @@ export interface InternalValidatorProps<Model, Field extends DeepKey<Model>> {
   values?: Model;
 }
 
-export type ValidatorProps<CustomArgs> = CustomArgs & {
+export type ValidatorProps<CustomArgs = {}> = CustomArgs & {
   message?: string;
 };
 
-export type ValidatorFn<CustomArgs = any, Model = any, Field extends DeepKey<Model> = any> = (
+export type ValidatorFn<CustomArgs = {}, Model = any, Field extends DeepKey<Model> = any> = (
   props?: ValidatorProps<CustomArgs>
 ) => (props: InternalValidatorProps<Model, Field>) => ErrorMessage | Promise<ErrorMessage> | undefined;
 

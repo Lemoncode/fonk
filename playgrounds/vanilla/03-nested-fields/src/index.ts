@@ -11,7 +11,7 @@ interface MyForm {
 }
 
 const fonk = getFonk<MyForm>({
-  email: [Validators.required()],
+  email: [Validators.required(), Validators.email()],
   'address.street': [Validators.required()],
   'address.city': [Validators.required()],
 });

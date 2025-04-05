@@ -1,5 +1,5 @@
 import type { ValidatorFn, ValidatorProps } from '../model.js';
-import { parseMessageWithCustomArgs } from '../validators.helpers.js';
+import { replaceParamsInMessage } from '../validators.helpers.js';
 
 export interface RequiredParams {
   trim?: boolean;
@@ -17,9 +17,7 @@ const isValidField = (value: any, trim: boolean): boolean =>
 export const required: ValidatorFn<RequiredParams> =
   ({ trim = DEFAULT_PROPS.trim, message = DEFAULT_PROPS.message } = DEFAULT_PROPS) =>
   ({ value }) => {
-    const success = isValidField(value, Boolean(trim));
-
-    if (!success) {
-      return parseMessageWithCustomArgs(message, { trim });
+    if (!isValidField(value, Boolean(trim))) {
+      return replaceParamsInMessage(message, { trim });
     }
   };
