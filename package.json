@@ -4,8 +4,7 @@
   "type": "module",
   "workspaces": [
     "packages/*",
-    "playgrounds/*",
-    "playgrounds/vanilla/01-validate-field"
+    "playgrounds/**/*"
   ],
   "engines": {
     "node": ">=22.0.0"
@@ -15,13 +14,16 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "scripts": {
+    "install:browsers": "playwright install",
     "scripts": "tsx ./run-scripts",
     "start": "npm run scripts -- start",
     "dev": "npm start",
     "test:watch": "npm run scripts -- test-watch",
+    "pree2e:watch": "npm run install:browsers",
     "e2e:watch": "npm run scripts -- e2e-watch",
     "build": "turbo build",
     "test": "turbo test",
+    "pree2e": "npm run install:browsers",
     "e2e": "cross-env CI=true npm run scripts -- e2e",
     "changeset": "changeset",
     "publish-packages": "changeset publish",

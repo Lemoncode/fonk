@@ -1,3 +1,5 @@
+// TODO: Refactor all methods
+
 const get = (obj: any, path: string, defaultValue: any): any => {
   const keys = path.split('.');
   let current = obj;

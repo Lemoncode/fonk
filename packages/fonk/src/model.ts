@@ -1,5 +1,7 @@
 export type ErrorMessage = string;
 
+export type Errors<Model> = Partial<Record<DeepKey<Model>, ErrorMessage | undefined>> | undefined;
+
 export interface InternalValidatorProps<Model, Field extends DeepKey<Model>> {
   value: DeepValue<Model, Field & string>;
   values?: Model;

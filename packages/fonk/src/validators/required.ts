@@ -6,7 +6,7 @@ export interface RequiredParams {
 }
 const DEFAULT_PROPS: ValidatorProps<RequiredParams> = {
   trim: true,
-  message: 'Please fill in this mandatory field.',
+  message: 'Required',
 };
 
 const isStringValid = (value: string, trim: boolean): boolean => (trim ? value.trim().length > 0 : value.length > 0);

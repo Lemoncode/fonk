@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vanilla / 03 Nested fields</title>
+  </head>
+  <body>
+    <main class="app">
+      <h1>Fonk and Vanilla Typescript</h1>
+      <h2>Nested fields</h2>
+      <form id="form">
+        <div>
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="Email" />
+          <span data-testid="email-error" id="email-error"></span>
+        </div>
+        <div>
+          <label for="address.street">Street</label>
+          <input id="address.street" type="text" placeholder="Street" />
+          <span data-testid="address.street-error" id="address.street-error"></span>
+        </div>
+        <div>
+          <label for="address.city">City</label>
+          <input id="address.city" type="text" placeholder="City" />
+          <span data-testid="address.city-error" id="address.city-error"></span>
+        </div>
+        <div class="buttons">
+          <button type="submit">Submit</button>
+          <button id="reset-button" type="button">Reset</button>
+        </div>
+        <pre id="result"></pre>
+      </form>
+    </main>
+    <script type="module" src="/src/index.ts"></script>
+  </body>
+</html>
