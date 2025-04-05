@@ -9,7 +9,7 @@ export const getFonk = <Model>(validationSchema: ValidationSchema<Model>) => {
     const validators = validationSchema[field] || [];
 
     for (const validator of validators) {
-      const error = await validator({ value, values });
+      const error = await validator({ field, value, values });
       if (error) {
         return error;
       }

@@ -25,6 +25,7 @@ const INITIAL_VALUES: MyForm = {
 };
 
 let values: MyForm = INITIAL_VALUES;
+setValues(values);
 
 const INITIAL_ERRORS: Errors<MyForm> = {
   email: undefined,

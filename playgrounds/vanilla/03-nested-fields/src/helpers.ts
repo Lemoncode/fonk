@@ -38,6 +38,15 @@ export const setErrors = <Model>(errors: Errors<Model>): Errors<Model> => {
       }
     });
   }
+  const errorElement = document.getElementById('errors');
+  if (errorElement) {
+    console.log(errors);
+    errorElement.textContent = JSON.stringify(
+      errors,
+      (_, value) => (value === undefined ? '__undefined' : value),
+      2
+    ).replace(/"__undefined"/g, 'undefined');
+  }
   return errors;
 };
 

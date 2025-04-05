@@ -3,8 +3,9 @@ export type ErrorMessage = string;
 export type Errors<Model> = Partial<Record<DeepKey<Model>, ErrorMessage | undefined>> | undefined;
 
 export interface InternalValidatorProps<Model, Field extends DeepKey<Model>> {
+  field: Field;
   value: DeepValue<Model, Field & string>;
-  values?: Model;
+  values: Model;
 }
 
 export type ValidatorProps<CustomArgs = {}> = CustomArgs & {
@@ -15,9 +16,19 @@ export type ValidatorFn<CustomArgs = {}, Model = any, Field extends DeepKey<Mode
   props?: ValidatorProps<CustomArgs>
 ) => (props: InternalValidatorProps<Model, Field>) => ErrorMessage | Promise<ErrorMessage> | undefined;
 
+// export type DeepKey<Model> = Model extends object
+//   ? {
+//       [K in keyof Model]: Model[K] extends Array<infer ArrayType>
+//         ? `${Exclude<K, symbol>}[${number}].${DeepKey<ArrayType>}`
+//         : `${Exclude<K, symbol>}${DeepKey<Model[K]> extends never ? '' : `.${DeepKey<Model[K]>}`}`;
+//     }[keyof Model]
+//   : never;
+
 export type DeepKey<Model> = Model extends object
   ? {
-      [K in keyof Model]: `${Exclude<K, symbol>}${DeepKey<Model[K]> extends never ? '' : `.${DeepKey<Model[K]>}`}`;
+      [K in keyof Model]: Model[K] extends Array<infer ArrayType>
+        ? `${Exclude<K, symbol>}[i].${DeepKey<ArrayType>}` | `${Exclude<K, symbol>}[${number}].${DeepKey<ArrayType>}`
+        : `${Exclude<K, symbol>}${DeepKey<Model[K]> extends never ? '' : `.${DeepKey<Model[K]>}`}`;
     }[keyof Model]
   : never;
 
