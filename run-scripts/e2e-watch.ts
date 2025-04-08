@@ -1,5 +1,5 @@
 import prompts from 'prompts';
-import { VANILLA_PLAYGROUNDS, PLAYGROUNDS_SCOPE } from './constants';
+import { VANILLA_PLAYGROUNDS, REACT_PLAYGROUNDS, PLAYGROUNDS_SCOPE } from './constants';
 import { filterChoices, formatPlaygroundName } from './helpers';
 
 const { selected } = await prompts({
@@ -8,8 +8,12 @@ const { selected } = await prompts({
   message: '[e2e:watch]',
   choices: [
     ...VANILLA_PLAYGROUNDS.map(playground => ({
-      title: playground,
+      title: `vanilla/${playground}`,
       value: formatPlaygroundName(PLAYGROUNDS_SCOPE, 'vanilla', playground),
+    })),
+    ...REACT_PLAYGROUNDS.map(playground => ({
+      title: `react/${playground}`,
+      value: formatPlaygroundName(PLAYGROUNDS_SCOPE, 'react', playground),
     })),
   ],
   suggest: filterChoices,

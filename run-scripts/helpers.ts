@@ -17,5 +17,4 @@ export const exec = command => {
 export const filterChoices = (input: string, choices: Choice[]) =>
   Promise.resolve(choices.filter(choice => choice.title.toLocaleLowerCase().includes(input.toLocaleLowerCase())));
 
-export const formatPlaygroundName = (scope: string, subforlder: string, name: string) =>
-  `${scope}/${subforlder}-${name}`;
+export const formatPlaygroundName = (scope: string, subfolder: string, name: string) => `${scope}/${subfolder}-${name}`;

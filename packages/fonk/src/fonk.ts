@@ -1,15 +1,21 @@
 import type { Errors, DeepKey, DeepValue, ErrorMessage, ValidationSchema } from './model.js';
 
+const ARRAY_FIELD_REGEX = /\[(\d+)\]/g;
+
+const isArrayField = <Field>(field: Field): boolean =>
+  ARRAY_FIELD_REGEX.test(field as string) || /\[i\]/.test(field as string);
+
 export const getFonk = <Model>(validationSchema: ValidationSchema<Model>) => {
   const validateField = async <Field extends DeepKey<Model>>(
     field: Field,
     value: DeepValue<Model, Field & string>,
     values?: Model
   ): Promise<ErrorMessage | undefined> => {
-    const validators = validationSchema[field] || [];
+    const key = isArrayField(field) ? field.replaceAll(ARRAY_FIELD_REGEX, '[i]') : field;
+    const validators = validationSchema[key as Field] || [];
 
     for (const validator of validators) {
-      const error = await validator({ field, value, values });
+      const error = await validator({ value, values });
       if (error) {
         return error;
       }
@@ -32,15 +38,50 @@ export const getFonk = <Model>(validationSchema: ValidationSchema<Model>) => {
 
   const hasSomeError = (errors: Errors<Model>): boolean => Object.values(errors).some(error => error !== undefined);
 
+  const validateArrayField = async <Field extends DeepKey<Model>>(
+    field: Field,
+    values: Model,
+    nestedProperty?: string
+  ): Promise<Errors<Model>> => {
+    const errors: Errors<Model> = {};
+    const [arrayField] = nestedProperty ? nestedProperty.split('[i].') : field.split('[i].');
+    const arrayFieldLength = `${arrayField}[i].`.length;
+    const property = nestedProperty ? nestedProperty.substring(arrayFieldLength) : field.substring(arrayFieldLength);
+    const array = getDeepValue(arrayField as DeepKey<Model>, values);
+    console.log(
+      `Validating array field ${arrayField} with value ${JSON.stringify(array)} and property ${property}, nestedProperty ${nestedProperty}`
+    );
+    if (Array.isArray(array)) {
+      for (const [index, item] of array.entries()) {
+        if (isArrayField(property)) {
+          const propertyErrors = await validateArrayField(field, item, property);
+          for (const propertyKey in propertyErrors) {
+            errors[`${arrayField}[${index}]${propertyKey}`] = propertyErrors[propertyKey];
+          }
+        } else {
+          const key = `${arrayField}[${index}].${property}` as DeepKey<Model>;
+          errors[key] = await validateField(field, item[property], item);
+        }
+      }
+    }
+    return errors;
+  };
+
   return {
     validateField,
     validateAll: async (values: Model): Promise<Errors<Model>> => {
-      const errors: Errors<Model> = {};
+      let errors: Errors<Model> = {};
 
-      for (const field in validationSchema) {
-        const value = getDeepValue(field as DeepKey<Model>, values);
-        const error = await validateField(field as DeepKey<Model>, value, values);
-        errors[field as DeepKey<Model>] = error;
+      for (const key in validationSchema) {
+        const field = key as DeepKey<Model>;
+        if (isArrayField(field)) {
+          const arrayErrors = await validateArrayField(field, values);
+          errors = { ...errors, ...arrayErrors };
+        } else {
+          const value = getDeepValue(field, values);
+          const error = await validateField(field, value, values);
+          errors[field] = error;
+        }
       }
 
       return hasSomeError(errors) ? errors : undefined;
