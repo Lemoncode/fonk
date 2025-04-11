@@ -36,6 +36,7 @@
     "@playwright/test": "^1.51.1",
     "@types/node": "^22.13.17",
     "@types/prompts": "^2.4.9",
+    "@vitest/coverage-v8": "^3.1.1",
     "cross-env": "^7.0.3",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.0",

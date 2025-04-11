@@ -5,12 +5,14 @@ const ARRAY_FIELD_REGEX = /\[(\d+)\]/g;
 const isArrayField = <Field>(field: Field): boolean =>
   ARRAY_FIELD_REGEX.test(field as string) || /\[i\]/.test(field as string);
 
-export const getFonk = <Model>(validationSchema: ValidationSchema<Model>) => {
+export const getFonk = <Model, ValidationResult = ErrorMessage>(
+  validationSchema: ValidationSchema<Model, ValidationResult>
+) => {
   const validateField = async <Field extends DeepKey<Model>>(
     field: Field,
     value: DeepValue<Model, Field & string>,
     values?: Model
-  ): Promise<ErrorMessage | undefined> => {
+  ): Promise<ValidationResult | undefined> => {
     const key = isArrayField(field) ? field.replaceAll(ARRAY_FIELD_REGEX, '[i]') : field;
     const validators = validationSchema[key as Field] || [];
 
@@ -36,14 +38,15 @@ export const getFonk = <Model>(validationSchema: ValidationSchema<Model>) => {
     }, values) as DeepValue<Model, Field & string>;
   };
 
-  const hasSomeError = (errors: Errors<Model>): boolean => Object.values(errors).some(error => error !== undefined);
+  const hasSomeError = (errors: Errors<Model, ValidationResult>): boolean =>
+    Object.values(errors).some(error => error !== undefined);
 
   const validateArrayField = async <Field extends DeepKey<Model>>(
     field: Field,
     values: Model,
     nestedProperty?: string
-  ): Promise<Errors<Model>> => {
-    const errors: Errors<Model> = {};
+  ): Promise<Errors<Model, ValidationResult>> => {
+    const errors: Errors<Model, ValidationResult> = {};
     const [arrayField] = nestedProperty ? nestedProperty.split('[i].') : field.split('[i].');
     const arrayFieldLength = `${arrayField}[i].`.length;
     const property = nestedProperty ? nestedProperty.substring(arrayFieldLength) : field.substring(arrayFieldLength);
@@ -69,8 +72,8 @@ export const getFonk = <Model>(validationSchema: ValidationSchema<Model>) => {
 
   return {
     validateField,
-    validateAll: async (values: Model): Promise<Errors<Model>> => {
-      let errors: Errors<Model> = {};
+    validateAll: async (values: Model): Promise<Errors<Model, ValidationResult>> => {
+      let errors: Errors<Model, ValidationResult> = {};
 
       for (const key in validationSchema) {
         const field = key as DeepKey<Model>;

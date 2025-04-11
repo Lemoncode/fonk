@@ -21,7 +21,7 @@
   "scripts": {
     "build": "vite build",
     "type-check": "tsc --noEmit --preserveWatchOutput",
-    "test": "vitest run -c ./config/test/config.ts",
+    "test": "vitest run --coverage -c ./config/test/config.ts",
     "test:watch": "vitest -c ./config/test/config.ts"
   },
   "repository": {
