@@ -4,9 +4,23 @@ export type Errors<Model, ValidationResult = ErrorMessage> =
   | Partial<Record<DeepKey<Model>, ValidationResult | undefined>>
   | undefined;
 
+type ExtractArrayPaths<Field extends string> =
+  Field extends `${infer Prefix}[${string}].${infer ArrayName}[${string}]${infer Rest}`
+    ? Prefix | `${Prefix}.${ArrayName}` | ExtractArrayPaths<`${Prefix}[${string}].${ArrayName}${Rest}`>
+    : Field extends `${infer Prefix}.${infer ArrayName}[${string}]${infer Rest}`
+      ? `${Prefix}.${ArrayName}` | ExtractArrayPaths<`${Prefix}.${ArrayName}${Rest}`>
+      : Field extends `${infer Prefix}[${string}]${infer Rest}`
+        ? Prefix | ExtractArrayPaths<`${Prefix}${Rest}`>
+        : never;
+
+export type ArrayIndexes<Field extends string = string> = {
+  [K in ExtractArrayPaths<Field>]?: number;
+};
+
 export interface InternalValidatorProps<Model, Field extends DeepKey<Model>> {
   value: DeepValue<Model, Field & string>;
   values: Model;
+  arrayIndexes: ArrayIndexes<Field & string>;
 }
 
 export type ValidatorProps<CustomArgs = {}> = CustomArgs & {

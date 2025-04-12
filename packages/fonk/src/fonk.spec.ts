@@ -467,6 +467,117 @@ describe('validateField', () => {
     });
     expect(productDItemResult).toEqual('error6');
   });
+
+  it('should validate array fields with array indexes correctly', async () => {
+    // Arrange
+    const internalValidator = vi.fn(() => 'error');
+    const validator: ValidatorFn = () => internalValidator;
+    const { validateField } = getFonk<ExampleModel>({
+      'products[i].name': [validator()],
+      'client.orders[i]': [validator()],
+      products: [validator()],
+      'products[i].reviews[i]': [validator()],
+      'products[i].a': [validator()],
+      'products[i].a[i].b': [validator()],
+      'products[i].a[i].b[i].c': [validator()],
+      'products[i].a[i].b[i].c[i].d': [validator()],
+      'products[i].a[i].b[i].c[i].d[i]': [validator()],
+    });
+
+    // Act
+    const values: ExampleModel = {
+      name: 'test',
+      age: 10,
+      client: { name: 'test', orders: ['order1', 'order2'] },
+      products: [
+        {
+          id: 'id',
+          name: 'name',
+          reviews: ['review1', 'review2'],
+          a: [{ b: [{ c: [{ d: ['d-value'] }] }] }],
+        },
+      ],
+    };
+    await validateField('products[0].name', 'test', values, { products: 0 });
+    await validateField('client.orders[0]', 'order1', values, { 'client.orders': 0 });
+    await validateField('products[1].reviews[20]', 'review20', values, {
+      products: 1,
+      'products.reviews': 20,
+    });
+    await validateField('products', [{ id: 'id', name: 'name', reviews: [] }], values);
+    await validateField('products[0].a', [{ b: [{ c: [{ d: ['test'] }] }] }], values, {
+      products: 0,
+    });
+    await validateField('products[0].a[1].b', [{ c: [{ d: ['test'] }] }], values, {
+      products: 0,
+      'products.a': 1,
+    });
+    await validateField('products[0].a[1].b[2].c', [{ d: ['test'] }], values, {
+      products: 0,
+      'products.a': 1,
+      'products.a.b': 2,
+    });
+    await validateField('products[0].a[1].b[2].c[3].d', ['test'], values, {
+      products: 0,
+      'products.a': 1,
+      'products.a.b': 2,
+      'products.a.b.c': 3,
+    });
+    await validateField('products[0].a[1].b[2].c[3].d[4]', 'test', values, {
+      products: 0,
+      'products.a': 1,
+      'products.a.b': 2,
+      'products.a.b.c': 3,
+      'products.a.b.c.d': 4,
+    });
+
+    // Assert
+    expect(internalValidator).toHaveBeenNthCalledWith(1, {
+      value: 'test',
+      values,
+      arrayIndexes: { products: 0 },
+    });
+    expect(internalValidator).toHaveBeenNthCalledWith(2, {
+      value: 'order1',
+      values,
+      arrayIndexes: { 'client.orders': 0 },
+    });
+    expect(internalValidator).toHaveBeenNthCalledWith(3, {
+      value: 'review20',
+      values,
+      arrayIndexes: { products: 1, 'products.reviews': 20 },
+    });
+    expect(internalValidator).toHaveBeenNthCalledWith(4, {
+      value: [{ id: 'id', name: 'name', reviews: [] }],
+      values,
+      arrayIndexes: undefined,
+    });
+    expect(internalValidator).toHaveBeenNthCalledWith(5, {
+      value: [{ b: [{ c: [{ d: ['test'] }] }] }],
+      values,
+      arrayIndexes: { products: 0 },
+    });
+    expect(internalValidator).toHaveBeenNthCalledWith(6, {
+      value: [{ c: [{ d: ['test'] }] }],
+      values,
+      arrayIndexes: { products: 0, 'products.a': 1 },
+    });
+    expect(internalValidator).toHaveBeenNthCalledWith(7, {
+      value: [{ d: ['test'] }],
+      values,
+      arrayIndexes: { products: 0, 'products.a': 1, 'products.a.b': 2 },
+    });
+    expect(internalValidator).toHaveBeenNthCalledWith(8, {
+      value: ['test'],
+      values,
+      arrayIndexes: { products: 0, 'products.a': 1, 'products.a.b': 2, 'products.a.b.c': 3 },
+    });
+    expect(internalValidator).toHaveBeenNthCalledWith(9, {
+      value: 'test',
+      values,
+      arrayIndexes: { products: 0, 'products.a': 1, 'products.a.b': 2, 'products.a.b.c': 3, 'products.a.b.c.d': 4 },
+    });
+  });
 });
 
 describe('validateAll', () => {
@@ -935,69 +1046,104 @@ describe('validateAll', () => {
 
   it('should validate array fields correctly', async () => {
     // Arrange
-    const internalValidator = vi.fn(() => 'error');
+    const internalValidator = vi.fn(({ value }) => `error-${value}`);
     const validator: ValidatorFn = () => internalValidator;
     const { validateAll } = getFonk<ExampleModel>({
       'products[i].name': [validator()],
     });
 
     // Act
-    const result = await validateAll({
+    const values: ExampleModel = {
       name: 'test',
       age: 10,
       client: { name: 'test', orders: [] },
-      products: [{ id: 'id', name: 'test', reviews: [] }],
-    });
+      products: [
+        { id: 'id-1', name: 'test-1', reviews: [] },
+        { id: 'id-2', name: 'test-2', reviews: [] },
+      ],
+    };
+    const result = await validateAll(values);
 
     // Assert
-    expect(internalValidator).toHaveBeenCalledWith({
-      value: 'test',
-      values: { id: 'id', name: 'test', reviews: [] },
+    expect(internalValidator).toHaveBeenNthCalledWith(1, {
+      value: 'test-1',
+      values,
+      arrayIndexes: { products: 0 },
+    });
+    expect(internalValidator).toHaveBeenNthCalledWith(2, {
+      value: 'test-2',
+      values,
+      arrayIndexes: { products: 1 },
     });
     const expectedError: Errors<ExampleModel> = {
-      'products[0].name': 'error',
+      'products[0].name': 'error-test-1',
+      'products[1].name': 'error-test-2',
     };
     expect(result).toEqual(expectedError);
   });
 
   it('should validate nested fields in array fields correctly', async () => {
     // Arrange
-    const ordersInternalValidator = vi.fn(() => 'error');
-    const ordersValidator: ValidatorFn = () => ordersInternalValidator;
-    const reviewsInternalValidator = vi.fn(() => 'error');
-    const reviewsValidator: ValidatorFn = () => reviewsInternalValidator;
+    const internalValidator = vi.fn(({ value }) => `error-${value}`);
+    const validator: ValidatorFn = () => internalValidator;
     const { validateAll } = getFonk<ExampleModel>({
-      'client.orders[i]': [ordersValidator()],
-      'products[i].reviews[i]': [reviewsValidator()],
+      'client.orders[i]': [validator()],
+      'products[i].reviews[i]': [validator()],
     });
 
     // Act
-    const result = await validateAll({
+    const values: ExampleModel = {
       name: 'test',
       age: 10,
       client: { name: 'test', orders: ['order1', 'order2'] },
-      products: [{ id: 'id', name: 'test', reviews: ['review1', 'review2'] }],
-    });
+      products: [
+        { id: 'id-1', name: 'name-1', reviews: ['review1', 'review2'] },
+        { id: 'id-2', name: 'name-2', reviews: ['review3'] },
+      ],
+    };
+    const result = await validateAll(values);
 
     // Assert
-    expect(ordersInternalValidator).toHaveBeenCalledWith({
+    expect(internalValidator).toHaveBeenNthCalledWith(1, {
       value: 'order1',
-      values: { name: 'test', age: 10, client: { name: 'test', orders: ['order1', 'order2'] }, products: [] },
+      values,
+      arrayIndexes: { 'client.orders': 0 },
     });
-    expect(ordersInternalValidator).toHaveBeenCalledWith({
+    expect(internalValidator).toHaveBeenNthCalledWith(2, {
       value: 'order2',
-      values: { name: 'test', age: 10, client: { name: 'test', orders: ['order1', 'order2'] }, products: [] },
+      values,
+      arrayIndexes: { 'client.orders': 1 },
     });
-    expect(reviewsInternalValidator).toHaveBeenCalledWith({
+    expect(internalValidator).toHaveBeenNthCalledWith(3, {
       value: 'review1',
-      values: { id: 'id', name: 'test', reviews: ['review1', 'review2'] },
+      values,
+      arrayIndexes: {
+        products: 0,
+        'products.reviews': 0,
+      },
     });
-    expect(reviewsInternalValidator).toHaveBeenCalledWith({
+    expect(internalValidator).toHaveBeenNthCalledWith(4, {
       value: 'review2',
-      values: { id: 'id', name: 'test', reviews: ['review1', 'review2'] },
+      values,
+      arrayIndexes: {
+        products: 0,
+        'products.reviews': 1,
+      },
+    });
+    expect(internalValidator).toHaveBeenNthCalledWith(5, {
+      value: 'review3',
+      values,
+      arrayIndexes: {
+        products: 1,
+        'products.reviews': 0,
+      },
     });
     const expectedError: Errors<ExampleModel> = {
-      'products[0].reviews[0]': 'error',
+      'client.orders[0]': 'error-order1',
+      'client.orders[1]': 'error-order2',
+      'products[0].reviews[0]': 'error-review1',
+      'products[0].reviews[1]': 'error-review2',
+      'products[1].reviews[0]': 'error-review3',
     };
     expect(result).toEqual(expectedError);
   });
@@ -1027,7 +1173,7 @@ describe('validateAll', () => {
     });
 
     // Act
-    const result = await validateAll({
+    const values: ExampleModel = {
       name: 'test',
       age: 10,
       client: { name: 'test', orders: [] },
@@ -1036,10 +1182,11 @@ describe('validateAll', () => {
           id: 'id',
           name: 'name',
           reviews: [],
-          a: [{ b: [{ c: [{ d: ['test'] }] }] }],
+          a: [{ b: [{ c: [{ d: ['d-value'] }] }] }],
         },
       ],
-    });
+    };
+    const result = await validateAll(values);
 
     // Assert
     expect(productsInternalValidator).toHaveBeenCalledWith({
@@ -1048,53 +1195,40 @@ describe('validateAll', () => {
           id: 'id',
           name: 'name',
           reviews: [],
-          a: [{ b: [{ c: [{ d: ['test'] }] }] }],
+          a: [{ b: [{ c: [{ d: ['d-value'] }] }] }],
         },
       ],
-      values: {
-        name: 'test',
-        age: 10,
-        client: { name: 'test', orders: [] },
-        products: [
-          {
-            id: 'id',
-            name: 'name',
-            reviews: [],
-            a: [{ b: [{ c: [{ d: ['test'] }] }] }],
-          },
-        ],
-      },
+      values,
     });
     expect(productAInternalValidator).toHaveBeenCalledWith({
-      value: [{ b: [{ c: [{ d: ['test'] }] }] }],
-      values: { id: 'id', name: 'name', reviews: [], a: [{ b: [{ c: [{ d: ['test'] }] }] }] },
+      value: [{ b: [{ c: [{ d: ['d-value'] }] }] }],
+      values,
+      arrayIndexes: { products: 0 },
     });
     expect(productBInternalValidator).toHaveBeenCalledWith({
-      value: [{ c: [{ d: ['test'] }] }],
-      values: { b: [{ c: [{ d: ['test'] }] }] },
+      value: [{ c: [{ d: ['d-value'] }] }],
+      values,
+      arrayIndexes: { products: 0, 'products.a': 0 },
     });
     expect(productCInternalValidator).toHaveBeenCalledWith({
-      value: [{ d: ['test'] }],
-      values: { c: [{ d: ['test'] }] },
+      value: [{ d: ['d-value'] }],
+      values,
+      arrayIndexes: { products: 0, 'products.a': 0, 'products.a.b': 0 },
     });
     expect(productDInternalValidator).toHaveBeenCalledWith({
-      value: ['test'],
-      values: { d: ['test'] },
+      value: ['d-value'],
+      values,
+      arrayIndexes: { products: 0, 'products.a': 0, 'products.a.b': 0, 'products.a.b.c': 0 },
     });
     expect(productDItemInternalValidator).toHaveBeenCalledWith({
-      value: 'test',
-      values: {
-        name: 'test',
-        age: 10,
-        client: { name: 'test', orders: [] },
-        products: [
-          {
-            id: 'id',
-            name: 'name',
-            reviews: [],
-            a: [{ b: [{ c: [{ d: ['test'] }] }] }],
-          },
-        ],
+      value: 'd-value',
+      values,
+      arrayIndexes: {
+        products: 0,
+        'products.a': 0,
+        'products.a.b': 0,
+        'products.a.b.c': 0,
+        'products.a.b.c.d': 0,
       },
     });
     const expectedError: Errors<ExampleModel> = {
