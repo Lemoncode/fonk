@@ -17,6 +17,15 @@ export type ArrayIndexes<Field extends string = string> = {
   [K in ExtractArrayPaths<Field>]?: number;
 };
 
+export interface ArrayValidationContext<Model, Field extends DeepKey<Model>> {
+  field: Field;
+  values: Model;
+  path: string[];
+  segmentValue?: Model | DeepValue<Model, Field & string>;
+  arrayIndexes?: ArrayIndexes<Field & string>;
+  lastArrayIndexSegment?: string;
+}
+
 export interface InternalValidatorProps<Model, Field extends DeepKey<Model>> {
   value: DeepValue<Model, Field & string>;
   values: Model;
@@ -88,5 +97,6 @@ export type ValidationSchema<Model, ValidationResult = ErrorMessage> = {
 export type ValidateFieldFn<Model, ValidationResult = ErrorMessage> = <Field extends DeepKey<Model>>(
   field: Field,
   value: DeepValue<Model, Field & string>,
-  values?: Model
-) => Promise<ValidationResult | undefined | void>;
+  values?: Model,
+  arrayIndexes?: ArrayIndexes<Field & string>
+) => Promise<ValidationResult | undefined>;

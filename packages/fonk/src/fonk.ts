@@ -1,20 +1,23 @@
-import type { Errors, DeepKey, DeepValue, ErrorMessage, ValidationSchema, ArrayIndexes } from './model.js';
-const ARRAY_FIELD_REGEX = /\[(\d+)\]/g;
+import type {
+  Errors,
+  DeepKey,
+  DeepValue,
+  ErrorMessage,
+  ValidationSchema,
+  ArrayIndexes,
+  ArrayValidationContext,
+  ValidateFieldFn,
+} from './fonk.model.js';
+import { getValueAtPath, hasSomeError, isArrayField } from './fonk.helpers.js';
+import { ARRAY_FIELD_REGEX } from './fonk.constants.js';
 
-const isArrayField = <Field>(field: Field): boolean =>
-  ARRAY_FIELD_REGEX.test(field as string) || /\[i\]/.test(field as string);
-
+// TODO: Check this "standard" for validation libraries: https://github.com/standard-schema/standard-schema
 export const getFonk = <Model, ValidationResult = ErrorMessage>(
   validationSchema: ValidationSchema<Model, ValidationResult>
 ) => {
-  const validateField = async <Field extends DeepKey<Model>>(
-    field: Field,
-    value: DeepValue<Model, Field & string>,
-    values?: Model,
-    arrayIndexes?: ArrayIndexes<Field & string>
-  ): Promise<ValidationResult | undefined> => {
+  const validateField: ValidateFieldFn<Model, ValidationResult> = async (field, value, values, arrayIndexes) => {
     const key = isArrayField(field) ? field.replaceAll(ARRAY_FIELD_REGEX, '[i]') : field;
-    const validators = validationSchema[key as Field] || [];
+    const validators = validationSchema[key] || [];
 
     for (const validator of validators) {
       const error = await validator({ value, values, arrayIndexes });
@@ -24,74 +27,65 @@ export const getFonk = <Model, ValidationResult = ErrorMessage>(
     }
   };
 
-  // TODO: Temporal solution. Refactor
-  const getDeepValue = (field: string, values: any) => {
-    const keys = field.split('.');
-    return keys.reduce((result, key) => {
-      if (result && typeof result === 'object') {
-        return result[key];
-      }
-      return undefined;
-    }, values);
-  };
+  const parseSegment = (segment: string): string =>
+    isArrayField(segment) ? segment.substring(0, segment.indexOf('[')) : segment;
 
-  const hasSomeError = (errors: Errors<Model, ValidationResult>): boolean =>
-    Object.values(errors).some(error => error !== undefined);
-
-  const getFirstField = (field: string): string => {
-    const firstPart = field.split('.')[0];
-    return isArrayField(firstPart) ? firstPart.substring(0, firstPart.indexOf('[')) : firstPart;
-  };
-
-  const validateArrayField = async <Field extends DeepKey<Model>>(
-    field: Field,
-    values: Model,
-    nestedField?: string,
-    nestedValues?: any,
-    arrayIndexes?: ArrayIndexes<Field & string>,
-    parentPath?: string
-  ): Promise<Errors<Model, ValidationResult>> => {
+  const validateArraySegment = async <Field extends DeepKey<Model>>(
+    nextContext: ArrayValidationContext<Model, Field>,
+    value: any,
+    segment: string,
+    isLastSegment: boolean
+  ) => {
     const errors: Errors<Model, ValidationResult> = {};
-    const currentField = nestedField ?? field;
-    const firstField = getFirstField(currentField);
-    const value = getDeepValue(firstField, nestedValues ?? values);
-    const nextField = currentField.split('.').slice(1).join('.');
-
-    const fullPath = parentPath ? `${parentPath}.${firstField}` : firstField;
-
-    if (currentField !== firstField && Array.isArray(value)) {
-      for (const [index, v] of value.entries()) {
-        if (nextField) {
-          const arrayErrors = await validateArrayField(
-            field,
-            values,
-            nextField,
-            v,
-            {
-              ...(arrayIndexes ?? {}),
-              [fullPath]: index, // Usar la ruta completa como clave
-            },
-            fullPath
-          );
-          for (const propertyKey in arrayErrors) {
-            errors[`${firstField}[${index}].${propertyKey}`] = arrayErrors[propertyKey];
-          }
-        } else {
-          const error = await validateField(field, v, values, {
-            ...(arrayIndexes ?? {}),
-            [fullPath]: index,
-          });
-          errors[`${firstField}[${index}]`] = error;
+    for (let index = 0; index < value.length; index++) {
+      const arrayIndexes = {
+        ...(nextContext.arrayIndexes ?? {}),
+        [nextContext.lastArrayIndexSegment]: index,
+      };
+      if (isLastSegment) {
+        const error = await validateField(nextContext.field, value[index], nextContext.values, arrayIndexes);
+        errors[`${segment}[${index}]`] = error;
+      } else {
+        const nestedErrors = await validateArrayField({
+          ...nextContext,
+          segmentValue: value[index],
+          arrayIndexes,
+        });
+        for (const key in nestedErrors) {
+          errors[`${segment}[${index}].${key}`] = nestedErrors[key];
         }
       }
-    } else if (nextField) {
-      const arrayErrors = await validateArrayField(field, values, nextField, value, arrayIndexes, fullPath);
-      for (const propertyKey in arrayErrors) {
-        errors[`${firstField}.${propertyKey}`] = arrayErrors[propertyKey];
-      }
+    }
+    return errors;
+  };
+
+  const validateArrayField = async <Field extends DeepKey<Model>>(context: ArrayValidationContext<Model, Field>) => {
+    let errors: Errors<Model, ValidationResult> = {};
+    const originalSegment = context.path[0];
+    const segment = parseSegment(originalSegment);
+    const value = getValueAtPath([segment], context.segmentValue);
+    const nextPath = context.path.slice(1);
+    const isLastSegment = nextPath.length === 0;
+    const arrayIndexSegment = context.lastArrayIndexSegment ? `${context.lastArrayIndexSegment}.${segment}` : segment;
+    const nextContex: ArrayValidationContext<Model, Field> = {
+      ...context,
+      path: nextPath,
+      segmentValue: value,
+      lastArrayIndexSegment: arrayIndexSegment,
+    };
+
+    if (isArrayField(originalSegment) && Array.isArray(value)) {
+      const arraySegmentErrors = await validateArraySegment(nextContex, value, segment, isLastSegment);
+      errors = { ...errors, ...arraySegmentErrors };
+    } else if (isLastSegment) {
+      const error = await validateField(context.field, value, context.values, context.arrayIndexes);
+      errors[segment] = error;
     } else {
-      const error = await validateField(field, value, values, arrayIndexes);
-      errors[firstField] = error;
+      // Validate object segment
+      const nestedErrors = await validateArrayField(nextContex);
+      for (const key in nestedErrors) {
+        errors[`${segment}.${key}`] = nestedErrors[key];
+      }
     }
     return errors;
   };
@@ -103,11 +97,17 @@ export const getFonk = <Model, ValidationResult = ErrorMessage>(
 
       for (const key in validationSchema) {
         const field = key as DeepKey<Model>;
+        const path = field.split('.');
         if (isArrayField(field)) {
-          const arrayErrors = await validateArrayField(field, values);
+          const arrayErrors = await validateArrayField({
+            field,
+            values,
+            path,
+            segmentValue: values,
+          });
           errors = { ...errors, ...arrayErrors };
         } else {
-          const value = getDeepValue(field, values);
+          const value = getValueAtPath(path, values);
           const error = await validateField(field, value, values);
           errors[field] = error;
         }

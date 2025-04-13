@@ -1,5 +1,5 @@
 import { getFonk } from './fonk.js';
-import type { Errors, ValidatorFn } from './model.js';
+import type { Errors, ValidatorFn } from './fonk.model.js';
 
 interface ExampleModel {
   name: string;

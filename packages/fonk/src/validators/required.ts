@@ -1,5 +1,5 @@
-import type { ValidatorFn, ValidatorProps } from '../model.js';
-import { replaceParamsInMessage } from '../validators.helpers.js';
+import type { ValidatorFn, ValidatorProps } from '../fonk.model.js';
+import { replaceParamsInMessage } from '../fonk.helpers.js';
 
 export interface RequiredParams {
   trim?: boolean;

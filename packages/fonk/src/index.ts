@@ -1,4 +1,4 @@
 export * from './fonk.js';
-export * from './model.js';
+export * from './fonk.model.js';
 export * as Validators from './validators/index.js';
-export * from './validators.helpers.js';
+export * from './fonk.helpers.js';

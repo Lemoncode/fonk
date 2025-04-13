@@ -1,5 +1,5 @@
-import type { ValidatorFn, ValidatorProps } from '../model.js';
-import { isValidPattern } from '../validators.helpers.js';
+import type { ValidatorFn, ValidatorProps } from '../fonk.model.js';
+import { isValidPattern } from '../fonk.helpers.js';
 
 const DEFAULT_PROPS: ValidatorProps = {
   message: 'Invalid email',

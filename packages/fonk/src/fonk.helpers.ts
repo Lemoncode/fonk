@@ -1,5 +1,24 @@
 // TODO: Refactor all methods
 
+import { ARRAY_FIELD_REGEX } from './fonk.constants.js';
+import type { Errors } from './fonk.model.js';
+
+// TODO: Temporal solution. Refactor
+export const getValueAtPath = <Model>(path: string[], values: Model) => {
+  return path.reduce((result, segment) => {
+    if (result && typeof result === 'object') {
+      return result[segment];
+    }
+    return undefined;
+  }, values);
+};
+
+export const hasSomeError = <Model, ValidationResult>(errors: Errors<Model, ValidationResult>): boolean =>
+  Object.values(errors).some(error => error !== undefined);
+
+export const isArrayField = <Field extends string>(field: Field): boolean =>
+  ARRAY_FIELD_REGEX.test(field) || /\[i\]/.test(field);
+
 const get = (obj: any, path: string, defaultValue: any): any => {
   const keys = path.split('.');
   let current = obj;

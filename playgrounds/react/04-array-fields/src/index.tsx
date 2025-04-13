@@ -1,5 +1,5 @@
 import './styles.css';
-import { ValidateFieldFn, Errors, getFonk, Validators } from '@lemoncode/fonk';
+import { Errors, getFonk, Validators } from '@lemoncode/fonk';
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 
@@ -31,11 +31,6 @@ const INITIAL_ERRORS: Errors<MyForm> = {};
 const App = () => {
   const [values, setValues] = React.useState<MyForm>(INITIAL_VALUES);
   const [errors, setErrors] = React.useState<Errors<MyForm>>(INITIAL_ERRORS);
-
-  const validateField: ValidateFieldFn<MyForm> = async (fieldName, value) => {
-    const error = await fonk.validateField(fieldName, value);
-    setErrors({ ...errors, [fieldName]: error });
-  };
 
   const onAddProduct = () => {
     const newProduct: Product = {
@@ -94,11 +89,13 @@ const App = () => {
                       ...values,
                       products: values.products.map((p, i) => (i === index ? { ...p, name: value } : p)),
                     });
-                    await validateField(`products[${index}].name`, value);
+                    const error = await fonk.validateField(`products[${index}].name`, value);
+                    setErrors({ ...errors, [`products[${index}].name`]: error });
                   }}
                   onBlur={async event => {
                     const value = event.target.value;
-                    await validateField(`products[${index}].name`, value);
+                    const error = await fonk.validateField(`products[${index}].name`, value);
+                    setErrors({ ...errors, [`products[${index}].name`]: error });
                   }}
                 />
                 <span>{errors?.[`products[${index}].name`]}</span>
