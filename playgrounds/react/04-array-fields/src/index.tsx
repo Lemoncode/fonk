@@ -40,6 +40,7 @@ const App = () => {
     };
     setValues({ ...values, products: [...values.products, newProduct] });
   };
+
   const onRemoveProduct = (index: number) => {
     const newProducts: Product[] = [...values.products];
     newProducts.splice(index, 1);

@@ -1,8 +1,6 @@
 export type ErrorMessage = string;
 
-export type Errors<Model, ValidationResult = ErrorMessage> =
-  | Partial<Record<DeepKey<Model>, ValidationResult | undefined>>
-  | undefined;
+export type Errors<Model> = Partial<Record<DeepKey<Model>, ErrorMessage | undefined>> | undefined;
 
 type ExtractArrayPaths<Field extends string> =
   Field extends `${infer Prefix}[${string}].${infer ArrayName}[${string}]${infer Rest}`
@@ -36,27 +34,35 @@ export type ValidatorProps<CustomArgs = {}> = CustomArgs & {
   message?: string;
 };
 
-export type ValidatorFn<
-  CustomArgs = {},
-  ValidationResult = ErrorMessage,
-  Model = any,
-  Field extends DeepKey<Model> = any,
-> = (
+export type ValidatorFn<CustomArgs = {}, Model = any, Field extends DeepKey<Model> = any> = (
   props?: ValidatorProps<CustomArgs>
-) => (props: InternalValidatorProps<Model, Field>) => ValidationResult | Promise<ValidationResult> | undefined;
+) => (props: InternalValidatorProps<Model, Field>) => ErrorMessage | Promise<ErrorMessage> | undefined;
+
+export type DeepSchemaKey<Model> = Model extends object
+  ? {
+      [K in keyof Model]-?:
+        | `${Exclude<K, symbol>}`
+        | (Model[K] extends Array<infer ArrayType>
+            ? ArrayType extends object
+              ? `${Exclude<K, symbol>}[i]` | `${Exclude<K, symbol>}[i].${DeepSchemaKey<ArrayType>}`
+              : `${Exclude<K, symbol>}[i]`
+            : Model[K] extends object | undefined
+              ? `${Exclude<K, symbol>}.${DeepSchemaKey<NonNullable<Model[K]>>}`
+              : never);
+    }[keyof Model]
+  : never;
 
 export type DeepKey<Model> = Model extends object
   ? {
-      [K in keyof Model]: Model[K] extends Array<infer ArrayType>
-        ? ArrayType extends object
-          ?
-              | `${Exclude<K, symbol>}`
-              | `${Exclude<K, symbol>}[i].${DeepKey<ArrayType>}`
-              | `${Exclude<K, symbol>}[${number}].${DeepKey<ArrayType>}`
-          : `${Exclude<K, symbol>}` | `${Exclude<K, symbol>}[i]` | `${Exclude<K, symbol>}[${number}]`
-        : Model[K] extends object
-          ? `${Exclude<K, symbol>}.${DeepKey<Model[K]>}` | `${Exclude<K, symbol>}`
-          : `${Exclude<K, symbol>}`;
+      [K in keyof Model]-?:
+        | `${Exclude<K, symbol>}`
+        | (Model[K] extends Array<infer ArrayType>
+            ? ArrayType extends object
+              ? `${Exclude<K, symbol>}[${number}]` | `${Exclude<K, symbol>}[${number}].${DeepKey<ArrayType>}`
+              : `${Exclude<K, symbol>}[${number}]`
+            : Model[K] extends object | undefined
+              ? `${Exclude<K, symbol>}.${DeepKey<NonNullable<Model[K]>>}`
+              : never);
     }[keyof Model]
   : never;
 
@@ -90,13 +96,19 @@ export type DeepValue<Model, Key extends string> = Key extends keyof Model
             : never
           : never;
 
-export type ValidationSchema<Model, ValidationResult = ErrorMessage> = {
-  [Field in DeepKey<Model>]?: Array<ReturnType<ValidatorFn<any, ValidationResult, Model, Field>>>;
+export type ConvertSchemaKeyToKey<Model, Field extends string> = Field extends `${infer Prefix}[i]${infer Suffix}`
+  ? ConvertSchemaKeyToKey<Model, `${Prefix}[${number}]${Suffix}`>
+  : Field extends DeepKey<Model>
+    ? Field
+    : never;
+
+export type ValidationSchema<Model> = {
+  [Field in DeepSchemaKey<Model>]?: Array<ReturnType<ValidatorFn<any, Model, ConvertSchemaKeyToKey<Model, Field>>>>;
 };
 
-export type ValidateFieldFn<Model, ValidationResult = ErrorMessage> = <Field extends DeepKey<Model>>(
+export type ValidateFieldFn<Model> = <Field extends DeepKey<Model>>(
   field: Field,
   value: DeepValue<Model, Field & string>,
   values?: Model,
   arrayIndexes?: ArrayIndexes<Field & string>
-) => Promise<ValidationResult | undefined>;
+) => Promise<ErrorMessage | undefined>;
