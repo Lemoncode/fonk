@@ -1,26 +1,27 @@
 import type {
   Errors,
   DeepKey,
-  DeepValue,
-  ErrorMessage,
   ValidationSchema,
-  ArrayIndexes,
   ArrayValidationContext,
   ValidateFieldFn,
+  ValidatorFn,
 } from './fonk.model.js';
-import { getValueAtPath, hasSomeError, isArrayField } from './fonk.helpers.js';
-import { ARRAY_FIELD_REGEX } from './fonk.constants.js';
+import { extractArrayIndexes, getValueAtPath, hasSomeError, isArrayField, normalizeField } from './fonk.helpers.js';
+
+type Fonk<Model> = {
+  validateField: ValidateFieldFn<Model>;
+  validateAll: (values: Model) => Promise<Errors<Model>>;
+};
 
 // TODO: Check this "standard" for validation libraries: https://github.com/standard-schema/standard-schema
-export const getFonk = <Model, ValidationResult = ErrorMessage>(
-  validationSchema: ValidationSchema<Model, ValidationResult>
-) => {
-  const validateField: ValidateFieldFn<Model, ValidationResult> = async (field, value, values, arrayIndexes) => {
-    const key = isArrayField(field) ? field.replaceAll(ARRAY_FIELD_REGEX, '[i]') : field;
-    const validators = validationSchema[key] || [];
+export const getFonk = <Model>(validationSchema: ValidationSchema<Model>): Fonk<Model> => {
+  const validateField: ValidateFieldFn<Model> = async (field, value, values, arrayIndexes) => {
+    const fallbackArrayIndexes = arrayIndexes ?? extractArrayIndexes(field);
+    const normalizedField = normalizeField(field);
+    const validators: ReturnType<ValidatorFn>[] = validationSchema[normalizedField] || [];
 
     for (const validator of validators) {
-      const error = await validator({ value, values, arrayIndexes });
+      const error = await validator({ value, values, arrayIndexes: fallbackArrayIndexes });
       if (error) {
         return error;
       }
@@ -36,7 +37,7 @@ export const getFonk = <Model, ValidationResult = ErrorMessage>(
     segment: string,
     isLastSegment: boolean
   ) => {
-    const errors: Errors<Model, ValidationResult> = {};
+    const errors: Errors<Model> = {};
     for (let index = 0; index < value.length; index++) {
       const arrayIndexes = {
         ...(nextContext.arrayIndexes ?? {}),
@@ -60,7 +61,7 @@ export const getFonk = <Model, ValidationResult = ErrorMessage>(
   };
 
   const validateArrayField = async <Field extends DeepKey<Model>>(context: ArrayValidationContext<Model, Field>) => {
-    let errors: Errors<Model, ValidationResult> = {};
+    let errors: Errors<Model> = {};
     const originalSegment = context.path[0];
     const segment = parseSegment(originalSegment);
     const value = getValueAtPath([segment], context.segmentValue);
@@ -92,8 +93,8 @@ export const getFonk = <Model, ValidationResult = ErrorMessage>(
 
   return {
     validateField,
-    validateAll: async (values: Model): Promise<Errors<Model, ValidationResult>> => {
-      let errors: Errors<Model, ValidationResult> = {};
+    validateAll: async (values: Model): Promise<Errors<Model>> => {
+      let errors: Errors<Model> = {};
 
       for (const key in validationSchema) {
         const field = key as DeepKey<Model>;
