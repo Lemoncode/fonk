@@ -1,0 +1,25 @@
+{
+  "name": "@playgrounds/react-99-tanstack-form",
+  "private": true,
+  "types": "module",
+  "scripts": {
+    "start": "vite --port 8080",
+    "e2e": "run-p -r start e2e:start",
+    "e2e:watch": "run-p start \"e2e:start -- --ui\"",
+    "e2e:start": "playwright test --config ../../../playwright.config.ts react/99-tanstack-form"
+  },
+  "dependencies": {
+    "@lemoncode/fonk": "*",
+    "@tanstack/react-form": "^1.3.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "postcss": "^8.5.3",
+    "postcss-preset-env": "^10.1.5"
+  }
+}
